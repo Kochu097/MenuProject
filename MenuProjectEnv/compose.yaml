@@ -1,0 +1,13 @@
+services:
+    db:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: zaq1@WSX
+            MYSQL_DATABASE: menu_database
+            MYSQL_TCP_PORT: 3307
+        ports:
+        - 3307:3307
+        expose:
+            - 3307
+        
+            
