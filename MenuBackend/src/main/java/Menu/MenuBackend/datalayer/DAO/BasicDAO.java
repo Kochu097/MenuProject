@@ -6,6 +6,5 @@ import jakarta.persistence.PersistenceContext;
 public class BasicDAO {
 
     @PersistenceContext
-    EntityManager entityManager;
-
+    public EntityManager entityManager;
 }

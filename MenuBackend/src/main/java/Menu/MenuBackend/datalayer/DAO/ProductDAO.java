@@ -1,4 +1,10 @@
 package Menu.MenuBackend.datalayer.DAO;
 
-public class ProductDAO extends BasicDAO {
+import Menu.MenuBackend.datalayer.entity.ProductEntity;
+
+public interface ProductDAO {
+
+    ProductEntity saveProduct(ProductEntity product);
+
+    ProductEntity getProductById(int id);
 }

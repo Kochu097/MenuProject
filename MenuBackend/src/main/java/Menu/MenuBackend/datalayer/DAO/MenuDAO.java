@@ -1,5 +1,13 @@
 package Menu.MenuBackend.datalayer.DAO;
 
-public class MenuDAO extends BasicDAO {
+import Menu.MenuBackend.datalayer.entity.MenuEntity;
+
+public interface MenuDAO {
+
+    MenuEntity saveMenu(MenuEntity menu);
+
+    MenuEntity updateMenu(MenuEntity menu);
+
+    MenuEntity getMenuById(Long id);
 
 }
