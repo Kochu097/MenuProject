@@ -1,121 +1,179 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useState, useCallback } from 'react';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import Sidebar from '@/components/HomeScreenSidebar';
+import MealCard from '@/components/MealCard';
+import { googleOauth } from '@/hooks/useOauth';
 
-// Simple Menu Data for Today
-const todayMenu = {
-  breakfast: "Pancakes with syrup",
-  dinner: "Grilled chicken with veggies",
-  supper: "Spaghetti Bolognese"
-};
+const CORK_PATTERN = `
+  <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>
+    </filter>
+    <rect width="100" height="100" filter="url(#noise)" opacity="0.4"/>
+  </svg>
+`;
 
-interface Props {
-  navigation: NativeStackNavigationProp<any>;
-}
+const HomeScreen: React.FC = () => {
+  const [showFullWeek, setShowFullWeek] = useState(true);
+  
+  const getDates = useCallback(() => {
+    const dates = [];
+    const today = new Date();
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay());
+    
+    for (let i = 0; i < (showFullWeek ? 7 : 1); i++) {
+      const date = new Date(startOfWeek);
+      date.setDate(startOfWeek.getDate() + i);
+      dates.push(date);
+    }
+    return dates;
+  }, [showFullWeek]);
 
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
+  const getMealsForDate = (date: Date) => {
+    return [
+      { type: 'Breakfast', name: 'Oatmeal with berries' },
+      { type: 'Lunch', name: 'Grilled chicken salad' },
+    ];
+  };
+
+  const handleAddMeal = (date: Date, mealType: string) => {
+    console.log(`Adding meal for ${date.toDateString()}, ${mealType}`);
+  };
+
+  const login = (provider: string) => {
+      if(provider == 'google') {
+        googleOauth();
+      }
+  }
+
   return (
     <View style={styles.container}>
-      {/* Header with Login Link */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Menu Project</Text>
-        <TouchableOpacity style={styles.loginLink}>
-        <Button title="Login" onPress={() => navigation.navigate('Login')} />
+      <Sidebar isLoggedIn={false} userInfo={null} />
+      
+      {/* Wooden Frame Header */}
+      <LinearGradient
+        colors={['#8B4513', '#A0522D', '#8B4513']}
+        style={styles.header}
+      >
+        <Text style={styles.title}>My Meal Plan</Text>
+        <TouchableOpacity
+          style={styles.weekToggle}
+          onPress={() => setShowFullWeek(!showFullWeek)}
+        >
+          <MaterialIcons
+            name={showFullWeek ? 'view-day' : 'view-week'}
+            size={24}
+            color="#8B4513"
+          />
+          <Text style={styles.weekToggleText}>
+            {showFullWeek ? 'Show Today' : 'Show Week'}
+          </Text>
         </TouchableOpacity>
+      </LinearGradient>
+
+      {/* Corkboard with texture */}
+      <View style={styles.corkboard}>
+        <View style={styles.corkTexture} />
+        <ScrollView 
+          contentContainerStyle={styles.cardGrid}
+          showsVerticalScrollIndicator={false}
+        >
+          {getDates().map((date, index) => (
+            <MealCard
+              key={date.toISOString()}
+              date={date}
+              meals={getMealsForDate(date)}
+              onAddMeal={(mealType) => handleAddMeal(date, mealType)}
+              index={index} isToday={showFullWeek} showFullWeek={showFullWeek}            
+              />
+          ))}
+        </ScrollView>
       </View>
 
-      {/* Menu Bar */}
-      <View style={styles.menuBar}>
-        <Button title="Show menu" onPress={() => alert('Show menu')} />
-        <Button title="Add new meal" onPress={() => alert('Add new meal')} />
-        <Button title="New meal plan" onPress={() => alert('New meal plan')} />
-      </View>
-
-      {/* Main Content: Today's Menu */}
-      <ScrollView contentContainerStyle={styles.mainContent}>
-        <Text style={styles.heading}>Today's Meal Menu</Text>
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableHeader}>Meal</Text>
-            <Text style={styles.tableHeader}>Menu</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableCell}>Breakfast</Text>
-            <Text style={styles.tableCell}>{todayMenu.breakfast}</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableCell}>Dinner</Text>
-            <Text style={styles.tableCell}>{todayMenu.dinner}</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableCell}>Supper</Text>
-            <Text style={styles.tableCell}>{todayMenu.supper}</Text>
-          </View>
-        </View>
-      </ScrollView>
+      {/* Wooden Frame Bottom */}
+      <LinearGradient
+        colors={['#8B4513', '#A0522D', '#8B4513']}
+        style={styles.footer}
+      />
     </View>
   );
-}
+};
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 40,
-    paddingHorizontal: 20,
+    backgroundColor: '#8B4513',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    padding: 20,
+    paddingTop: 40,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#FFF8F0',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
-  loginLink: {
-    backgroundColor: '#3498db',
-    padding: 10,
-    borderRadius: 5,
-  },
-  loginText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  menuBar: {
+  weekToggle: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
-  },
-  mainContent: {
-    flexGrow: 1,
     alignItems: 'center',
+    gap: 8,
+    padding: 8,
+    backgroundColor: '#FFF8F0',
+    borderRadius: 20,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
-  heading: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  weekToggleText: {
+    color: '#8B4513',
+    fontWeight: '500',
   },
-  table: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#ddd',
+  corkboard: {
+    flex: 1,
+    backgroundColor: '#D4B483',
+    position: 'relative',
   },
-  tableRow: {
+  corkTexture: {
+    ...StyleSheet.absoluteFillObject,
+    opacity: 0.1,
+    backgroundColor: '#000',
+  },
+  cardGrid: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
+    paddingTop: 20,
   },
-  tableHeader: {
-    flex: 1,
-    fontWeight: 'bold',
-  },
-  tableCell: {
-    flex: 1,
+  footer: {
+    height: 20,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
 });
 

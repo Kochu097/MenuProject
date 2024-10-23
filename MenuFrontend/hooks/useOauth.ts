@@ -1,14 +1,8 @@
-
-import { Text, TouchableOpacity } from 'react-native';
+import auth from "@/components/FirebaseInit";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import auth from './FirebaseInit';
 
-
-const GoogleLoginButton = ({ onChange }: { onChange: (User: any) => void }) => {
-
-
-    const googlePromptAsync = () => {
-        const provider = new GoogleAuthProvider();
+export function googleOauth() {
+    const provider = new GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
         signInWithPopup(auth, provider)
         .then((result) => {
@@ -16,9 +10,7 @@ const GoogleLoginButton = ({ onChange }: { onChange: (User: any) => void }) => {
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential?.accessToken; 
             // The signed-in user info.
-            const user = result.user;
-            console.log(token);
-            onChange(user)
+            return result.user;
         }).catch((error) => {
             // Handle Errors here.
             const errorCode = error.code;
@@ -29,23 +21,4 @@ const GoogleLoginButton = ({ onChange }: { onChange: (User: any) => void }) => {
             const credential = GoogleAuthProvider.credentialFromError(error);
             // ...
         });
-    }
-
-return (
-    <TouchableOpacity style={{
-        backgroundColor: '#4285F4',
-        padding: 10,
-        borderRadius: 5,
-        marginVertical: 10,
-        width: 200,
-        alignItems: 'center',
-      }} onPress={() => googlePromptAsync()}>
-    <Text style={{
-        color: 'white',
-        fontWeight: 'bold',
-    }}>Login with Google</Text>
-  </TouchableOpacity>
-);
 }
-
-export default GoogleLoginButton;
