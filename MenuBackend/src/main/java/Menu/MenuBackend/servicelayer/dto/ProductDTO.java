@@ -1,16 +1,7 @@
-package Menu.MenuBackend.datalayer.entity;
+package Menu.MenuBackend.servicelayer.dto;
 
-import jakarta.persistence.*;
+public class ProductDTO {
 
-@Entity
-@Table(name = "PRODUCT")
-public class ProductEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "ID", nullable = false)
     private Long id;
-
-    @Column(name = "Name", nullable = false)
     private String name;
 }

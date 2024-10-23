@@ -1,2 +1,5 @@
-package Menu.MenuBackend.servicelayer.mapper;public class DTOMApper {
+package Menu.MenuBackend.servicelayer.mapper;
+
+public class DTOMapper {
+
 }

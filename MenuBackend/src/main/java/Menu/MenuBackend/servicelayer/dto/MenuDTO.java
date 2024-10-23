@@ -1,29 +1,16 @@
-package Menu.MenuBackend.datalayer.entity;
+package Menu.MenuBackend.servicelayer.dto;
 
 import Menu.MenuBackend.datalayer.enums.MealType;
-import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-@Table(name="MENU")
-public class MenuEntity {
+public class MenuDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
     private Long id;
-
-    @Column(name = "Day", nullable = false)
     private LocalDate day;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Meal_type", nullable = false)
     private MealType mealType;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<MenuItemEntity> items;
+    private List<MenuItemDTO> items;
 
     public Long getId() {
         return id;

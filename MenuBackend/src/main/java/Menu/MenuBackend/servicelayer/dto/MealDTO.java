@@ -1,17 +1,8 @@
-package Menu.MenuBackend.datalayer.entity;
+package Menu.MenuBackend.servicelayer.dto;
 
-import jakarta.persistence.*;
+public class MealDTO {
 
-@Entity
-@Table(name="MEAL")
-public class MealEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
     private Long id;
-
-    @Column(name = "Name", nullable = false)
     private String name;
 
     public Long getId() {
