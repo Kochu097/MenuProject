@@ -28,7 +28,7 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
 
         if(authorizationHeader != null && authorizationHeader.startsWith(BEARER_PREFIX)) {
@@ -43,6 +43,8 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
             }
         }
         setAuthErrorDetails(response);
+        filterChain.doFilter(request, response);
+
     }
 
     private Optional<String> getUserIdFromToken(String token) {
