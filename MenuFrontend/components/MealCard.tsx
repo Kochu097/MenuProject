@@ -25,8 +25,8 @@ interface MealCardProps {
 
 const PAPER_PATTERNS = [
   'repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%)',
-  'radial-gradient(circle, transparent 20%, #000 20%, #000 21%, transparent 21%, transparent)',
   'repeating-linear-gradient(90deg, #000 0, #000 1px, transparent 1px, transparent 50%)',
+  'repeating-linear-gradient(30deg, #000 0, #000 1px, transparent 1px, transparent 50%)',
 ];
 
 const PIN_COLORS = [
@@ -56,6 +56,7 @@ const MealCard: React.FC<MealCardProps> = ({
   const floatAnim = React.useRef(new Animated.Value(0)).current;
 
   // Get random variations based on index
+  
   const patternIndex = index % PAPER_PATTERNS.length;
   const paperColorIndex = index % PAPER_COLORS.length;
   const pinColorIndex = index % PIN_COLORS.length;

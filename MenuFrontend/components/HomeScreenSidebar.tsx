@@ -8,25 +8,13 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { useUser } from '@/context/UserContext';
 import { MaterialIcons } from '@expo/vector-icons';
 
-interface SidebarProps {
-  isLoggedIn: boolean;
-  userInfo?: {
-    displayName: string;
-    email: string;
-    photoURL: string;
-  } | null;
-  onLogin?: (provider: string) => void;
-  onLogout?: () => void;
-}
+const Sidebar: React.FC = () => {
 
-const Sidebar: React.FC<SidebarProps> = ({
-  isLoggedIn,
-  userInfo,
-  onLogin,
-  onLogout,
-}) => {
+  const { userInfo, isAuthenticated, login, logout } = useUser();
+
   const [isOpen, setIsOpen] = useState(false);
   const slideAnim = useState(new Animated.Value(-300))[0];
 
@@ -64,25 +52,25 @@ const Sidebar: React.FC<SidebarProps> = ({
         ]}
       >
         <View style={styles.sidebarContent}>
-          {!isLoggedIn ? (
+          {!isAuthenticated ? (
             <View style={styles.authButtons}>
               <TouchableOpacity
                 style={[styles.authButton, { backgroundColor: '#DB4437' }]}
-                onPress={() => onLogin?.('google')}
+                onPress={() => login?.('google')}
               >
                 <Text style={styles.authButtonText}>Sign in with Google</Text>
               </TouchableOpacity>
               
               <TouchableOpacity
                 style={[styles.authButton, { backgroundColor: '#4267B2' }]}
-                onPress={() => onLogin?.('facebook')}
+                onPress={() => login?.('facebook')}
               >
                 <Text style={styles.authButtonText}>Sign in with Facebook</Text>
               </TouchableOpacity>
               
               <TouchableOpacity
                 style={[styles.authButton, { backgroundColor: '#000000' }]}
-                onPress={() => onLogin?.('icloud')}
+                onPress={() => login?.('icloud')}
               >
                 <Text style={styles.authButtonText}>Sign in with iCloud</Text>
               </TouchableOpacity>
@@ -99,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               <Text style={styles.userEmail}>{userInfo?.email}</Text>
               <TouchableOpacity
                 style={styles.logoutButton}
-                onPress={onLogout}
+                onPress={logout}
               >
                 <Text style={styles.logoutButtonText}>Sign Out</Text>
               </TouchableOpacity>
