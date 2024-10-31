@@ -9,7 +9,7 @@ import { useTestMenuConnection } from "@/hooks/useMealAPI";
 const MealPlanFrame: React.FC = () => {
   const { isAuthenticated } = useUser();
 
-    const [showFullWeek, setShowFullWeek] = useState(true);
+    const [showFullWeek, setShowFullWeek] = useState(false);
     
     const getDates = useCallback(() => {
       const dates = [];
@@ -26,10 +26,11 @@ const MealPlanFrame: React.FC = () => {
     }, [showFullWeek]);
   
     const getMealsForDate = (date: Date) => {
-      return [
-        { type: 'Breakfast', name: 'Oatmeal with berries' },
-        { type: 'Lunch', name: 'Grilled chicken salad' },
-      ];
+      return [];
+    };
+  
+    const getMealsTypes = () => {
+      return ['Breakfast', 'Dinner', 'Supper', 'Snacks'];
     };
   
     const handleAddMeal = (date: Date, mealType: string) => {
@@ -75,6 +76,7 @@ const MealPlanFrame: React.FC = () => {
                     key={date.toISOString()}
                     date={date}
                     meals={getMealsForDate(date)}
+                    mealTypes={getMealsTypes()}
                     onAddMeal={(mealType) => handleAddMeal(date, mealType)}
                     index={index}
                     isToday={date.toDateString() === new Date().toDateString()}

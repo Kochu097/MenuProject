@@ -17,6 +17,7 @@ interface MealCardProps {
     type: string;
     name: string;
   }[];
+  mealTypes: string[];
   onAddMeal: (mealType: string) => void;
   index: number;
   isToday: boolean;
@@ -45,6 +46,7 @@ const PAPER_COLORS = [
 const MealCard: React.FC<MealCardProps> = ({ 
   date, 
   meals, 
+  mealTypes,
   onAddMeal, 
   index,
   isToday,
@@ -184,7 +186,7 @@ const MealCard: React.FC<MealCardProps> = ({
         </View>
 
         <View style={styles.mealsList}>
-          {['Breakfast', 'Lunch', 'Dinner', 'Snacks'].map((mealType) => {
+          {mealTypes.map((mealType) => {
             const meal = meals.find(m => m.type === mealType);
             
             return (
