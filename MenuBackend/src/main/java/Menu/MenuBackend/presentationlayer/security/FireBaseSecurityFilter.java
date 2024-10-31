@@ -39,12 +39,12 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(userId.get(), null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                return;
+                filterChain.doFilter(request, response);
             }
+        } else {
+            setAuthErrorDetails(response);
+            filterChain.doFilter(request, response);
         }
-        setAuthErrorDetails(response);
-        filterChain.doFilter(request, response);
-
     }
 
     private Optional<String> getUserIdFromToken(String token) {
@@ -63,5 +63,9 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED,
                 "Authentication failure: Token missing, invalid or expired");
         response.getWriter().write(new ObjectMapper().writeValueAsString(problemDetail));
+    }
+
+    private void setResponseOnOptionsMethod(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpStatus.OK.value());
     }
 }
