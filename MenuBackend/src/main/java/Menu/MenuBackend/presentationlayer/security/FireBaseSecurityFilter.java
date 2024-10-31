@@ -8,7 +8,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -63,9 +62,5 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED,
                 "Authentication failure: Token missing, invalid or expired");
         response.getWriter().write(new ObjectMapper().writeValueAsString(problemDetail));
-    }
-
-    private void setResponseOnOptionsMethod(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpStatus.OK.value());
     }
 }
