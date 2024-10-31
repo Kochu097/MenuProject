@@ -24,8 +24,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const token = credential?.accessToken;
           const user = result.user;
-
-          setToken(credential?.accessToken != undefined ? credential?.accessToken : null);
+          auth.currentUser?.getIdToken(true).then(function(tokenId) {
+            setToken(tokenId);
+          })
           setLoginSource(source);
           setIsAuthenticated(true);
           setUserInfo({
