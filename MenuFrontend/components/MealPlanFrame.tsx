@@ -73,7 +73,7 @@ const MealPlanFrame: React.FC = () => {
                   <>
                     <Text>response from API: {String(apiResult)}</Text>
                     <MealCard
-                    key={date.toISOString()}
+                    key={index}
                     date={date}
                     meals={getMealsForDate(date)}
                     mealTypes={getMealsTypes()}

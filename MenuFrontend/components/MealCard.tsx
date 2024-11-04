@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import AddMealDialog from './AddMealWindow';
 
 interface MealCardProps {
   date: Date;
@@ -186,11 +187,11 @@ const MealCard: React.FC<MealCardProps> = ({
         </View>
 
         <View style={styles.mealsList}>
-          {mealTypes.map((mealType) => {
+          {mealTypes.map((mealType, index) => {
             const meal = meals.find(m => m.type === mealType);
             
             return (
-              <View key={mealType} style={styles.mealItem}>
+              <View key={index} style={styles.mealItem}>
                 <Text style={styles.mealType}>{mealType}</Text>
                 {meal ? (
                   <View style={styles.mealNameContainer}>
@@ -201,13 +202,14 @@ const MealCard: React.FC<MealCardProps> = ({
                     ]} />
                   </View>
                 ) : (
-                  <TouchableOpacity
-                    style={styles.addMealButton}
-                    onPress={() => onAddMeal(mealType)}
-                  >
-                    <MaterialIcons name="add" size={16} color="#8B4513" />
-                    <Text style={styles.addMealText}>Add meal</Text>
-                  </TouchableOpacity>
+                  // <TouchableOpacity
+                  //   style={styles.addMealButton}
+                  //   onPress={() => onAddMeal(mealType)}
+                  // >
+                  //   <MaterialIcons name="add" size={16} color="#8B4513" />
+                  //   <Text style={styles.addMealText}>Add meal</Text>
+                  // </TouchableOpacity>
+                  <AddMealDialog />
                 )}
               </View>
             );
