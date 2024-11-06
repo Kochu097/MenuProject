@@ -69,7 +69,7 @@ const MealPlanFrame: React.FC = () => {
               contentContainerStyle={styles.cardGrid}
               showsVerticalScrollIndicator={false}
               >
-                {isAuthenticated ? (getDates().map((date, index) => (
+                {/* {isAuthenticated ? (getDates().map((date, index) => (
                   <>
                     <Text>response from API: {String(apiResult)}</Text>
                     <MealCard
@@ -83,7 +83,23 @@ const MealPlanFrame: React.FC = () => {
                     showFullWeek={showFullWeek}
                 />
                 </>
-                ))) : (<Text>Please Login to get menu</Text>)}
+                ))) : (<Text>Please Login to get menu</Text>)} */}
+
+                {getDates().map((date, index) => (
+                  <>
+                    <Text>response from API: {String(apiResult)}</Text>
+                    <MealCard
+                    key={index}
+                    date={date}
+                    meals={getMealsForDate(date)}
+                    mealTypes={getMealsTypes()}
+                    onAddMeal={(mealType) => handleAddMeal(date, mealType)}
+                    index={index}
+                    isToday={date.toDateString() === new Date().toDateString()}
+                    showFullWeek={showFullWeek}
+                />
+                </>
+                ))}
               </ScrollView>
           </View>
 

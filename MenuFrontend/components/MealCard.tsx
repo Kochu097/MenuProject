@@ -8,9 +8,8 @@ import {
   Animated,
   Pressable
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import AddMealDialog from './AddMealWindow';
+import AddMealDialog from './AddMealDialog/AddMealDialog';
 
 interface MealCardProps {
   date: Date;
@@ -209,7 +208,58 @@ const MealCard: React.FC<MealCardProps> = ({
                   //   <MaterialIcons name="add" size={16} color="#8B4513" />
                   //   <Text style={styles.addMealText}>Add meal</Text>
                   // </TouchableOpacity>
-                  <AddMealDialog />
+                  <AddMealDialog 
+                  onAddMeal={(mealData) => {
+                    // Handle the meal addition here
+                    console.log('Meal added:', mealData);
+                    onAddMeal(mealData.type);
+                  }}
+                  recipes={[
+                    {
+                      id: '1',
+                      name: 'Pancakes',
+                      description: 'Fluffy homemade pancakes with maple syrup',
+                      imageUrl: '/path/to/pancakes.jpg',
+                      preparationTime: '20 min',
+                      difficulty: 'Easy'
+                    },
+                    {
+                      id: '2',
+                      name: 'Scrambled eggs',
+                      description: 'Fluffy homemade pancakes with maple syrup',
+                      imageUrl: '/path/to/pancakes.jpg',
+                      preparationTime: '20 min',
+                      difficulty: 'Easy'
+                    },
+                    {
+                      id: '3',
+                      name: 'Pancakes',
+                      description: 'Fluffy homemade pancakes with maple syrup',
+                      imageUrl: '/path/to/pancakes.jpg',
+                      preparationTime: '20 min',
+                      difficulty: 'Easy'
+                    },
+                    {
+                      id: '4',
+                      name: 'Pancakes',
+                      description: 'Fluffy homemade pancakes with maple syrup',
+                      imageUrl: '/path/to/pancakes.jpg',
+                      preparationTime: '20 min',
+                      difficulty: 'Easy'
+                    },
+                    // ... more recipes
+                  ]}
+                  products={[
+                    {
+                      id: '1',
+                      name: 'Greek Yogurt',
+                      description: 'Plain Greek yogurt, high in protein',
+                      imageUrl: '/path/to/yogurt.jpg',
+                      weight: '200g',
+                      calories: 130
+                    },
+                    // ... more products
+                  ]}/>
                 )}
               </View>
             );
