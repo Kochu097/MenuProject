@@ -254,7 +254,7 @@ const MealCard: React.FC<MealCardProps> = ({
                       id: '1',
                       name: 'Greek Yogurt',
                       description: 'Plain Greek yogurt, high in protein',
-                      imageUrl: '/path/to/yogurt.jpg',
+                      imageUrl: '',
                       weight: '200g',
                       calories: 130
                     },
