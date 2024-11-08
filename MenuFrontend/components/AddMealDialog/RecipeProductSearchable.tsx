@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { View, TouchableOpacity, TextInput, ScrollView, Text, StyleSheet} from "react-native";
-import AddRecipeDialog from "../AddRecipeDialog";
+import AddRecipeDialog from "../AddRecipe/AddRecipeDialog";
 
 interface Recipe {
     id: string;
