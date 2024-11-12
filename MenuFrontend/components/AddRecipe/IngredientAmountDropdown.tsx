@@ -79,10 +79,11 @@ const IngredientAmountDropdown: React.FC<IngredientAmountDropdownProps> = ({ onC
         value={selectedOption}
         placeholder="Select unit"
         styles={customStyles}
+        menuPlacement='top'
         components={{
           DropdownIndicator: () => (
             <MaterialIcons name="arrow-drop-down" size={24} color="#8B4513" />
-          ),
+          )
         }}
       />
     </View>

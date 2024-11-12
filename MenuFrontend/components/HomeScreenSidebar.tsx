@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
     Animated.timing(slideAnim, {
       toValue,
       duration: 300,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
     setIsOpen(!isOpen);
   };

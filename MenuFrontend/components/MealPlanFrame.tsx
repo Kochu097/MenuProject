@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useUser } from "@/context/UserContext";
 import { useTestMenuConnection } from "@/hooks/useMealAPI";
+import React from "react";
 
 const MealPlanFrame: React.FC = () => {
   const { isAuthenticated } = useUser();
@@ -69,24 +70,8 @@ const MealPlanFrame: React.FC = () => {
               contentContainerStyle={styles.cardGrid}
               showsVerticalScrollIndicator={false}
               >
-                {/* {isAuthenticated ? (getDates().map((date, index) => (
-                  <>
-                    <Text>response from API: {String(apiResult)}</Text>
-                    <MealCard
-                    key={index}
-                    date={date}
-                    meals={getMealsForDate(date)}
-                    mealTypes={getMealsTypes()}
-                    onAddMeal={(mealType) => handleAddMeal(date, mealType)}
-                    index={index}
-                    isToday={date.toDateString() === new Date().toDateString()}
-                    showFullWeek={showFullWeek}
-                />
-                </>
-                ))) : (<Text>Please Login to get menu</Text>)} */}
-
                 {getDates().map((date, index) => (
-                  <>
+                  <React.Fragment key={index}>
                     <Text>response from API: {String(apiResult)}</Text>
                     <MealCard
                     key={index}
@@ -98,7 +83,7 @@ const MealPlanFrame: React.FC = () => {
                     isToday={date.toDateString() === new Date().toDateString()}
                     showFullWeek={showFullWeek}
                 />
-                </>
+                </React.Fragment>
                 ))}
               </ScrollView>
           </View>

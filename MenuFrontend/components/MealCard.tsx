@@ -73,12 +73,12 @@ const MealCard: React.FC<MealCardProps> = ({
         Animated.timing(floatAnim, {
           toValue: 1,
           duration: 2000 + (index % 3) * 500,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(floatAnim, {
           toValue: 0,
           duration: 2000 + (index % 3) * 500,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ])
     ).start();
@@ -88,11 +88,11 @@ const MealCard: React.FC<MealCardProps> = ({
     Animated.parallel([
       Animated.spring(scaleAnim, {
         toValue: 0.95,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.spring(rotateAnim, {
         toValue: 1,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start();
   };
@@ -101,11 +101,11 @@ const MealCard: React.FC<MealCardProps> = ({
     Animated.parallel([
       Animated.spring(scaleAnim, {
         toValue: 1,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.spring(rotateAnim, {
         toValue: 0,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start();
   };
@@ -136,8 +136,9 @@ const MealCard: React.FC<MealCardProps> = ({
     <Animated.View style={[
       styles.cardContainer,
       { width: cardWidth },
-      cardStyle
-    ]}>
+      cardStyle,
+    ]}
+    key={index}>
       {/* Enhanced pin with 3D effect */}
       <View style={styles.pinContainer}>
         <LinearGradient
