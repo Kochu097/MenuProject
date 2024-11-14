@@ -39,9 +39,7 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
   const [isIngredientsModalVisible, setIsIngredientsModalVisible] = useState(false);
   const [newRecipeName, setNewRecipeName] = useState('');
   const [newRecipeDescription, setNewRecipeDescription] = useState('');
-  const [selectedProducts, setSelectedProducts] = useState<
-    { id: string; name: string; amount: string; unit: string }[]
-  >([]);
+  const [selectedProducts, setSelectedProducts] = useState<{product: Product, amount: string, unit: string}[]>([]);
   const [preparationTime, setPreparationTime] = useState('');
   const [newRecipeServings, setNewRecipeServings] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -61,7 +59,6 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
 
   const handleAddRecipe = () => {
     const newRecipe: Recipe = {
-      id: `recipe-${recipes.length + 1}`,
       name: newRecipeName,
       description: newRecipeDescription,
       imageUrl: selectedImage,
@@ -133,10 +130,10 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
     setIsIngredientsModalVisible(false);
   };
 
-  const handleAddSelectedIngredient = (product: Product, unit: string) => {
+  const handleAddSelectedIngredient = (product: Product) => {
     setSelectedProducts([
       ...selectedProducts,
-      { id: product.id, name: product.name, amount: '', unit: unit },
+      { product: product, amount: '', unit: '' },
     ]);
     setIsIngredientsModalVisible(false);
   };
@@ -221,17 +218,18 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
                       </TouchableOpacity>
                       <View style={styles.ingredientInfo}>
                         <Text style={styles.ingredientName}>
-                          {ingredient.name}
+                          {ingredient.product.name}
                         </Text>
                         <TextInput
                           style={styles.ingredientAmount}
                           placeholder="Amount"
                           value={ingredient.amount}
                           onChangeText={(amount) =>
-                            handleChangeIngredientAmount(index, amount)
+                            handleChangeIngredientAmount(index, amount.replace(/[^0-9]/g, ''))
                           }
                           placeholderTextColor="#A67B5B"
                           key="ingridientAmount"
+                          keyboardType='numeric'
                         />
                         <IngredientAmountDropdown
                           onChange={(unit) => handleChangeUnit(index, unit)}
@@ -334,11 +332,11 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
             </TouchableOpacity>
           </View>
           <ScrollView style={styles.ingredientsModalContent}>
-            {products.map((product) => (
+            {products.map((product, index) => (
               <TouchableOpacity
-                key={product.id}
+                key={index}
                 style={styles.ingredientItem}
-                onPress={() => handleAddSelectedIngredient(product, '')}
+                onPress={() => handleAddSelectedIngredient(product)}
               >
                 {product.imageUrl != '' ? (
                 <Image

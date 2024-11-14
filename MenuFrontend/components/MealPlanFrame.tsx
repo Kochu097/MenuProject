@@ -75,7 +75,6 @@ const MealPlanFrame: React.FC = () => {
                   <>
                     {getDates().map((date, index) => (
                       <React.Fragment key={index}>
-                        <Text>response from API: {String(apiResult)}</Text>
                         <MealCard
                         key={index}
                         date={date}
