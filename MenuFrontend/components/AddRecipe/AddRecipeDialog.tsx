@@ -14,26 +14,8 @@ import IngredientAmountDropdown from './IngredientAmountDropdown';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from "expo-linear-gradient";
 import Select from 'react-select';
-
-interface Recipe {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string | null;
-  ingredients: { id: string; name: string; amount: string }[];
-  preparationTime: string;
-  servings: number;
-  difficulty: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string;
-  weight: string;
-  calories: number;
-}
+import Recipe from '../Interfaces/IRecipe';
+import Product from '../Interfaces/IProduct';
 
 interface AddRecipeDialogProps {
   recipes: Recipe[];
@@ -570,36 +552,36 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 8,
       },
-      addIngredientButtonText: {
-        fontSize: 14,
-        color: '#8B4513',
-      },
-      ingredientsModalContainer: {
-        backgroundColor: '#FFF9E5',
-        borderRadius: 12,
-        overflow: 'hidden',
-        elevation: 8,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        width: '90%',
-        maxWidth: 600,
-      },
-      ingredientsModalHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#8B4513',
-        padding: 16,
-      },
-      ingredientsModalTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#FFF',
-      },
-      ingredientsModalContent: {
-        padding: 16,
-      },
+    addIngredientButtonText: {
+      fontSize: 14,
+      color: '#8B4513',
+    },
+    ingredientsModalContainer: {
+      backgroundColor: '#FFF9E5',
+      borderRadius: 12,
+      overflow: 'hidden',
+      elevation: 8,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      width: '90%',
+      maxWidth: 600,
+    },
+    ingredientsModalHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: '#8B4513',
+      padding: 16,
+    },
+    ingredientsModalTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#FFF',
+    },
+    ingredientsModalContent: {
+      padding: 16,
+    },
   });
 
 export default AddRecipeDialog;

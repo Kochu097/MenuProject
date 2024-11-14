@@ -53,8 +53,8 @@ const CalendarComponent: React.FC<CalendarComponentProp> = ({onSelectedDate, sel
     return (
         <View style={styles.calendarContainer}>
         <View style={styles.weekDaysHeader}>
-          {WEEKDAYS.map(day => (
-            <Text key={day} style={styles.weekDayText}>{day}</Text>
+          {WEEKDAYS.map((day, index) => (
+            <Text key={index} style={styles.weekDayText}>{day}</Text>
           ))}
         </View>
         {getWeeks().map((week, weekIndex) => (
@@ -73,7 +73,6 @@ const CalendarComponent: React.FC<CalendarComponentProp> = ({onSelectedDate, sel
               }
               
               return (
-                <>
                 <TouchableOpacity
                   key={date.getDay()+dateIndex}
                   style={[
@@ -93,7 +92,6 @@ const CalendarComponent: React.FC<CalendarComponentProp> = ({onSelectedDate, sel
                     {date.getDate()}
                   </Text>
                 </TouchableOpacity>
-                </>
                 
               )
         })}
