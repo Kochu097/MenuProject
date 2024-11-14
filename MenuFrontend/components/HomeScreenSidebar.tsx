@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useUser } from '@/context/UserContext';
 import { MaterialIcons } from '@expo/vector-icons';
+import LoginButton from './Buttons/LoginButton';
 
 const Sidebar: React.FC = () => {
 
@@ -54,26 +55,11 @@ const Sidebar: React.FC = () => {
         <View style={styles.sidebarContent}>
           {!isAuthenticated ? (
             <View style={styles.authButtons}>
-              <TouchableOpacity
-                style={[styles.authButton, { backgroundColor: '#DB4437' }]}
-                onPress={() => login?.('google')}
-              >
-                <Text style={styles.authButtonText}>Sign in with Google</Text>
-              </TouchableOpacity>
+              <LoginButton loginMethod='google' />
               
-              <TouchableOpacity
-                style={[styles.authButton, { backgroundColor: '#4267B2' }]}
-                onPress={() => login?.('facebook')}
-              >
-                <Text style={styles.authButtonText}>Sign in with Facebook</Text>
-              </TouchableOpacity>
+              <LoginButton loginMethod='facebook' />
               
-              <TouchableOpacity
-                style={[styles.authButton, { backgroundColor: '#000000' }]}
-                onPress={() => login?.('icloud')}
-              >
-                <Text style={styles.authButtonText}>Sign in with iCloud</Text>
-              </TouchableOpacity>
+              <LoginButton loginMethod='icloud' />
             </View>
           ) : (
             <View style={styles.userInfo}>
@@ -138,16 +124,6 @@ const styles = StyleSheet.create({
   },
   authButtons: {
     gap: 12,
-  },
-  authButton: {
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  authButtonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
   },
   userInfo: {
     alignItems: 'center',

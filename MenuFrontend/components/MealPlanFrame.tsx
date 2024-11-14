@@ -6,6 +6,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useUser } from "@/context/UserContext";
 import { useTestMenuConnection } from "@/hooks/useMealAPI";
 import React from "react";
+import LoginButton from "./Buttons/LoginButton";
 
 const MealPlanFrame: React.FC = () => {
   const { isAuthenticated } = useUser();
@@ -70,21 +71,31 @@ const MealPlanFrame: React.FC = () => {
               contentContainerStyle={styles.cardGrid}
               showsVerticalScrollIndicator={false}
               >
-                {getDates().map((date, index) => (
-                  <React.Fragment key={index}>
-                    <Text>response from API: {String(apiResult)}</Text>
-                    <MealCard
-                    key={index}
-                    date={date}
-                    meals={getMealsForDate(date)}
-                    mealTypes={getMealsTypes()}
-                    onAddMeal={(mealType) => handleAddMeal(date, mealType)}
-                    index={index}
-                    isToday={date.toDateString() === new Date().toDateString()}
-                    showFullWeek={showFullWeek}
-                />
-                </React.Fragment>
-                ))}
+                {isAuthenticated ? (
+                  <>
+                    {getDates().map((date, index) => (
+                      <React.Fragment key={index}>
+                        <Text>response from API: {String(apiResult)}</Text>
+                        <MealCard
+                        key={index}
+                        date={date}
+                        meals={getMealsForDate(date)}
+                        mealTypes={getMealsTypes()}
+                        onAddMeal={(mealType) => handleAddMeal(date, mealType)}
+                        index={index}
+                        isToday={date.toDateString() === new Date().toDateString()}
+                        showFullWeek={showFullWeek}
+                        />
+                      </React.Fragment>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <Text>In order to use an app, please log in</Text>
+                    <LoginButton loginMethod="google" />
+                  </>
+                )}
+                
               </ScrollView>
           </View>
 
