@@ -1,5 +1,6 @@
 package Menu.MenuBackend.datalayer.entity;
 
+import Menu.MenuBackend.datalayer.enums.WeightUnit;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,4 +14,22 @@ public class ProductEntity {
 
     @Column(name = "Name", nullable = false)
     private String name;
+
+    @Column(name = "UserID", nullable = false)
+    private int userID;
+
+    @Column(name = "Description")
+    private String description;
+
+    @Column(name = "ImageURL")
+    private String imageURL;
+
+    @Column(name = "Weight")
+    private Double weight;
+
+    @Column(name = "WeightUnit")
+    private WeightUnit weightUnit;
+
+    @Column(name = "Calories", nullable = false)
+    private Double calories;
 }

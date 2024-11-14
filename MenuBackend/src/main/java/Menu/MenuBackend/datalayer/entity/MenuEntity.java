@@ -23,7 +23,7 @@ public class MenuEntity {
     private MealType mealType;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private List<MenuItemEntity> items;
+    private List<IngredientEntity> ingredients;
 
     public Long getId() {
         return id;
@@ -47,5 +47,13 @@ public class MenuEntity {
 
     public void setMealType(MealType mealType) {
         this.mealType = mealType;
+    }
+
+    public List<IngridientEntity> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<IngridientEntity> ingredients) {
+        this.ingredients = ingredients;
     }
 }
