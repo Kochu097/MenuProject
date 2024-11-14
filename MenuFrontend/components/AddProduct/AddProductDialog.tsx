@@ -5,6 +5,7 @@ import { TouchableOpacity, Text, StyleSheet, View, Image, TextInput} from "react
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Select, { StylesConfig } from 'react-select';
+import ProductWeightUnit from "../Enums/ProductWeghtUnit";
 
 interface Option {
     label: string;
@@ -52,6 +53,11 @@ option: (provided, { isSelected }) => ({
 
 const AddProductDialog: React.FC = () => {
 
+    const weightOptions = Object.values(ProductWeightUnit).map(unit => ({
+        value: unit, 
+        label: unit,
+      }));
+
     const [product, setProduct] = useState<Product| null>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string>('');
@@ -59,15 +65,9 @@ const AddProductDialog: React.FC = () => {
     const [productDescription, setProductDescription] = useState<string>('');
     const [productWeight, setProductWeight] = useState<string>('');
     const [productCalories, setProductCalories] = useState<string>('');
-    const [weightUnitOption, setWeightUnitOption] = useState<Option | null>(null);
+    const [weightUnitOption, setWeightUnitOption] = useState<Option>(weightOptions[0]);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const weightOptions: Option[] = [
-        {label: 'g', value: 'grams'},
-        {label: 'kg', value: 'kilogram'},
-        {label: 'oz', value: 'ounce'},
-        {label: 'lb', value: 'pound'},
-    ]
 
     const clearForm = () => {
         setSelectedImage('');
@@ -75,7 +75,12 @@ const AddProductDialog: React.FC = () => {
         setProductDescription('');
         setProductWeight('');
         setProductCalories('');
-        setWeightUnitOption(null);
+        setWeightUnitOption(weightOptions[0]);
+    }
+
+    const handleSetWeightUnitOption = (unit: Option | null) => {
+        if(unit != null)
+        setWeightUnitOption(unit);
     }
 
     const handleOnClose = () => {
@@ -99,11 +104,11 @@ const AddProductDialog: React.FC = () => {
 
     const handleAddRecipe = () => {
         const newProduct: Product = {
-            id: 'id',
             name: productName,
             description: productDescription,
             imageUrl: selectedImage,
-            weight: productWeight,
+            weight: Number(productWeight),
+            weightUnit: weightUnitOption.value,
             calories: productCalories == '' ? Number(productCalories) : 0,
         };
         console.log(newProduct);
@@ -210,7 +215,7 @@ const AddProductDialog: React.FC = () => {
                             <Select 
                             options={weightOptions}
                             value={weightUnitOption}
-                            onChange={setWeightUnitOption}
+                            onChange={handleSetWeightUnitOption}
                             placeholder={weightOptions[0].label}
                             styles={customStyles}
                             menuPlacement='top'

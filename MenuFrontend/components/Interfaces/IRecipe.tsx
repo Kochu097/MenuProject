@@ -1,3 +1,4 @@
+import difficulty from "../Enums/DifficultyEnum";
 import Product from "./IProduct";
 
 interface Recipe {
@@ -7,7 +8,7 @@ interface Recipe {
     ingredients: {product: Product, amount: string, unit: string}[];
     preparationTime: string;
     servings: number;
-    difficulty: string;
+    difficulty: difficulty;
 }
 
 export default Recipe;

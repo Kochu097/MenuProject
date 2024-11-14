@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import Select, { SingleValue, StylesConfig } from 'react-select';
+import Select, { StylesConfig } from 'react-select';
 import { StyleSheet, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import IngridientAmountUnit from '../Enums/IngredientAmountUnit';
 
 interface Option {
   label: string;
-  value: string;
+  value: IngridientAmountUnit;
 }
 
 interface IngredientAmountDropdownProps {
@@ -13,23 +14,18 @@ interface IngredientAmountDropdownProps {
 }
 
 const IngredientAmountDropdown: React.FC<IngredientAmountDropdownProps> = ({ onChange }) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
-  const options: Option[] = [
-    { label: 'teaspoon', value: 'teaspoon' },
-    { label: 'tablespoon', value: 'tablespoon' },
-    { label: 'cup', value: 'cup' },
-    { label: 'gram', value: 'gram' },
-    { label: 'ounce', value: 'ounce' },
-    { label: 'pound', value: 'pound' },
-    { label: 'piece', value: 'piece' },
-    { label: 'whole', value: 'whole' },
-  ];
+  const options = Object.values(IngridientAmountUnit).map(unit => ({
+    value: unit, 
+    label: unit,
+  }));
 
-  const handleOptionSelect = (option: SingleValue<Option>) => {
-    setSelectedOption(option);
-    if (option) {
-      onChange(option.value);
+  const [selectedOption, setSelectedOption] = useState<Option>(options[0]);
+
+  const handleOptionSelect = (unit: Option | null) => {
+    if (unit != null) {
+      setSelectedOption(unit);
+      onChange(unit.value);
     }
   };
 

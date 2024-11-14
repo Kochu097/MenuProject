@@ -16,6 +16,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import Select from 'react-select';
 import Recipe from '../Interfaces/IRecipe';
 import Product from '../Interfaces/IProduct';
+import Difficulty from '../Enums/DifficultyEnum';
+
+interface Option {
+  label: string;
+  value: Difficulty;
+}
 
 interface AddRecipeDialogProps {
   recipes: Recipe[];
@@ -24,17 +30,18 @@ interface AddRecipeDialogProps {
   onClose?: () => void;
 }
 
-interface Option {
-  label: string;
-  value: string;
-}
-
 const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
   recipes,
   products,
   onAddRecipe,
   onClose,
 }) => {
+  
+  const difficultOptions = Object.values(Difficulty).map(difficulty => ({
+    value: difficulty, 
+    label: difficulty,
+  }));
+
   const [isVisible, setIsVisible] = useState(false);
   const [isIngredientsModalVisible, setIsIngredientsModalVisible] = useState(false);
   const [newRecipeName, setNewRecipeName] = useState('');
@@ -45,16 +52,16 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showTimeSelect, setShowTimeSelect] = useState(false);
-  const [selectedDifficultyOption, setSelectedDifficultyOption] = useState<Option | null>(null);
+  const [selectedDifficultyOption, setSelectedDifficultyOption] = useState<Option>(difficultOptions[0]);
 
-  const difficultOptions: Option[] = [
-    { label: 'Easy', value: 'easy' },
-    { label: 'Medium', value: 'medium' },
-    { label: 'Hard', value: 'hard' },
-  ];
 
   const formatTime = (time: {hours: number, minutes: number}) => {
     return time.hours + " hours and " + time.minutes + " minutes";
+  }
+
+  const handleSetSelectedDifficultyOption = (value: Option | null) => {
+    if(value != null)
+      setSelectedDifficultyOption(value);
   }
 
   const handleAddRecipe = () => {
@@ -65,7 +72,7 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
       ingredients: selectedProducts,
       preparationTime: preparationTime,
       servings: parseInt(newRecipeServings),
-      difficulty: selectedDifficultyOption ? selectedDifficultyOption.value : '',
+      difficulty: selectedDifficultyOption.value,
     };
 
     console.log(newRecipe);
@@ -81,7 +88,7 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
     setPreparationTime('');
     setNewRecipeServings('');
     setSelectedImage(null);
-    setSelectedDifficultyOption(null);
+    setSelectedDifficultyOption(difficultOptions[0]);
   };
 
   const handleOnClose = () => {
@@ -176,6 +183,7 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
                   <Image
                     source={{ uri: selectedImage }}
                     style={styles.selectedImage}
+                    resizeMode='contain'
                   />
                 ) : (
                   <View style={styles.imagePlaceholder}>
@@ -285,7 +293,7 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
                 <Select 
                 options={difficultOptions}
                 value={selectedDifficultyOption}
-                onChange={setSelectedDifficultyOption}
+                onChange={handleSetSelectedDifficultyOption}
                 placeholder='Difficulty'
                 />
                 <TouchableOpacity
@@ -528,7 +536,6 @@ const styles = StyleSheet.create({
     selectedImage: {
       width: '100%',
       height: 200,
-      resizeMode: 'contain',
       borderRadius: 8,
     },
     recipeDetails: {
