@@ -19,9 +19,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Menu> menus;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Product> products;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Product> products;
 //
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Recipe> recipes;

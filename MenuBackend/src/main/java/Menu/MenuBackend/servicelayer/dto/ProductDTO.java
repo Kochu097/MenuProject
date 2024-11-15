@@ -1,7 +1,17 @@
 package menu.menubackend.servicelayer.dto;
 
-public class ProductDTO {
+import lombok.Data;
+import menu.menubackend.datalayer.enums.WeightUnit;
 
-    private Long id;
+@Data
+public class ProductDTO {
+    private Integer id;
     private String name;
+    private UserDTO user;
+    private String description;
+    private String imageUrl;
+    private Long weight;
+    private WeightUnit weightUnit;
+    private Long calories;
 }
+
