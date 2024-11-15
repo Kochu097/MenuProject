@@ -1,7 +1,7 @@
 package menu.menubackend.datalayer.dao.impl;
 
-import menu.menubackend.datalayer.entity.MenuEntity;
-import menu.menubackend.datalayer.enums.MealType;
+import menu.menubackend.datalayer.entity.Menu;
+import java.util.Optional;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,8 +15,6 @@ import java.time.LocalDate;
 class MenuDAOImplIT {
 
     private static final LocalDate NOW = LocalDate.now();
-    private static final MealType MEAL_TYPE = MealType.BREAKFAST;
-    private static final MealType UPDATED_MEAL_TYPE = MealType.SUPPER;
 
 
     @Autowired
@@ -25,49 +23,45 @@ class MenuDAOImplIT {
     @Test
     void testSaveMenu() {
 
-        MenuEntity expectedMenuEntity = new MenuEntity();
-        expectedMenuEntity.setDay(NOW);
-        expectedMenuEntity.setMealType(MEAL_TYPE);
+        Menu expectedMenu = new Menu();
+        expectedMenu.setDay(NOW);
 
-        MenuEntity savedMenuEntity = menuDAO.saveMenu(expectedMenuEntity);
+        Menu savedMenu = menuDAO.save(expectedMenu);
 
-        Assertions.assertEquals(NOW, savedMenuEntity.getDay());
-        Assertions.assertEquals(MEAL_TYPE, savedMenuEntity.getMealType());
+        Assertions.assertEquals(NOW, savedMenu.getDay());
 
     }
 
     @Test
     void testUpdateMenu() {
 
-        MenuEntity expectedMenuEntity = new MenuEntity();
-        expectedMenuEntity.setDay(NOW);
-        expectedMenuEntity.setMealType(MEAL_TYPE);
+        Menu expectedMenu = new Menu();
+        expectedMenu.setDay(NOW);
 
-        MenuEntity savedMenuEntity = menuDAO.saveMenu(expectedMenuEntity);
+        Menu savedMenu = menuDAO.save(expectedMenu);
 
-        MenuEntity updatedMenuEntity = new MenuEntity();
-        updatedMenuEntity.setId(savedMenuEntity.getId());
-        updatedMenuEntity.setDay(NOW);
-        updatedMenuEntity.setMealType(UPDATED_MEAL_TYPE);
+        Menu updatedMenu = new Menu();
+        updatedMenu.setId(savedMenu.getId());
+        updatedMenu.setDay(NOW);
 
-        updatedMenuEntity = menuDAO.updateMenu(updatedMenuEntity);
+        updatedMenu = menuDAO.save(updatedMenu);
 
-        Assertions.assertEquals(savedMenuEntity.getId(), updatedMenuEntity.getId());
-        Assertions.assertEquals(UPDATED_MEAL_TYPE, updatedMenuEntity.getMealType());
-        Assertions.assertEquals(NOW, updatedMenuEntity.getDay());
+        Assertions.assertEquals(savedMenu.getId(), updatedMenu.getId());
+        Assertions.assertEquals(NOW, updatedMenu.getDay());
     }
 
     @Test
     void testGetMenuById() {
 
-        MenuEntity expectedMenuEntity = new MenuEntity();
-        expectedMenuEntity.setDay(NOW);
-        expectedMenuEntity.setMealType(MEAL_TYPE);
+        Menu expectedMenu = new Menu();
+        expectedMenu.setDay(NOW);
 
-        MenuEntity savedMenuEntity = menuDAO.saveMenu(expectedMenuEntity);
+        Menu savedMenu = menuDAO.save(expectedMenu);
 
-        MenuEntity fetchedMenuEntity = menuDAO.getMenuById(savedMenuEntity.getId());
+        Optional<Menu> fetchedMenu = menuDAO.findById(savedMenu.getId());
 
-        Assertions.assertEquals(expectedMenuEntity, fetchedMenuEntity);
+        Assertions.assertTrue(fetchedMenu.isPresent());
+
+        Assertions.assertEquals(expectedMenu, fetchedMenu.get());
     }
 }

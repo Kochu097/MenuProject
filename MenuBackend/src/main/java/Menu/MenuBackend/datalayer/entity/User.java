@@ -3,6 +3,8 @@ package menu.menubackend.datalayer.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "USERS")
 @Data
@@ -15,8 +17,8 @@ public class User {
     @Column(name = "Authentication_Token", nullable = false)
     private String authenticationToken;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Menu> menus;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Menu> menus;
 //
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Product> products;
