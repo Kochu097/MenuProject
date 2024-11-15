@@ -1,6 +1,6 @@
-package Menu.MenuBackend.datalayer.entity;
+package menu.menubackend.datalayer.entity;
 
-import Menu.MenuBackend.datalayer.enums.MealType;
+import menu.menubackend.datalayer.enums.MealType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -49,11 +49,11 @@ public class MenuEntity {
         this.mealType = mealType;
     }
 
-    public List<IngridientEntity> getIngredients() {
-        return ingredients;
+    public List<IngredientEntity> getIngredients() {
+        return this.ingredients;
     }
 
-    public void setIngredients(List<IngridientEntity> ingredients) {
+    public void setIngredients(List<IngredientEntity> ingredients) {
         this.ingredients = ingredients;
     }
 }

@@ -1,4 +1,4 @@
-package Menu.MenuBackend.presentationlayer;
+package menu.menubackend.presentationlayer;
 
 public class AuthorizationRequestBody {
 

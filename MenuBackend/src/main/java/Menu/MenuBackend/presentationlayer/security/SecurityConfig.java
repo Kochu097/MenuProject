@@ -1,4 +1,4 @@
-package Menu.MenuBackend.presentationlayer.security;
+package menu.menubackend.presentationlayer.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +20,7 @@ public class SecurityConfig {
 
     @Autowired
     private final FireBaseSecurityFilter fireBaseSecurityFilter;
+
     private static final String[] WHITELISTED_API_ENDPOINTS = { "/api/test" };
 
     public SecurityConfig(FireBaseSecurityFilter fireBaseSecurityFilter) {
@@ -32,12 +33,12 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authManager -> {
+                .authorizeHttpRequests(authManager ->
                     authManager.requestMatchers(HttpMethod.OPTIONS)
                             .permitAll()
                             .requestMatchers(HttpMethod.GET, WHITELISTED_API_ENDPOINTS)
-                            .permitAll();
-                })
+                            .permitAll()
+                )
                 .addFilterBefore(fireBaseSecurityFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

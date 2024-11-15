@@ -1,4 +1,4 @@
-package Menu.MenuBackend.presentationlayer;
+package menu.menubackend.presentationlayer;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;

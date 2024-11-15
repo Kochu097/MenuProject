@@ -1,6 +1,6 @@
-package Menu.MenuBackend.datalayer.DAO.impl;
+package menu.menubackend.datalayer.dao.impl;
 
-import Menu.MenuBackend.datalayer.entity.MealEntity;
+import menu.menubackend.datalayer.entity.RecipeEntity;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,17 +9,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Transactional
-public class MealDAOImplIT {
+class MealDAOImplIT {
 
     @Autowired
-    private MealDAOImpl mealDAO;
+    private RecipeDAOImpl mealDAO;
 
-    private String MEAL_NAME = "Spaghetti";
+    private static final String MEAL_NAME = "Spaghetti";
 
     @Test
-    public void testSaveMeal() {
+    void testSaveMeal() {
 
-        MealEntity meal = new MealEntity();
+        RecipeEntity meal = new RecipeEntity();
         meal.setName(MEAL_NAME);
 
         meal = mealDAO.saveMeal(meal);
@@ -30,10 +30,10 @@ public class MealDAOImplIT {
     }
 
     @Test
-    public void testGetMealByID() {
+    void testGetMealByID() {
 
-        MealEntity expectedMeal = new MealEntity();
-        MealEntity fetchedMeal;
+        RecipeEntity expectedMeal = new RecipeEntity();
+        RecipeEntity fetchedMeal;
         expectedMeal.setName(MEAL_NAME);
 
         expectedMeal = mealDAO.saveMeal(expectedMeal);

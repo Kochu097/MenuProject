@@ -1,19 +1,45 @@
-package Menu.MenuBackend.datalayer.DAO.impl;
+package menu.menubackend.datalayer.dao.impl;
 
-import Menu.MenuBackend.datalayer.DAO.BasicDAO;
-import Menu.MenuBackend.datalayer.DAO.UserDAO;
-import Menu.MenuBackend.datalayer.entity.UserEntity;
+import menu.menubackend.datalayer.dao.BasicDAO;
+import menu.menubackend.datalayer.dao.UserDAO;
+import menu.menubackend.datalayer.entity.User;
+import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
+@Repository
 public class UserDAOImpl extends BasicDAO implements UserDAO {
 
-    @Override
-    public UserEntity saveUser(UserEntity user) {
-        entityManager.persist(user);
+    public List<User> findAll() {
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u", User.class);
+        return query.getResultList();
+    }
+
+    public Optional<User> findById(Integer id) {
+        User user = entityManager.find(User.class, id);
+        return Optional.ofNullable(user);
+    }
+
+    public User save(User user) {
+        if (user.getId() == null) {
+            entityManager.persist(user);
+        } else {
+            user = entityManager.merge(user);
+        }
         return user;
     }
 
-    @Override
-    public UserEntity geUserById(int id) {
-        return entityManager.find(UserEntity.class, id);
+    public void delete(User user) {
+        entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
     }
+
+    public boolean existsByAuthenticationToken(String authenticationToken) {
+        TypedQuery<Long> query = entityManager.createQuery(
+                "SELECT COUNT(u) FROM User u WHERE u.authenticationToken = :token", Long.class);
+        query.setParameter("token", authenticationToken);
+        return query.getSingleResult() > 0;
+    }
+
 }

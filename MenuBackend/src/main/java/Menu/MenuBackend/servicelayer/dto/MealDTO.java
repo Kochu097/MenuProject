@@ -1,4 +1,4 @@
-package Menu.MenuBackend.servicelayer.dto;
+package menu.menubackend.servicelayer.dto;
 
 public class MealDTO {
 

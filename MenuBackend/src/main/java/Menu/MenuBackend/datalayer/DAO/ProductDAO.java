@@ -1,6 +1,6 @@
-package Menu.MenuBackend.datalayer.DAO;
+package menu.menubackend.datalayer.dao;
 
-import Menu.MenuBackend.datalayer.entity.ProductEntity;
+import menu.menubackend.datalayer.entity.ProductEntity;
 
 public interface ProductDAO {
 

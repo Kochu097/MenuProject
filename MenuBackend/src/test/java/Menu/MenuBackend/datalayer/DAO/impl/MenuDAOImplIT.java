@@ -1,7 +1,7 @@
-package Menu.MenuBackend.datalayer.DAO.impl;
+package menu.menubackend.datalayer.dao.impl;
 
-import Menu.MenuBackend.datalayer.entity.MenuEntity;
-import Menu.MenuBackend.datalayer.enums.MealType;
+import menu.menubackend.datalayer.entity.MenuEntity;
+import menu.menubackend.datalayer.enums.MealType;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

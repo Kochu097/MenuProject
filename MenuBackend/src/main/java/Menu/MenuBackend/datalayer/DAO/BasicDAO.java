@@ -1,4 +1,4 @@
-package Menu.MenuBackend.datalayer.DAO;
+package menu.menubackend.datalayer.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

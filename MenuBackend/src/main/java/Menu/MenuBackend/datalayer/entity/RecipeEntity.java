@@ -1,4 +1,4 @@
-package Menu.MenuBackend.datalayer.entity;
+package menu.menubackend.datalayer.entity;
 
 import jakarta.persistence.*;
 

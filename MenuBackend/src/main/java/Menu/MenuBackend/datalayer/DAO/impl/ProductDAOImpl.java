@@ -1,9 +1,8 @@
-package Menu.MenuBackend.datalayer.DAO.impl;
+package menu.menubackend.datalayer.dao.impl;
 
-import Menu.MenuBackend.datalayer.DAO.BasicDAO;
-import Menu.MenuBackend.datalayer.DAO.ProductDAO;
-import Menu.MenuBackend.datalayer.entity.ProductEntity;
-import jakarta.persistence.EntityManager;
+import menu.menubackend.datalayer.dao.BasicDAO;
+import menu.menubackend.datalayer.dao.ProductDAO;
+import menu.menubackend.datalayer.entity.ProductEntity;
 
 public class ProductDAOImpl extends BasicDAO implements ProductDAO {
     @Override

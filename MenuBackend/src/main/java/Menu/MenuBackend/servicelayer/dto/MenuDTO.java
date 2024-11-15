@@ -1,6 +1,6 @@
-package Menu.MenuBackend.servicelayer.dto;
+package menu.menubackend.servicelayer.dto;
 
-import Menu.MenuBackend.datalayer.enums.MealType;
+import menu.menubackend.datalayer.enums.MealType;
 
 import java.time.LocalDate;
 import java.util.List;
