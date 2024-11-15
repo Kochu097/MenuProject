@@ -13,7 +13,7 @@ public class IngredientEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Menu_ID")
-    private MenuEntity menu;
+    private Menu menu;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Recipe_ID")
@@ -31,11 +31,11 @@ public class IngredientEntity {
         this.id = id;
     }
 
-    public MenuEntity getMenu() {
+    public Menu getMenu() {
         return menu;
     }
 
-    public void setMenu(MenuEntity menu) {
+    public void setMenu(Menu menu) {
         this.menu = menu;
     }
 
