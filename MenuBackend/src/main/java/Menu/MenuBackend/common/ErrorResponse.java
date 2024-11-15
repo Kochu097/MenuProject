@@ -1,4 +1,4 @@
-package menu.menubackend.common;
+package Menu.MenuBackend.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

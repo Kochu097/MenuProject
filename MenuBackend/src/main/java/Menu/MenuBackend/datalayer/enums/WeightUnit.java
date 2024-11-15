@@ -1,4 +1,4 @@
-package menu.menubackend.datalayer.enums;
+package Menu.MenuBackend.datalayer.enums;
 
 public enum WeightUnit {
     Gram,

@@ -1,4 +1,4 @@
-package menu.menubackend.common.exception;
+package Menu.MenuBackend.common.exception;
 
 public class RecipeNotFoundException extends RuntimeException {
     public RecipeNotFoundException(String message) {

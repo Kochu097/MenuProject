@@ -1,7 +1,7 @@
-package menu.menubackend.datalayer.entity;
+package Menu.MenuBackend.datalayer.entity;
 
 import lombok.Data;
-import menu.menubackend.datalayer.enums.WeightUnit;
+import Menu.MenuBackend.datalayer.enums.WeightUnit;
 import jakarta.persistence.*;
 
 @Entity

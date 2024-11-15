@@ -1,8 +1,8 @@
-package menu.menubackend.servicelayer;
+package Menu.MenuBackend.servicelayer;
 
-import menu.menubackend.common.exception.DuplicateAuthTokenException;
-import menu.menubackend.common.exception.UserNotFoundException;
-import menu.menubackend.servicelayer.dto.UserDTO;
+import Menu.MenuBackend.common.exception.DuplicateAuthTokenException;
+import Menu.MenuBackend.common.exception.UserNotFoundException;
+import Menu.MenuBackend.servicelayer.dto.UserDTO;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package menu.menubackend.datalayer.dao.impl;
+package Menu.MenuBackend.datalayer.dao.impl;
 
-import menu.menubackend.datalayer.entity.Menu;
+import Menu.MenuBackend.datalayer.entity.Menu;
 import java.util.Optional;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;

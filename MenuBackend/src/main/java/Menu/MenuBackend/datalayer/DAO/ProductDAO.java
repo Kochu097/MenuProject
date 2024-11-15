@@ -1,6 +1,6 @@
-package menu.menubackend.datalayer.dao;
+package Menu.MenuBackend.datalayer.dao;
 
-import menu.menubackend.datalayer.entity.Product;
+import Menu.MenuBackend.datalayer.entity.Product;
 
 import java.util.List;
 import java.util.Optional;

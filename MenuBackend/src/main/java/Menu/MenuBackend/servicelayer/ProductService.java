@@ -1,7 +1,7 @@
-package menu.menubackend.servicelayer;
+package Menu.MenuBackend.servicelayer;
 
-import menu.menubackend.common.exception.ProductNotFoundException;
-import menu.menubackend.servicelayer.dto.ProductDTO;
+import Menu.MenuBackend.common.exception.ProductNotFoundException;
+import Menu.MenuBackend.servicelayer.dto.ProductDTO;
 
 import java.util.List;
 

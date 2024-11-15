@@ -1,4 +1,4 @@
-package menu.menubackend.presentationlayer.security;
+package Menu.MenuBackend.presentationlayer.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;

@@ -1,4 +1,4 @@
-package menu.menubackend.common;
+package Menu.MenuBackend.common;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

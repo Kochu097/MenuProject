@@ -1,11 +1,11 @@
-package menu.menubackend.servicelayer.impl;
+package Menu.MenuBackend.servicelayer.impl;
 
-import menu.menubackend.common.exception.ProductNotFoundException;
-import menu.menubackend.datalayer.dao.ProductDAO;
-import menu.menubackend.datalayer.entity.Product;
-import menu.menubackend.datalayer.entity.User;
-import menu.menubackend.servicelayer.ProductService;
-import menu.menubackend.servicelayer.dto.ProductDTO;
+import Menu.MenuBackend.common.exception.ProductNotFoundException;
+import Menu.MenuBackend.datalayer.dao.ProductDAO;
+import Menu.MenuBackend.datalayer.entity.Product;
+import Menu.MenuBackend.datalayer.entity.User;
+import Menu.MenuBackend.servicelayer.ProductService;
+import Menu.MenuBackend.servicelayer.dto.ProductDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

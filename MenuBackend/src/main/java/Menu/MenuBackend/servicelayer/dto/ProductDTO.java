@@ -1,7 +1,7 @@
-package menu.menubackend.servicelayer.dto;
+package Menu.MenuBackend.servicelayer.dto;
 
 import lombok.Data;
-import menu.menubackend.datalayer.enums.WeightUnit;
+import Menu.MenuBackend.datalayer.enums.WeightUnit;
 
 @Data
 public class ProductDTO {

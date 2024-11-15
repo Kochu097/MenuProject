@@ -1,11 +1,11 @@
-package menu.menubackend.servicelayer.impl;
+package Menu.MenuBackend.servicelayer.impl;
 
-import menu.menubackend.common.exception.DuplicateAuthTokenException;
-import menu.menubackend.common.exception.UserNotFoundException;
-import menu.menubackend.datalayer.dao.UserDAO;
-import menu.menubackend.datalayer.entity.User;
-import menu.menubackend.servicelayer.UserService;
-import menu.menubackend.servicelayer.dto.UserDTO;
+import Menu.MenuBackend.common.exception.DuplicateAuthTokenException;
+import Menu.MenuBackend.common.exception.UserNotFoundException;
+import Menu.MenuBackend.datalayer.dao.UserDAO;
+import Menu.MenuBackend.datalayer.entity.User;
+import Menu.MenuBackend.servicelayer.UserService;
+import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

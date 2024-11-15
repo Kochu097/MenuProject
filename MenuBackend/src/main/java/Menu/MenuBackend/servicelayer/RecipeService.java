@@ -1,7 +1,7 @@
-package menu.menubackend.servicelayer;
+package Menu.MenuBackend.servicelayer;
 
-import menu.menubackend.common.exception.RecipeNotFoundException;
-import menu.menubackend.servicelayer.dto.RecipeDTO;
+import Menu.MenuBackend.common.exception.RecipeNotFoundException;
+import Menu.MenuBackend.servicelayer.dto.RecipeDTO;
 
 import java.util.List;
 

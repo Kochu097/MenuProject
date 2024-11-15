@@ -1,7 +1,7 @@
-package menu.menubackend.common;
+package Menu.MenuBackend.common;
 
-import menu.menubackend.common.exception.DuplicateAuthTokenException;
-import menu.menubackend.common.exception.UserNotFoundException;
+import Menu.MenuBackend.common.exception.DuplicateAuthTokenException;
+import Menu.MenuBackend.common.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

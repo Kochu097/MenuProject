@@ -1,4 +1,4 @@
-package menu.menubackend.common.exception;
+package Menu.MenuBackend.common.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {

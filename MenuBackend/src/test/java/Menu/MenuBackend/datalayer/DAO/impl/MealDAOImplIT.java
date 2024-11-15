@@ -1,6 +1,6 @@
-package menu.menubackend.datalayer.dao.impl;
+package Menu.MenuBackend.datalayer.dao.impl;
 
-import menu.menubackend.datalayer.entity.RecipeEntity;
+import Menu.MenuBackend.datalayer.entity.RecipeEntity;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

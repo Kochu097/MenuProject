@@ -1,11 +1,11 @@
-package menu.menubackend.servicelayer.impl;
+package Menu.MenuBackend.servicelayer.impl;
 
-import menu.menubackend.common.exception.RecipeNotFoundException;
-import menu.menubackend.datalayer.dao.RecipeDAO;
-import menu.menubackend.datalayer.entity.Recipe;
-import menu.menubackend.datalayer.entity.User;
-import menu.menubackend.servicelayer.RecipeService;
-import menu.menubackend.servicelayer.dto.RecipeDTO;
+import Menu.MenuBackend.common.exception.RecipeNotFoundException;
+import Menu.MenuBackend.datalayer.dao.RecipeDAO;
+import Menu.MenuBackend.datalayer.entity.Recipe;
+import Menu.MenuBackend.datalayer.entity.User;
+import Menu.MenuBackend.servicelayer.RecipeService;
+import Menu.MenuBackend.servicelayer.dto.RecipeDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
