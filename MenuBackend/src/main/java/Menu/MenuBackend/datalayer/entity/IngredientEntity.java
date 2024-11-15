@@ -17,11 +17,11 @@ public class IngredientEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Recipe_ID")
-    private RecipeEntity recipe;
+    private Recipe recipe;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Product_ID")
-    private ProductEntity product;
+    private Product product;
 
     public Long getId() {
         return id;
@@ -39,19 +39,19 @@ public class IngredientEntity {
         this.menu = menu;
     }
 
-    public RecipeEntity getRecipe() {
+    public Recipe getRecipe() {
         return recipe;
     }
 
-    public void setRecipe(RecipeEntity recipe) {
+    public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
 
-    public ProductEntity getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(ProductEntity product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 }
