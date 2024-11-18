@@ -1,7 +1,10 @@
 package Menu.MenuBackend.datalayer.DAO;
 
 import Menu.MenuBackend.datalayer.entity.Menu;
+import Menu.MenuBackend.datalayer.entity.User;
+import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,4 +38,6 @@ public interface MenuDAO {
      * @param menu the Menu entity to be deleted
      */
     void delete(Menu menu);
+
+    List<Menu> getByPeriod(LocalDate startDate, LocalDate endDate, User user);
 }

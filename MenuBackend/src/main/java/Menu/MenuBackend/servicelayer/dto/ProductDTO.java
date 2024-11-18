@@ -5,7 +5,6 @@ import Menu.MenuBackend.datalayer.enums.WeightUnit;
 
 @Data
 public class ProductDTO {
-    private Integer id;
     private String name;
     private UserDTO user;
     private String description;

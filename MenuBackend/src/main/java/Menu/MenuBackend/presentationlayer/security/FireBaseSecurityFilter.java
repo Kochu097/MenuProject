@@ -1,5 +1,6 @@
 package Menu.MenuBackend.presentationlayer.security;
 
+import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -34,8 +35,10 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
             String token = authorizationHeader.replace(BEARER_PREFIX, "");
             Optional<String> userId = getUserIdFromToken(token);
             if(userId.isPresent()) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setAuthenticationToken(userId.get());
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userId.get(), null, null);
+                        new UsernamePasswordAuthenticationToken(userDTO, null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);

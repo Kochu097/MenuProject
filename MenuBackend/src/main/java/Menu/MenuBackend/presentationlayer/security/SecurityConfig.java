@@ -21,7 +21,7 @@ public class SecurityConfig {
     @Autowired
     private final FireBaseSecurityFilter fireBaseSecurityFilter;
 
-    private static final String[] WHITELISTED_API_ENDPOINTS = { "/api/test" };
+    private static final String[] WHITELISTED_API_ENDPOINTS = { "/api/test", "api/getMenuForPeriod" };
 
     public SecurityConfig(FireBaseSecurityFilter fireBaseSecurityFilter) {
         this.fireBaseSecurityFilter = fireBaseSecurityFilter;

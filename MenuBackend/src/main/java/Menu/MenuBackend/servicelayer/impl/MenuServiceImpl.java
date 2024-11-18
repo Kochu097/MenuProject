@@ -1,6 +1,9 @@
 package Menu.MenuBackend.servicelayer.impl;
 
 import Menu.MenuBackend.common.exception.MenuNotFoundException;
+import Menu.MenuBackend.common.exception.UserNotFoundException;
+import Menu.MenuBackend.datalayer.DAO.UserDAO;
+import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import org.springframework.transaction.annotation.Transactional;
 import Menu.MenuBackend.datalayer.DAO.MenuDAO;
 import Menu.MenuBackend.datalayer.entity.Menu;
@@ -11,7 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -20,6 +25,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Autowired
     private MenuDAO menuDAO;
+
+    @Autowired
+    private UserDAO userDAO;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -71,5 +79,14 @@ public class MenuServiceImpl implements MenuService {
         Menu menu = menuDAO.findById(id)
                 .orElseThrow(() -> new MenuNotFoundException(MENU_NOT_FOUND_ERROR_MESSAGE + id));
         menuDAO.delete(menu);
+    }
+
+    @Override
+    public List<MenuDTO> getMenuForPeriod(LocalDate startDate, LocalDate endDate, UserDTO user) throws MenuNotFoundException {
+        Optional<User> userEntity = userDAO.findById(1);
+        if(userEntity.isEmpty()) throw new UserNotFoundException("User Not found");
+
+        List<Menu> menu = menuDAO.getByPeriod(startDate, endDate, userEntity.get());
+        return menu.stream().map( m -> modelMapper.map(m, MenuDTO.class)).toList();
     }
 }

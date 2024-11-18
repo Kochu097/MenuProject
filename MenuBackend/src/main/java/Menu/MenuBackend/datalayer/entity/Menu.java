@@ -8,7 +8,14 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "MENU")
 @Data
+@NamedQueries({
+        @NamedQuery(name = Menu.GET_BY_PERIOD,
+        query = "SELECT m FROM Menu m where (m.day >= :startDate OR m.day <= :endDate) AND m.user = :user"),
+})
 public class Menu {
+
+    public static final String GET_BY_PERIOD = "Menu.GET_BY_PERIOD";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")

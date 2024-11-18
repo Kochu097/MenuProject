@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 public class UserDTO {
-    private Integer id;
-
     @NotBlank(message = "Authentication token is required")
     private String authenticationToken;
 }

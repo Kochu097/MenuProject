@@ -1,11 +1,14 @@
 package Menu.MenuBackend.datalayer.DAO.impl;
 
+import Menu.MenuBackend.datalayer.entity.User;
 import jakarta.persistence.TypedQuery;
 import Menu.MenuBackend.datalayer.DAO.BasicDAO;
 import Menu.MenuBackend.datalayer.DAO.MenuDAO;
 import Menu.MenuBackend.datalayer.entity.Menu;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +40,14 @@ public class MenuDAOImpl extends BasicDAO implements MenuDAO {
     @Override
     public void delete(Menu menu) {
         entityManager.remove(entityManager.contains(menu) ? menu : entityManager.merge(menu));
+    }
+
+    @Override
+    public List<Menu> getByPeriod(LocalDate startDate, LocalDate endDate, User user) {
+        return entityManager.createNamedQuery(Menu.GET_BY_PERIOD, Menu.class)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .setParameter("user", user.getId())
+                .getResultList();
     }
 }
