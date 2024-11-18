@@ -1,4 +1,4 @@
-package Menu.MenuBackend.datalayer.dao.impl;
+package Menu.MenuBackend.datalayer.DAO.impl;
 
 import Menu.MenuBackend.datalayer.entity.Menu;
 import java.util.Optional;

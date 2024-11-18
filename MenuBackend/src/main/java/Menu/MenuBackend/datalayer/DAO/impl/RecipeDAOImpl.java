@@ -1,8 +1,8 @@
-package Menu.MenuBackend.datalayer.dao.impl;
+package Menu.MenuBackend.datalayer.DAO.impl;
 
 import jakarta.persistence.TypedQuery;
-import Menu.MenuBackend.datalayer.dao.BasicDAO;
-import Menu.MenuBackend.datalayer.dao.RecipeDAO;
+import Menu.MenuBackend.datalayer.DAO.BasicDAO;
+import Menu.MenuBackend.datalayer.DAO.RecipeDAO;
 import Menu.MenuBackend.datalayer.entity.Recipe;
 import org.springframework.stereotype.Repository;
 

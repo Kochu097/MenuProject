@@ -1,7 +1,7 @@
 package Menu.MenuBackend.servicelayer.impl;
 
 import Menu.MenuBackend.common.exception.ProductNotFoundException;
-import Menu.MenuBackend.datalayer.dao.ProductDAO;
+import Menu.MenuBackend.datalayer.DAO.ProductDAO;
 import Menu.MenuBackend.datalayer.entity.Product;
 import Menu.MenuBackend.datalayer.entity.User;
 import Menu.MenuBackend.servicelayer.ProductService;

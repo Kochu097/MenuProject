@@ -2,7 +2,7 @@ package Menu.MenuBackend.servicelayer.impl;
 
 import Menu.MenuBackend.common.exception.DuplicateAuthTokenException;
 import Menu.MenuBackend.common.exception.UserNotFoundException;
-import Menu.MenuBackend.datalayer.dao.UserDAO;
+import Menu.MenuBackend.datalayer.DAO.UserDAO;
 import Menu.MenuBackend.datalayer.entity.User;
 import Menu.MenuBackend.servicelayer.UserService;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;

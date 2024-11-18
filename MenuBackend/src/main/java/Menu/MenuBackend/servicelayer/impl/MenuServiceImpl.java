@@ -2,7 +2,7 @@ package Menu.MenuBackend.servicelayer.impl;
 
 import Menu.MenuBackend.common.exception.MenuNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-import Menu.MenuBackend.datalayer.dao.MenuDAO;
+import Menu.MenuBackend.datalayer.DAO.MenuDAO;
 import Menu.MenuBackend.datalayer.entity.Menu;
 import Menu.MenuBackend.datalayer.entity.User;
 import Menu.MenuBackend.servicelayer.MenuService;

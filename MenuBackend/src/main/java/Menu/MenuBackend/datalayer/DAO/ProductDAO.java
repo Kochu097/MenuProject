@@ -1,4 +1,4 @@
-package Menu.MenuBackend.datalayer.dao;
+package Menu.MenuBackend.datalayer.DAO;
 
 import Menu.MenuBackend.datalayer.entity.Product;
 

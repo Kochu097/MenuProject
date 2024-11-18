@@ -1,7 +1,7 @@
 package Menu.MenuBackend.servicelayer.impl;
 
 import Menu.MenuBackend.common.exception.RecipeNotFoundException;
-import Menu.MenuBackend.datalayer.dao.RecipeDAO;
+import Menu.MenuBackend.datalayer.DAO.RecipeDAO;
 import Menu.MenuBackend.datalayer.entity.Recipe;
 import Menu.MenuBackend.datalayer.entity.User;
 import Menu.MenuBackend.servicelayer.RecipeService;
