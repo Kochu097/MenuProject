@@ -1,5 +1,7 @@
 package Menu.MenuBackend.presentationlayer.security;
 
+import Menu.MenuBackend.common.exception.UserNotFoundException;
+import Menu.MenuBackend.servicelayer.UserService;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
@@ -9,6 +11,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -27,6 +30,12 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
     private static final String USER_ID_CLAIM = "user_id";
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    FirebaseAuth firebaseAuth;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
@@ -35,12 +44,14 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
             String token = authorizationHeader.replace(BEARER_PREFIX, "");
             Optional<String> userId = getUserIdFromToken(token);
             if(userId.isPresent()) {
-                UserDTO userDTO = new UserDTO();
-                userDTO.setAuthenticationToken(userId.get());
+                UserDTO userDTO = fetchOrCreateUser(userId.get());
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDTO, null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                filterChain.doFilter(request, response);
+            } else {
+                setAuthErrorDetails(response);
                 filterChain.doFilter(request, response);
             }
         } else {
@@ -49,9 +60,19 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
         }
     }
 
+    private UserDTO fetchOrCreateUser(String token) {
+        try {
+            return userService.getUserByAuthenticationToken(token);
+        } catch (UserNotFoundException e ) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setAuthenticationToken(token);
+            return userService.createUser(userDTO);
+        }
+    }
+
     private Optional<String> getUserIdFromToken(String token) {
         try{
-            FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(token);
             String userId = String.valueOf(firebaseToken.getClaims().get(USER_ID_CLAIM));
             return Optional.of(userId);
         } catch (FirebaseAuthException e) {

@@ -55,4 +55,6 @@ public interface UserService {
      * @throws UserNotFoundException if the User entity is not found
      */
     void deleteUser(Integer id) throws UserNotFoundException;
+
+    UserDTO getUserByAuthenticationToken(String token) throws UserNotFoundException;
 }

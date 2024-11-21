@@ -36,10 +36,16 @@ public class UserDAOImpl extends BasicDAO implements UserDAO {
     }
 
     public boolean existsByAuthenticationToken(String authenticationToken) {
-        TypedQuery<Long> query = entityManager.createQuery(
-                "SELECT COUNT(u) FROM User u WHERE u.authenticationToken = :token", Long.class);
-        query.setParameter("token", authenticationToken);
-        return query.getSingleResult() > 0;
+        TypedQuery<User> query = entityManager.createNamedQuery(User.FIND_BY_AUTH_TOKEN, User.class)
+                .setParameter("token", authenticationToken);
+        return query.getSingleResult() != null;
+    }
+
+    @Override
+    public Optional<User> findByAuthenticationToken(String token) {
+        TypedQuery<User> query = entityManager.createNamedQuery(User.FIND_BY_AUTH_TOKEN, User.class)
+                .setParameter("token", token);
+        return Optional.ofNullable(query.getSingleResult());
     }
 
 }

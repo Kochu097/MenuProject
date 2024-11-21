@@ -4,6 +4,7 @@ import Menu.MenuBackend.servicelayer.MenuService;
 import Menu.MenuBackend.servicelayer.dto.MenuDTO;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,12 @@ public class MenuRestController {
     }
 
     @GetMapping("/getMenuForPeriod")
-    public List<MenuDTO> getMenuForPeriod(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+    public List<MenuDTO> getMenuForPeriod(@RequestParam
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                              LocalDate startDate,
+                                          @RequestParam
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                              LocalDate endDate) {
         UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return menuService.getMenuForPeriod(startDate, endDate, user);
     }

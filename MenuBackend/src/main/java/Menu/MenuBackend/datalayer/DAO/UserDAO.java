@@ -48,4 +48,6 @@ public interface UserDAO {
      * @return true if a User entity with the given authentication token exists, false otherwise
      */
     boolean existsByAuthenticationToken(String authenticationToken);
+
+    Optional<User> findByAuthenticationToken(String token);
 }
