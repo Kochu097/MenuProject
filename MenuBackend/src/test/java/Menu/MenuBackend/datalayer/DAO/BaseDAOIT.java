@@ -17,22 +17,25 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(FirebaseAuthMockConfig.class)
 @Testcontainers
 public class BaseDAOIT {
 
     @Container
-    public static MySQLContainer<BaseMySQLContainer> mySQLContainer = BaseMySQLContainer.getInstance();
+    public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0.30")
+            .withDatabaseName("menu_database")
+            .withUsername("root")
+            .withPassword("zaq1@WSX");
 
     @BeforeAll
     public static void beforeAll() {
-        mySQLContainer.start();
+        System.setProperty("spring.datasource.url", mySQLContainer.getJdbcUrl());
+        System.setProperty("spring.datasource.username", mySQLContainer.getUsername());
+        System.setProperty("spring.datasource.password", mySQLContainer.getPassword());
     }
 
     @AfterAll
     public static void afterAll() {
-        mySQLContainer.stop();
     }
 
     @BeforeEach
