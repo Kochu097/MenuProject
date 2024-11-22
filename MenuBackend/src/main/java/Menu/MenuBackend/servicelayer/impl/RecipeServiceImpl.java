@@ -43,8 +43,6 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional
     public RecipeDTO createRecipe(RecipeDTO recipeDTO) {
         Recipe recipe = modelMapper.map(recipeDTO, Recipe.class);
-        User user = recipeDTO.getUser() != null ? modelMapper.map(recipeDTO.getUser(), User.class) : null;
-        recipe.setUser(user);
         Recipe savedRecipe = recipeDAO.save(recipe);
         return modelMapper.map(savedRecipe, RecipeDTO.class);
     }
@@ -61,8 +59,6 @@ public class RecipeServiceImpl implements RecipeService {
         existingRecipe.setPreparationTime(recipeDTO.getPreparationTime());
         existingRecipe.setServings(recipeDTO.getServings());
         existingRecipe.setDifficulty(recipeDTO.getDifficulty());
-        User user = recipeDTO.getUser() != null ? modelMapper.map(recipeDTO.getUser(), User.class) : null;
-        existingRecipe.setUser(user);
 
         Recipe updatedRecipe = recipeDAO.save(existingRecipe);
         return modelMapper.map(updatedRecipe, RecipeDTO.class);

@@ -65,7 +65,7 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
             return userService.getUserByAuthenticationToken(token);
         } catch (UserNotFoundException e ) {
             UserDTO userDTO = new UserDTO();
-            userDTO.setAuthenticationToken(token);
+            userDTO.setFirebaseUserId(token);
             return userService.createUser(userDTO);
         }
     }

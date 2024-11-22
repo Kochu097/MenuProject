@@ -5,15 +5,10 @@ import Menu.MenuBackend.presentationlayer.config.FirebaseAuthMockConfig;
 import Menu.MenuBackend.presentationlayer.config.SecurityTestConfig;
 import Menu.MenuBackend.servicelayer.UserService;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.ErrorCode;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +20,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +47,7 @@ class UserCreationIT extends BasicIT{
     @BeforeEach
     void setUp() {
         UserDTO mockUser = new UserDTO();
-        mockUser.setAuthenticationToken(VALID_TOKEN);
+        mockUser.setFirebaseUserId(VALID_TOKEN);
         when(userService.getUserByAuthenticationToken(VALID_TOKEN)).thenReturn(mockUser);
     }
 
@@ -107,7 +101,7 @@ class UserCreationIT extends BasicIT{
 
         // Mock user creation
         UserDTO newUser = new UserDTO();
-        newUser.setAuthenticationToken(newUserToken);
+        newUser.setFirebaseUserId(newUserToken);
         when(userService.createUser(any(UserDTO.class))).thenReturn(newUser);
 
         mockMvc.perform(get("/api/test")

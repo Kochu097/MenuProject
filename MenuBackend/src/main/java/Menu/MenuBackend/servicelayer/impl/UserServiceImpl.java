@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
-        if (userDAO.existsByAuthenticationToken(userDTO.getAuthenticationToken())) {
+        if (userDAO.existsByAuthenticationToken(userDTO.getFirebaseUserId())) {
             throw new DuplicateAuthTokenException(TOKEN_EXISTS_ERROR_MESSAGE);
         }
         User user = modelMapper.map(userDTO, User.class);
@@ -55,12 +55,12 @@ public class UserServiceImpl implements UserService {
         User existingUser = userDAO.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_ERROR_MESSAGE + id));
 
-        if (!existingUser.getAuthenticationToken().equals(userDTO.getAuthenticationToken()) &&
-                userDAO.existsByAuthenticationToken(userDTO.getAuthenticationToken())) {
+        if (!existingUser.getFirebaseUserId().equals(userDTO.getFirebaseUserId()) &&
+                userDAO.existsByAuthenticationToken(userDTO.getFirebaseUserId())) {
             throw new DuplicateAuthTokenException(TOKEN_EXISTS_ERROR_MESSAGE);
         }
 
-        existingUser.setAuthenticationToken(userDTO.getAuthenticationToken());
+        existingUser.setFirebaseUserId(userDTO.getFirebaseUserId());
         User updatedUser = userDAO.save(existingUser);
         return modelMapper.map(updatedUser, UserDTO.class);
     }

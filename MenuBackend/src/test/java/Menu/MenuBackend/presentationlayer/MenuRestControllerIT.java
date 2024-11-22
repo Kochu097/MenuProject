@@ -1,21 +1,14 @@
 package Menu.MenuBackend.presentationlayer;
 
-import Menu.MenuBackend.common.exception.UserNotFoundException;
+import Menu.MenuBackend.datalayer.entity.User;
 import Menu.MenuBackend.presentationlayer.config.FirebaseAuthMockConfig;
 import Menu.MenuBackend.presentationlayer.config.SecurityTestConfig;
 import Menu.MenuBackend.servicelayer.MenuService;
 import Menu.MenuBackend.servicelayer.UserService;
 import Menu.MenuBackend.servicelayer.dto.MenuDTO;
-import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.ErrorCode;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
-import org.junit.jupiter.api.BeforeAll;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,21 +19,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.Assert;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static Menu.MenuBackend.presentationlayer.config.FirebaseAuthMockConfig.VALID_TOKEN;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -60,13 +45,21 @@ class MenuRestControllerIT extends BasicIT{
     @Autowired
     private MenuService menuService;
 
+//    @Autowired
+//    private EntityManagerFactory entityManagerFactory;
+
 
     @BeforeEach
     void setUp() {
         // Mock user service
-        UserDTO mockUser = new UserDTO();
-        mockUser.setAuthenticationToken("user123");
-        userService.createUser(mockUser);
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        User user = new User();
+        user.setFirebaseUserId("user123");
+//        entityManager.getTransaction().begin();
+//        entityManager.persist(user);
+//        entityManager.flush();
+//        entityManager.getTransaction().commit();
     }
 
     @Test

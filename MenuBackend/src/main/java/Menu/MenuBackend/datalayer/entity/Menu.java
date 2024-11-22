@@ -21,7 +21,7 @@ public class Menu {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "Day", nullable = false)
+    @Column(name = "Menu_Day", nullable = false)
     private LocalDate day;
 
     @ManyToOne(fetch = FetchType.LAZY)

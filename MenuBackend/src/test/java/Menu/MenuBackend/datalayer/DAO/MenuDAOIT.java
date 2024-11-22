@@ -1,5 +1,6 @@
-package Menu.MenuBackend.datalayer.DAO.impl;
+package Menu.MenuBackend.datalayer.DAO;
 
+import Menu.MenuBackend.datalayer.DAO.impl.MenuDAOImpl;
 import Menu.MenuBackend.datalayer.entity.Menu;
 import java.util.Optional;
 import jakarta.transaction.Transactional;
@@ -12,10 +13,9 @@ import java.time.LocalDate;
 
 @SpringBootTest
 @Transactional
-class MenuDAOImplIT {
+public class MenuDAOIT {
 
     private static final LocalDate NOW = LocalDate.now();
-
 
     @Autowired
     private MenuDAOImpl menuDAO;

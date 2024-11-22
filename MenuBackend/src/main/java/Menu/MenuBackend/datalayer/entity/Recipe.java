@@ -20,10 +20,6 @@ public class Recipe {
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "User_ID", nullable = false)
-    private User user;
-
     @Column(name = "Description", columnDefinition = "BLOB")
     private String description;
 
@@ -39,9 +35,7 @@ public class Recipe {
     @Column(name = "Difficulty")
     private String difficulty;
 
-    @ManyToMany
-    @JoinTable(name = "RECIPE_PRODUCT",
-            joinColumns = @JoinColumn(name = "Recipe_ID"),
-            inverseJoinColumns = @JoinColumn(name = "Product_ID"))
-    private List<Product> products = new ArrayList<>();
+    @OneToMany()
+    @JoinColumn(name = "recipe", nullable = false)
+    private List<Ingredient> ingredients = new ArrayList<>();
 }

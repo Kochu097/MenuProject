@@ -1,8 +1,8 @@
 package Menu.MenuBackend.servicelayer.impl;
 
 import Menu.MenuBackend.common.exception.IngredientNotFoundException;
-import Menu.MenuBackend.datalayer.DAO.IngredientDAO;
-import Menu.MenuBackend.datalayer.entity.Ingredient;
+import Menu.MenuBackend.datalayer.DAO.MenuItemDAO;
+import Menu.MenuBackend.datalayer.entity.MenuItem;
 import Menu.MenuBackend.servicelayer.IngredientService;
 import Menu.MenuBackend.servicelayer.dto.IngredientDTO;
 import org.modelmapper.ModelMapper;
@@ -16,7 +16,7 @@ import java.util.List;
 public class IngredientServiceImpl implements IngredientService {
 
     @Autowired
-    private IngredientDAO ingredientDAO;
+    private MenuItemDAO menuItemDAO;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -24,56 +24,56 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     @Transactional(readOnly = true)
     public List<IngredientDTO> getAllIngredients() {
-        return ingredientDAO.findAll()
+        return menuItemDAO.findAll()
                 .stream()
-                .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
+                .map(menuItem -> modelMapper.map(menuItem, IngredientDTO.class))
                 .toList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public IngredientDTO getIngredientById(Integer id) {
-        Ingredient ingredient = ingredientDAO.findById(id)
+        MenuItem menuItem = menuItemDAO.findById(id)
                 .orElseThrow(() -> new IngredientNotFoundException("Ingredient not found with id: " + id));
-        return modelMapper.map(ingredient, IngredientDTO.class);
+        return modelMapper.map(menuItem, IngredientDTO.class);
     }
 
     @Override
     @Transactional
     public IngredientDTO createIngredient(IngredientDTO ingredientDTO) {
-        Ingredient ingredient = modelMapper.map(ingredientDTO, Ingredient.class);
-        Ingredient savedIngredient = ingredientDAO.save(ingredient);
-        return modelMapper.map(savedIngredient, IngredientDTO.class);
+        MenuItem menuItem = modelMapper.map(ingredientDTO, MenuItem.class);
+        MenuItem savedMenuItem = menuItemDAO.save(menuItem);
+        return modelMapper.map(savedMenuItem, IngredientDTO.class);
     }
 
     @Override
     @Transactional
     public IngredientDTO updateIngredient(Integer id, IngredientDTO ingredientDTO) {
-        Ingredient existingIngredient = ingredientDAO.findById(id)
+        MenuItem existingMenuItem = menuItemDAO.findById(id)
                 .orElseThrow(() -> new IngredientNotFoundException("Ingredient not found with id: " + id));
 
         // Map DTO to existing entity while preserving the ID
-        modelMapper.map(ingredientDTO, existingIngredient);
-        existingIngredient.setId(id);
+        modelMapper.map(ingredientDTO, existingMenuItem);
+        existingMenuItem.setId(id);
 
-        Ingredient updatedIngredient = ingredientDAO.save(existingIngredient);
-        return modelMapper.map(updatedIngredient, IngredientDTO.class);
+        MenuItem updatedMenuItem = menuItemDAO.save(existingMenuItem);
+        return modelMapper.map(updatedMenuItem, IngredientDTO.class);
     }
 
     @Override
     @Transactional
     public void deleteIngredient(Integer id) {
-        Ingredient ingredient = ingredientDAO.findById(id)
+        MenuItem menuItem = menuItemDAO.findById(id)
                 .orElseThrow(() -> new IngredientNotFoundException("Ingredient not found with id: " + id));
-        ingredientDAO.delete(ingredient);
+        menuItemDAO.delete(menuItem);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<IngredientDTO> getIngredientsByMenuId(Integer menuId) {
-        return ingredientDAO.findByMenuId(menuId)
+        return menuItemDAO.findByMenuId(menuId)
                 .stream()
-                .map(ingredient -> modelMapper.map(ingredient, IngredientDTO.class))
+                .map(menuItem -> modelMapper.map(menuItem, IngredientDTO.class))
                 .toList();
     }
 }

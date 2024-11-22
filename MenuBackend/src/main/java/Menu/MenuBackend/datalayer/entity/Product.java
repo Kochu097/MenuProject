@@ -16,10 +16,6 @@ public class Product {
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UserID", nullable = false)
-    private User user;
-
     @Column(name = "Description", columnDefinition = "BLOB")
     private String description;
 

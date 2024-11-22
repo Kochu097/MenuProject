@@ -43,8 +43,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO) {
         Product product = modelMapper.map(productDTO, Product.class);
-        User user = productDTO.getUser() != null ? modelMapper.map(productDTO.getUser(), User.class) : null;
-        product.setUser(user);
         Product savedProduct = productDAO.save(product);
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
@@ -61,8 +59,6 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setWeight(productDTO.getWeight());
         existingProduct.setWeightUnit(productDTO.getWeightUnit());
         existingProduct.setCalories(productDTO.getCalories());
-        User user = productDTO.getUser() != null ? modelMapper.map(productDTO.getUser(), User.class) : null;
-        existingProduct.setUser(user);
 
         Product updatedProduct = productDAO.save(existingProduct);
         return modelMapper.map(updatedProduct, ProductDTO.class);
