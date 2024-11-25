@@ -47,7 +47,7 @@ public interface UserDAO {
      * @param authenticationToken the authentication token to check
      * @return true if a User entity with the given authentication token exists, false otherwise
      */
-    boolean existsByAuthenticationToken(String authenticationToken);
+    boolean existsByFirebaseUserId(String authenticationToken);
 
-    Optional<User> findByAuthenticationToken(String token);
+    Optional<User> findByFirebaseUserId(String token);
 }

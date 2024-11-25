@@ -47,7 +47,7 @@ public class MenuDAOImpl extends BasicDAO implements MenuDAO {
         return entityManager.createNamedQuery(Menu.GET_BY_PERIOD, Menu.class)
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
-                .setParameter("user", user.getId())
+                .setParameter("user", user)
                 .getResultList();
     }
 }

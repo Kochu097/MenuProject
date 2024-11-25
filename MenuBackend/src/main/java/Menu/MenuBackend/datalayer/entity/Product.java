@@ -28,6 +28,6 @@ public class Product {
     @Column(name = "WeightUnit")
     private WeightUnit weightUnit;
 
-    @Column(name = "Calories", nullable = false)
+    @Column(name = "Calories")
     private Long calories;
 }

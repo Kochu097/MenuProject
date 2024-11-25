@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Data
 @NamedQueries({
         @NamedQuery(name = Menu.GET_BY_PERIOD,
-        query = "SELECT m FROM Menu m where (m.day >= :startDate OR m.day <= :endDate) AND m.user = :user"),
+        query = "SELECT m FROM Menu m where (m.day >= :startDate AND m.day <= :endDate) AND m.user = :user"),
 })
 public class Menu {
 

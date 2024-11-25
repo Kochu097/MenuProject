@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public class UserDAOImpl extends BasicDAO implements UserDAO {
 
+
     public List<User> findAll() {
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u", User.class);
         return query.getResultList();
@@ -35,17 +36,17 @@ public class UserDAOImpl extends BasicDAO implements UserDAO {
         entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
     }
 
-    public boolean existsByAuthenticationToken(String authenticationToken) {
-        TypedQuery<User> query = entityManager.createNamedQuery(User.FIND_BY_AUTH_TOKEN, User.class)
+    public boolean existsByFirebaseUserId(String authenticationToken) {
+        TypedQuery<User> query = entityManager.createNamedQuery(User.FIND_BY_FIREBASE_USER_ID, User.class)
                 .setParameter("token", authenticationToken);
-        return query.getSingleResult() != null;
+        return query.getResultStream().findAny().isPresent();
     }
 
     @Override
-    public Optional<User> findByAuthenticationToken(String token) {
-        TypedQuery<User> query = entityManager.createNamedQuery(User.FIND_BY_AUTH_TOKEN, User.class)
+    public Optional<User> findByFirebaseUserId(String token) {
+        TypedQuery<User> query = entityManager.createNamedQuery(User.FIND_BY_FIREBASE_USER_ID, User.class)
                 .setParameter("token", token);
-        return Optional.ofNullable(query.getSingleResult());
+        return query.getResultList().stream().findAny();
     }
 
 }

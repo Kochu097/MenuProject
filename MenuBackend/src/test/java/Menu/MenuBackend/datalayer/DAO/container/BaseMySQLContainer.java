@@ -1,34 +1,30 @@
 package Menu.MenuBackend.datalayer.DAO.container;
 
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 
-public class BaseMySQLContainer extends MySQLContainer<BaseMySQLContainer> {
-    private static final String IMAGE_VERSION = "mysql:8.0.30";
-    private static BaseMySQLContainer container;
 
-    private BaseMySQLContainer() {
-        super(IMAGE_VERSION);
+public abstract class BaseMySQLContainer extends MySQLContainer<BaseMySQLContainer> {
+    @Container
+    protected static final MySQLContainer<?> MYSQL_CONTAINER;
+
+    static {
+        MYSQL_CONTAINER = new MySQLContainer<>("mysql:8.0.30")
+                .withDatabaseName("menu_database")
+                .withUsername("root")
+                .withPassword("zaq1@WSX")
+                .withReuse(true); // Reuse container between test runs for faster execution
+
+        MYSQL_CONTAINER.start();
     }
 
-    public static BaseMySQLContainer getInstance() {
-        if(container == null) {
-            container = new BaseMySQLContainer()
-                    .withDatabaseName("menu_database")
-                    .withUsername("root")
-                    .withPassword("zaq1@WSX");
-        }
-        return container;
-    }
-
-    @Override
-    public void start() {
-        super.start();
-        System.setProperty("spring.datasource.url", container.getJdbcUrl());
-        System.setProperty("spring.datasource.username", container.getUsername());
-        System.setProperty("spring.datasource.password", container.getPassword());
-    }
-
-    @Override
-    public void stop() {
+    @DynamicPropertySource
+    static void registerMySQLProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", MYSQL_CONTAINER::getJdbcUrl);
+        registry.add("spring.datasource.username", MYSQL_CONTAINER::getUsername);
+        registry.add("spring.datasource.password", MYSQL_CONTAINER::getPassword);
+        registry.add("spring.datasource.driver-class-name", MYSQL_CONTAINER::getDriverClassName);
     }
 }
