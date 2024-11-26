@@ -7,6 +7,7 @@ import java.time.LocalTime;
 
 @Data
 public class RecipeDTO {
+    private Integer id;
     private String name;
     private UserDTO user;
     private String description;

@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserByAuthenticationToken(String token) throws UserNotFoundException {
         User user = userDAO.findByFirebaseUserId(token)
-                .orElseThrow( () -> new UserNotFoundException("User not found by token: " + token));
+                .orElseThrow(() -> new UserNotFoundException("User not found by token: " + token));
         return modelMapper.map(user, UserDTO.class);
     }
 }

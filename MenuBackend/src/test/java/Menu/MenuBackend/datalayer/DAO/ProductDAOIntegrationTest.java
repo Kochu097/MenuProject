@@ -1,20 +1,15 @@
 package Menu.MenuBackend.datalayer.DAO;
 
-import Menu.MenuBackend.datalayer.DAO.impl.ProductDAOImpl;
 import Menu.MenuBackend.datalayer.entity.Product;
 import Menu.MenuBackend.datalayer.enums.WeightUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
 
-class ProductDAOTest extends BaseDAOTest {
-
-    @Autowired
-    private ProductDAOImpl productDAO;
+class ProductDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private Product testProduct;
 

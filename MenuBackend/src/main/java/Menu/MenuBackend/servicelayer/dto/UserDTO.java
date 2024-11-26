@@ -1,10 +1,12 @@
 package Menu.MenuBackend.servicelayer.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class UserDTO {
-    @NotBlank(message = "Authentication token is required")
+    private Integer id;
     private String firebaseUserId;
+    private List<MenuDTO> menus;
 }

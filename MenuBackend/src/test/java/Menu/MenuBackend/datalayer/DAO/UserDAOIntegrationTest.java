@@ -1,19 +1,14 @@
 package Menu.MenuBackend.datalayer.DAO;
 
-import Menu.MenuBackend.datalayer.DAO.impl.UserDAOImpl;
 import Menu.MenuBackend.datalayer.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
 
-class UserDAOTest extends BaseDAOTest{
-
-    @Autowired
-    public UserDAOImpl userDAO;
+class UserDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private User testUser;
 

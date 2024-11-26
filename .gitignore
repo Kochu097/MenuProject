@@ -25,3 +25,6 @@ replay_pid*
 MenuBackend/.idea/*
 MenuBackend/target/*
 .idea/*
+.DS_Store
+.github/.DS_Store
+MenuBackend/.DS_Store

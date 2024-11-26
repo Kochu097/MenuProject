@@ -1,12 +1,10 @@
 package Menu.MenuBackend.datalayer.DAO;
 
-import Menu.MenuBackend.datalayer.DAO.impl.*;
 import Menu.MenuBackend.datalayer.entity.*;
 import Menu.MenuBackend.datalayer.enums.WeightUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,33 +12,17 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
-class MenuItemDAOTest extends BaseDAOTest {
-
-    @Autowired
-    public MenuItemDAOImpl menuItemDAO;
-
-    @Autowired
-    public MenuDAOImpl menuDAO;
-
-    @Autowired
-    public UserDAOImpl userDAO;
-
-    @Autowired
-    public ProductDAOImpl productDAO;
-
-    @Autowired
-    public RecipeDAOImpl recipeDAO;
+class MenuItemDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private MenuItem testMenuItem;
     private Menu testMenu;
-    private User testUser;
     private Product testProduct;
     private Recipe testRecipe;
 
     @Override
     public void beforeEachTest() {
         // Create a test user
-        testUser = new User();
+        User testUser = new User();
         testUser.setFirebaseUserId("test-user-id");
         testUser = userDAO.save(testUser);
 

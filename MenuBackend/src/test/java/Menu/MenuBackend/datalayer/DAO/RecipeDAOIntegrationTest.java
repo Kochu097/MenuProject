@@ -1,21 +1,16 @@
 package Menu.MenuBackend.datalayer.DAO;
 
-import Menu.MenuBackend.datalayer.DAO.impl.RecipeDAOImpl;
 import Menu.MenuBackend.datalayer.entity.Recipe;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
-class RecipeDAOTest extends BaseDAOTest {
-
-    @Autowired
-    private RecipeDAOImpl recipeDAO;
+class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private Recipe testRecipe;
 

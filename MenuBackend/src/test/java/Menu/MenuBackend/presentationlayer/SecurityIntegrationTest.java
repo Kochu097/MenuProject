@@ -1,12 +1,10 @@
 package Menu.MenuBackend.presentationlayer;
 
-import Menu.MenuBackend.presentationlayer.config.FirebaseAuthMockConfig;
-import com.google.firebase.auth.FirebaseAuth;
+import Menu.MenuBackend.config.FirebaseAuthMockConfig;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -17,10 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import(FirebaseAuthMockConfig.class)
-class SecurityIT {
-
-    @Autowired
-    private FirebaseAuth firebaseAuth;
+class SecurityIntegrationTest extends BasicIntegrationTest {
 
     @Test
     @DisplayName("Should verify valid token")
@@ -32,9 +27,9 @@ class SecurityIT {
         FirebaseToken verifiedToken = firebaseAuth.verifyIdToken(validToken);
 
         // Assert
-        assertThat(verifiedToken.getUid()).isEqualTo("user123");
+        assertThat(verifiedToken.getUid()).isEqualTo("user123T"+validToken);
         assertThat(verifiedToken.getClaims())
-                .containsEntry("user_id", "user123");
+                .containsEntry("user_id", "user123T"+validToken);
     }
 
     @Test

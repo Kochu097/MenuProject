@@ -1,4 +1,4 @@
-package Menu.MenuBackend.presentationlayer.config;
+package Menu.MenuBackend.config;
 
 import com.google.firebase.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,8 +30,8 @@ public class FirebaseAuthMockConfig {
                     String token = invocation.getArgument(0);
 
                     // Different behavior for different test tokens
-                    if (VALID_TOKEN.equals(token)) {
-                        return createMockFirebaseToken("user123");
+                    if (token.startsWith(VALID_TOKEN)) {
+                        return createMockFirebaseToken("user123T"+token);
                     }
 
                     throw new FirebaseAuthException(ErrorCode.PERMISSION_DENIED, "Invalid token", null, null, null);

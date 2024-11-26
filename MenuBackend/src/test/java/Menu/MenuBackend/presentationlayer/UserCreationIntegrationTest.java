@@ -1,54 +1,28 @@
 package Menu.MenuBackend.presentationlayer;
 
-import Menu.MenuBackend.common.exception.UserNotFoundException;
-import Menu.MenuBackend.presentationlayer.config.FirebaseAuthMockConfig;
-import Menu.MenuBackend.presentationlayer.config.SecurityTestConfig;
-import Menu.MenuBackend.servicelayer.UserService;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
-import com.google.firebase.ErrorCode;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-import static Menu.MenuBackend.presentationlayer.config.FirebaseAuthMockConfig.VALID_TOKEN;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static Menu.MenuBackend.config.FirebaseAuthMockConfig.INVALID_TOKEN;
+import static Menu.MenuBackend.config.FirebaseAuthMockConfig.VALID_TOKEN;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-@Import({SecurityTestConfig.class, FirebaseAuthMockConfig.class})
-class UserCreationIT extends BasicIT{
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private FirebaseAuth firebaseAuth;
-
-    @MockBean
-    private UserService userService;
+class UserCreationIntegrationTest extends BasicIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        UserDTO mockUser = new UserDTO();
-        mockUser.setFirebaseUserId(VALID_TOKEN);
-        when(userService.getUserByAuthenticationToken(VALID_TOKEN)).thenReturn(mockUser);
+        UserDTO user = new UserDTO();
+        user.setFirebaseUserId(VALID_TOKEN);
+        userService.createUser(user);
     }
 
     @Test
@@ -88,21 +62,7 @@ class UserCreationIT extends BasicIT{
     @Test
     @DisplayName("Should create new user when not found")
     void testCreateNewUserWhenNotFound() throws Exception {
-        String newUserToken = VALID_TOKEN;
-        FirebaseToken mockFirebaseToken = mock(FirebaseToken.class);
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("user_id", "new-user-123");
-        when(mockFirebaseToken.getClaims()).thenReturn(claims);
-        when(firebaseAuth.verifyIdToken(newUserToken)).thenReturn(mockFirebaseToken);
-
-        // Simulate user not found
-        when(userService.getUserByAuthenticationToken("new-user-123"))
-                .thenThrow(new UserNotFoundException("User not found"));
-
-        // Mock user creation
-        UserDTO newUser = new UserDTO();
-        newUser.setFirebaseUserId(newUserToken);
-        when(userService.createUser(any(UserDTO.class))).thenReturn(newUser);
+        String newUserToken = VALID_TOKEN+"2";
 
         mockMvc.perform(get("/api/test")
                         .header("Authorization", BEARER_PREFIX + newUserToken)
@@ -110,17 +70,19 @@ class UserCreationIT extends BasicIT{
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(userService).createUser(any(UserDTO.class));
+        List<UserDTO> users = userService.getAllUsers();
+
+        Assertions.assertFalse(users.isEmpty());
+        Assertions.assertEquals(2, users.size());
+        Assertions.assertTrue(users.stream().anyMatch(u-> u.getFirebaseUserId().contains(newUserToken)));
     }
 
     @Test
     @DisplayName("Should handle Firebase service exception")
     void testFirebaseServiceException() throws Exception {
-        when(firebaseAuth.verifyIdToken(VALID_TOKEN))
-                .thenThrow(new FirebaseAuthException(ErrorCode.ABORTED, "Firebase service error", null, null, null));
 
         mockMvc.perform(get("/api/test")
-                        .header("Authorization", BEARER_PREFIX + VALID_TOKEN)
+                        .header("Authorization", BEARER_PREFIX + INVALID_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());

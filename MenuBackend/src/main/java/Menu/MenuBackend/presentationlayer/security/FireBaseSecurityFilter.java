@@ -1,8 +1,8 @@
 package Menu.MenuBackend.presentationlayer.security;
 
 import Menu.MenuBackend.common.exception.UserNotFoundException;
-import Menu.MenuBackend.servicelayer.UserService;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
+import Menu.MenuBackend.servicelayer.impl.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -31,10 +31,10 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Autowired
-    UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {

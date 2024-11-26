@@ -1,27 +1,16 @@
 package Menu.MenuBackend.datalayer.DAO;
 
-import Menu.MenuBackend.datalayer.DAO.impl.MenuDAOImpl;
-import Menu.MenuBackend.datalayer.DAO.impl.UserDAOImpl;
 import Menu.MenuBackend.datalayer.entity.Menu;
 import Menu.MenuBackend.datalayer.entity.User;
-import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public class MenuDAOTest extends BaseDAOTest {
-
-    @Autowired
-    public MenuDAOImpl menuDAO;
-
-    @Autowired
-    public UserDAOImpl userDAO;
+class MenuDAOIntegrationTest extends BaseDAOIntegrationTest {
 
     private Menu testMenu;
     private User testUser;
