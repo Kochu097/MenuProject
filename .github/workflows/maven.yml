@@ -8,6 +8,9 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: ./MenuBackend
     permissions:
       contents: read
       issues: read
@@ -25,13 +28,13 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Building the project
-      run: mvn clean compile -f ./MenuBackend/pom.xml
+      run: mvn clean compile
     - name: Running tests
-      run: mvn test -f ./MenuBackend/pom.xml
+      run: mvn test
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action/linux@v2
       if: always()
       with:
         files: |
-          ./MenuBackend/src/test/resources/TestResults/result.json
+          ./TestR esults/result.json
 
