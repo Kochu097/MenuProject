@@ -12,20 +12,32 @@ function getAPIConfiguration(token: string) {
     }
 }
 
-export function useTestMenuConnection() {
-    const [post, setPost] = useState([]);
+function useAPI(url: string, params: Record<string, string> = {}) {
+    const [data, setData] = useState([]);
     const { token } = useUser();
 
     useEffect(() => {
-        if(token != null) {
-        axios.get('http://localhost:8083/api/test', getAPIConfiguration(token))
-        .then( response => {
-            setPost(response.data);
-        }).catch( error => {
-            console.error('There was an error!', error);
-        })
+        if (token != null) {
+            const queryString = new URLSearchParams(params).toString();
+            const fullUrl = queryString ? `${url}?${queryString}` : url;
+            axios.get(fullUrl, getAPIConfiguration(token))
+                .then(response => {
+                    setData(response.data);
+                }).catch(error => {
+                    console.error('There was an error!', error);
+                });
         }
-    }, [token]);
+    }, [token, url, ...Object.values(params)]);
 
-    return post;
+    return data;
+}
+
+export function useTestMenuConnection() {
+    return useAPI('http://localhost:8083/api/test');
+}
+
+export function useFetchMenu(startDate: Date, endDate: Date) {
+    const formattedStartDate = startDate.toISOString().split('T')[0];
+    const formattedEndDate = endDate.toISOString().split('T')[0];
+    return useAPI('http://localhost:8083/api/getMenuForPeriod', { startDate: formattedStartDate, endDate: formattedEndDate });
 }

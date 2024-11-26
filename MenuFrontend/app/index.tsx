@@ -12,4 +12,4 @@ const App: React.FC = () => {
   );
 };
 
-export default registerRootComponent(App);
+export default App;

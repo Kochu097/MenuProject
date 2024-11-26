@@ -31,10 +31,10 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Autowired
-    private UserServiceImpl userService;
+    UserServiceImpl userService;
 
     @Autowired
-    private FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {

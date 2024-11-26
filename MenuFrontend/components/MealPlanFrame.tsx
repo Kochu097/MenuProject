@@ -1,34 +1,52 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, ScrollView, TouchableOpacity, View, Text } from "react-native";
 import MealCard from "./MealCard";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useUser } from "@/context/UserContext";
-import { useTestMenuConnection } from "@/hooks/useMealAPI";
+import { useFetchMenu } from "@/hooks/useMealAPI";
 import React from "react";
 import LoginButton from "./Buttons/LoginButton";
 
 const MealPlanFrame: React.FC = () => {
   const { isAuthenticated } = useUser();
+  const [showFullWeek, setShowFullWeek] = useState(false);
+  const [menu, setMenu] = useState([]);
+  const [visibleMenu, setVisibleMenu] = useState([]);
 
-    const [showFullWeek, setShowFullWeek] = useState(false);
+
+  const startDate = new Date();
+  const endDate = new Date();
+  endDate.setDate(startDate.getDate() + (showFullWeek ? 6 : 0));
+  const fetchedMenu = useFetchMenu(startDate, endDate);
     
     const getDates = useCallback(() => {
       const dates = [];
       const today = new Date();
-      const startOfWeek = new Date(today);
-      startOfWeek.setDate(today.getDate() - today.getDay());
       
       for (let i = 0; i < (showFullWeek ? 7 : 1); i++) {
-        const date = new Date(startOfWeek);
-        date.setDate(startOfWeek.getDate() + i);
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
         dates.push(date);
       }
       return dates;
     }, [showFullWeek]);
+
+    useEffect(() => {
+      if (isAuthenticated) {
+
+        setMenu(fetchedMenu);
+      }
+    }, [isAuthenticated, showFullWeek]);
+  
+    // useEffect(() => {
+    //   if (isAuthenticated && menu.length > 0) {
+    //     setVisibleMenu(showFullWeek ? menu : menu[0]);
+    //   }
+    // }, [showFullWeek, menu, isAuthenticated]);
   
     const getMealsForDate = (date: Date) => {
-      return [];
+      return visibleMenu.filter((meal: any) => meal.date === date.toISOString());
     };
   
     const getMealsTypes = () => {
@@ -38,8 +56,6 @@ const MealPlanFrame: React.FC = () => {
     const handleAddMeal = (date: Date, mealType: string) => {
       console.log(`Adding meal for ${date.toDateString()}, ${mealType}`);
     };
-
-    const apiResult = useTestMenuConnection();
     
     return (
         <> 
@@ -91,7 +107,7 @@ const MealPlanFrame: React.FC = () => {
                 ) : (
                   <>
                     <Text>In order to use an app, please log in</Text>
-                    <LoginButton loginMethod="google" />
+                    <LoginButton loginMethod="google"/>
                   </>
                 )}
                 

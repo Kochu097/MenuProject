@@ -11,12 +11,8 @@ import java.io.IOException;
 @SpringBootApplication
 public class MenuBackendApplication {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 
-		FirebaseOptions options = FirebaseOptions.builder()
-				.setCredentials(GoogleCredentials.getApplicationDefault())
-				.build();
-		FirebaseApp.initializeApp(options);
 		SpringApplication.run(MenuBackendApplication.class, args);
 	}
 
