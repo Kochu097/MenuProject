@@ -5,7 +5,7 @@ import Menu.MenuBackend.datalayer.entity.MenuItem;
 import java.util.List;
 import java.util.Optional;
 
-public interface MenuItemDAO {
+public interface IngredientDAO {
     /**
      * Retrieves all Ingredient entities from the database.
      *

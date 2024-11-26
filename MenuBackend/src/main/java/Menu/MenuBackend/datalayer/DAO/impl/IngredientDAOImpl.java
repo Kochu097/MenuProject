@@ -1,6 +1,6 @@
 package Menu.MenuBackend.datalayer.DAO.impl;
 
-import Menu.MenuBackend.datalayer.DAO.MenuItemDAO;
+import Menu.MenuBackend.datalayer.DAO.IngredientDAO;
 import Menu.MenuBackend.datalayer.DAO.BasicDAO;
 import Menu.MenuBackend.datalayer.entity.MenuItem;
 import jakarta.persistence.TypedQuery;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class MenuItemDAOImpl extends BasicDAO implements MenuItemDAO {
+public class IngredientDAOImpl extends BasicDAO implements IngredientDAO {
 
     @Override
     public List<MenuItem> findAll() {

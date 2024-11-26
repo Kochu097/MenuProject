@@ -20,12 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserServiceIntegrationTest extends BaseServiceIntegrationTest {
 
-    private UserDTO createTestUserDTO(String firebaseUserId) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setFirebaseUserId(firebaseUserId);
-        return userDTO;
-    }
-
     @Test
     @DisplayName("Create User - Successfully creates a new user with unique authentication token")
     void testCreateUser_Success() {
@@ -37,8 +31,8 @@ class UserServiceIntegrationTest extends BaseServiceIntegrationTest {
 
         // Assert
         assertNotNull(createdUser);
+        assertNotNull(createdUser.getId());
         assertEquals("test-user-1", createdUser.getFirebaseUserId());
-        assertTrue(userDAO.existsByFirebaseUserId("test-user-1"));
     }
 
     @Test
@@ -66,20 +60,19 @@ class UserServiceIntegrationTest extends BaseServiceIntegrationTest {
         List<UserDTO> users = userService.getAllUsers();
 
         // Assert
-        assertEquals(2, users.size());
+        assertEquals(3, users.size()); // 3 because one user is created in the base test
+        assertTrue(users.stream().anyMatch(u -> u.getFirebaseUserId().equals("user1")));
+        assertTrue(users.stream().anyMatch(u -> u.getFirebaseUserId().equals("user2")));
     }
 
     @Test
     @DisplayName("Get User By ID - Successfully retrieves a user by their ID")
     void testGetUserById_Success() {
         // Arrange
-        userService.createUser(createTestUserDTO("test-user"));
-        Optional<User> userDTOOptional = userDAO.findByFirebaseUserId("test-user");
-        assertFalse(userDTOOptional.isEmpty());
-        Integer userId = userDTOOptional.get().getId();
+        UserDTO userDTO = userService.createUser(createTestUserDTO("test-user"));
 
         // Act
-        UserDTO retrievedUser = userService.getUserById(userId);
+        UserDTO retrievedUser = userService.getUserById(userDTO.getId());
 
         // Assert
         assertNotNull(retrievedUser);
@@ -99,12 +92,11 @@ class UserServiceIntegrationTest extends BaseServiceIntegrationTest {
     @DisplayName("Update User - Successfully updates user's authentication token")
     void testUpdateUser_Success() {
         // Arrange
-        userService.createUser(createTestUserDTO("original-user"));
-        Integer userId = userDAO.findByFirebaseUserId("original-user").get().getId();
+        UserDTO userDTO = userService.createUser(createTestUserDTO("original-user"));
 
         // Act
         UserDTO updatedUserDTO = createTestUserDTO("updated-user");
-        UserDTO result = userService.updateUser(userId, updatedUserDTO);
+        UserDTO result = userService.updateUser(userDTO.getId(), updatedUserDTO);
 
         // Assert
         assertNotNull(result);
@@ -116,13 +108,12 @@ class UserServiceIntegrationTest extends BaseServiceIntegrationTest {
     void testUpdateUser_DuplicateAuthToken_ThrowsException() {
         // Arrange
         userService.createUser(createTestUserDTO("existing-user"));
-        userService.createUser(createTestUserDTO("original-user"));
-        Integer userId = userDAO.findByFirebaseUserId("original-user").get().getId();
+        UserDTO userDTO = userService.createUser(createTestUserDTO("original-user"));
 
         // Act & Assert
         UserDTO updateDTO = createTestUserDTO("existing-user");
         assertThrows(DuplicateAuthTokenException.class, () -> {
-            userService.updateUser(userId, updateDTO);
+            userService.updateUser(userDTO.getId(), updateDTO);
         });
     }
 
@@ -130,16 +121,14 @@ class UserServiceIntegrationTest extends BaseServiceIntegrationTest {
     @DisplayName("Delete User - Successfully deletes a user")
     void testDeleteUser_Success() {
         // Arrange
-        userService.createUser(createTestUserDTO("delete-user"));
-        Integer userId = userDAO.findByFirebaseUserId("delete-user").get().getId();
+        UserDTO userDTO = userService.createUser(createTestUserDTO("delete-user"));
 
         // Act
-        userService.deleteUser(userId);
+        userService.deleteUser(userDTO.getId());
 
         // Assert
-        assertThrows(UserNotFoundException.class, () -> {
-            userService.getUserById(userId);
-        });
+        assertThrows(UserNotFoundException.class, () ->
+            userService.getUserById(userDTO.getId()));
     }
 
     @Test

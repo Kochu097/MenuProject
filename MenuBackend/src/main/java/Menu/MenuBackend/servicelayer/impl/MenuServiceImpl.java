@@ -83,10 +83,10 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuDTO> getMenuForPeriod(LocalDate startDate, LocalDate endDate, UserDTO user) throws MenuNotFoundException {
-        Optional<User> userEntity = userDAO.findById(1);
-        if(userEntity.isEmpty()) throw new UserNotFoundException("User Not found");
+        User userEntity = userDAO.findById(user.getId())
+                .orElseThrow(() -> new UserNotFoundException("User Not found"));
 
-        List<Menu> menu = menuDAO.getByPeriod(startDate, endDate, userEntity.get());
+        List<Menu> menu = menuDAO.getByPeriod(startDate, endDate, userEntity);
         return menu.stream().map( m -> modelMapper.map(m, MenuDTO.class)).toList();
     }
 }
