@@ -15,7 +15,7 @@ import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from "expo-linear-gradient";
 import Select from 'react-select';
 import Recipe from '../Interfaces/IRecipe';
-import Product from '../Interfaces/IProduct';
+import Product from '../Interfaces/ICommon';
 import Difficulty from '../Enums/DifficultyEnum';
 
 interface Option {

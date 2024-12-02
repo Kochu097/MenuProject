@@ -16,7 +16,7 @@ public class Product {
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @Column(name = "Description", columnDefinition = "BLOB")
+    @Column(name = "Description")
     private String description;
 
     @Column(name = "ImageURL")
@@ -26,8 +26,15 @@ public class Product {
     private Long weight;
 
     @Column(name = "WeightUnit")
+    @Enumerated(EnumType.STRING)
     private WeightUnit weightUnit;
 
     @Column(name = "Calories")
     private Long calories;
+
+    @Column(name = "Source", nullable = false)
+    private String source;
+
+    @Column(name = "Shared" , nullable = false)
+    private Boolean shared;
 }

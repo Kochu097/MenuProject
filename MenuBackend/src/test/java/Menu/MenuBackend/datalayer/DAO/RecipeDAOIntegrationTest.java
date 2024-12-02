@@ -1,6 +1,7 @@
 package Menu.MenuBackend.datalayer.DAO;
 
 import Menu.MenuBackend.datalayer.entity.Recipe;
+import Menu.MenuBackend.datalayer.enums.Difficulty;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,9 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         testRecipe.setDescription("Test Recipe Description");
         testRecipe.setPreparationTime(LocalTime.of(0, 30));
         testRecipe.setServings(BigDecimal.valueOf(4));
-        testRecipe.setDifficulty("Medium");
+        testRecipe.setDifficulty(Difficulty.Medium);
+        testRecipe.setSource("test-source");
+        testRecipe.setShared(false);
         testRecipe = recipeDAO.save(testRecipe);
     }
 
@@ -33,7 +36,7 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         newRecipe.setDescription("New Recipe Description");
         newRecipe.setPreparationTime(LocalTime.of(1, 0));
         newRecipe.setServings(BigDecimal.valueOf(2));
-        newRecipe.setDifficulty("Hard");
+        newRecipe.setDifficulty(Difficulty.Hard);
 
         Recipe savedRecipe = recipeDAO.save(newRecipe);
 
@@ -45,7 +48,7 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
     @DisplayName("Should successfully update an existing recipe")
     void testUpdatingRecipe() {
         testRecipe.setName("Updated Recipe");
-        testRecipe.setDifficulty("Easy");
+        testRecipe.setDifficulty(Difficulty.Easy);
 
         Recipe updatedRecipe = recipeDAO.save(testRecipe);
 

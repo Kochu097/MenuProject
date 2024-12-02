@@ -1,5 +1,6 @@
 package Menu.MenuBackend.servicelayer.dto;
 
+import Menu.MenuBackend.datalayer.enums.Difficulty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,5 +15,7 @@ public class RecipeDTO {
     private String imageUrl;
     private LocalTime preparationTime;
     private BigDecimal servings;
-    private String difficulty;
+    private Difficulty difficulty;
+    private String source;
+    private Boolean shared;
 }

@@ -1,6 +1,7 @@
 package Menu.MenuBackend.datalayer.DAO;
 
 import Menu.MenuBackend.datalayer.entity.*;
+import Menu.MenuBackend.datalayer.enums.Difficulty;
 import Menu.MenuBackend.datalayer.enums.WeightUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +48,7 @@ class IngredientDAOIntegrationTest extends BaseDAOIntegrationTest {
         testRecipe.setDescription("Test Recipe Description");
         testRecipe.setPreparationTime(LocalTime.of(0, 30));
         testRecipe.setServings(BigDecimal.valueOf(4));
-        testRecipe.setDifficulty("Medium");
+        testRecipe.setDifficulty(Difficulty.Medium);
         testRecipe = recipeDAO.save(testRecipe);
 
         // Create a test menu item
@@ -91,7 +92,7 @@ class IngredientDAOIntegrationTest extends BaseDAOIntegrationTest {
         newRecipe.setDescription("New Test Recipe Description");
         newRecipe.setPreparationTime(LocalTime.of(1, 0));
         newRecipe.setServings(BigDecimal.valueOf(2));
-        newRecipe.setDifficulty("Hard");
+        newRecipe.setDifficulty(Difficulty.Hard);
         newRecipe = recipeDAO.save(newRecipe);
 
         // Update the existing menu item

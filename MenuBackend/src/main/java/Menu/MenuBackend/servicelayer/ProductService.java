@@ -2,6 +2,7 @@ package Menu.MenuBackend.servicelayer;
 
 import Menu.MenuBackend.common.exception.ProductNotFoundException;
 import Menu.MenuBackend.servicelayer.dto.ProductDTO;
+import Menu.MenuBackend.servicelayer.dto.UserDTO;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public interface ProductService {
      * @return a list of ProductDTO objects representing all Product entities
      */
     List<ProductDTO> getAllProducts();
+
+    List<ProductDTO> getAllProductsForUser(UserDTO user);
 
     /**
      * Retrieves a Product entity by its unique identifier (ID).

@@ -1,6 +1,7 @@
 package Menu.MenuBackend.servicelayer;
 
 import Menu.MenuBackend.common.exception.RecipeNotFoundException;
+import Menu.MenuBackend.datalayer.enums.Difficulty;
 import Menu.MenuBackend.servicelayer.dto.RecipeDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,7 +83,7 @@ class RecipeServiceIntegrationTest extends BaseServiceIntegrationTest {
         updateDTO.setDescription("Updated recipe description");
         updateDTO.setPreparationTime(LocalTime.of(1, 30)); // 1 hour 30 minutes
         updateDTO.setServings(BigDecimal.valueOf(6));
-        updateDTO.setDifficulty("Hard");
+        updateDTO.setDifficulty(Difficulty.Hard);
 
         // Act
         RecipeDTO updatedRecipe = recipeService.updateRecipe(recipeId, updateDTO);
@@ -93,7 +94,7 @@ class RecipeServiceIntegrationTest extends BaseServiceIntegrationTest {
         assertEquals("Updated recipe description", updatedRecipe.getDescription());
         assertEquals(LocalTime.of(1, 30), updatedRecipe.getPreparationTime());
         assertEquals(BigDecimal.valueOf(6), updatedRecipe.getServings());
-        assertEquals("Hard", updatedRecipe.getDifficulty());
+        assertEquals(Difficulty.Hard, updatedRecipe.getDifficulty());
     }
 
     @Test

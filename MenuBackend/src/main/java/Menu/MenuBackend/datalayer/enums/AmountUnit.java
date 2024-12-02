@@ -1,6 +1,13 @@
 package Menu.MenuBackend.datalayer.enums;
 
 public enum AmountUnit {
-    //TODO: to fill
-
+    GRAMS,
+    KILOGRAMS,
+    LITERS,
+    MILLILITERS,
+    TEASPOONS,
+    TABLESPOONS,
+    CUPS,
+    OUNCES,
+    POUNDS,
 }

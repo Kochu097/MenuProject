@@ -1,21 +1,22 @@
 package Menu.MenuBackend.presentationlayer;
 
 import Menu.MenuBackend.config.FirebaseAuthMockConfig;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 @Import(FirebaseAuthMockConfig.class)
 class SecurityIntegrationTest extends BasicIntegrationTest {
+
+    @Autowired
+    public FirebaseAuth firebaseAuth;
 
     @Test
     @DisplayName("Should verify valid token")

@@ -1,5 +1,6 @@
 package Menu.MenuBackend.datalayer.entity;
 
+import Menu.MenuBackend.datalayer.enums.MenuItemType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,10 @@ public class MenuItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Menu_ID", nullable = false)
     private Menu menu;
+
+    @Column(name = "MENU_ITEM_TYPE")
+    @Enumerated(EnumType.STRING)
+    private MenuItemType menuItemType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Recipe_ID")

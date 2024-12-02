@@ -4,123 +4,120 @@ import MealCard from "./MealCard";
 import { useCallback, useEffect, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useUser } from "@/context/UserContext";
-import { useFetchMenu } from "@/hooks/useMealAPI";
 import React from "react";
 import LoginButton from "./Buttons/LoginButton";
+import { MenuItem, Menu } from "./Interfaces/ICommon";
+import { fetchMenu } from "@/hooks/useMealAPI";
+import MealTypesEnum from "./Enums/MealTypesEnum";
 
 const MealPlanFrame: React.FC = () => {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, token } = useUser();
   const [showFullWeek, setShowFullWeek] = useState(false);
-  const [menu, setMenu] = useState([]);
-  const [visibleMenu, setVisibleMenu] = useState([]);
+  const [menu, setMenu] = useState<Menu[]>([]);
 
+  useEffect(() => {
+    refreshPage();
+  }, [isAuthenticated, token, showFullWeek]);
 
-  const startDate = new Date();
-  const endDate = new Date();
-  endDate.setDate(startDate.getDate() + (showFullWeek ? 6 : 0));
-  const fetchedMenu = useFetchMenu(startDate, endDate);
+  const refreshPage = () => {
+    if(isAuthenticated && token) {
+      const startDate = new Date();
+      const endDate = new Date();
+      endDate.setDate(startDate.getDate() + (showFullWeek ? 6 : 0));
+      fetchMenu(token, startDate, endDate).then((fetchedMenu) => {
+        setMenu(fetchedMenu as Menu[]);
+      });
+    }
+  }
     
-    const getDates = useCallback(() => {
-      const dates = [];
-      const today = new Date();
-      
-      for (let i = 0; i < (showFullWeek ? 7 : 1); i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() + i);
-        dates.push(date);
-      }
-      return dates;
-    }, [showFullWeek]);
-
-    useEffect(() => {
-      if (isAuthenticated) {
-
-        setMenu(fetchedMenu);
-      }
-    }, [isAuthenticated, showFullWeek]);
-  
-    // useEffect(() => {
-    //   if (isAuthenticated && menu.length > 0) {
-    //     setVisibleMenu(showFullWeek ? menu : menu[0]);
-    //   }
-    // }, [showFullWeek, menu, isAuthenticated]);
-  
-    const getMealsForDate = (date: Date) => {
-      return visibleMenu.filter((meal: any) => meal.date === date.toISOString());
-    };
-  
-    const getMealsTypes = () => {
-      return ['Breakfast', 'Dinner', 'Supper', 'Snacks'];
-    };
-  
-    const handleAddMeal = (date: Date, mealType: string) => {
-      console.log(`Adding meal for ${date.toDateString()}, ${mealType}`);
-    };
+  const getDates = useCallback(() => {
+    const dates = [];
+    const today = new Date();
     
-    return (
-        <> 
-          {/* Wooden Frame Header */}
-          <LinearGradient
-              colors={['#8B4513', '#A0522D', '#8B4513']}
-              style={styles.header}
-          >
-              <Text style={styles.title}>My Meal Plan</Text>
-              <TouchableOpacity
-              style={styles.weekToggle}
-              onPress={() => setShowFullWeek(!showFullWeek)}
-              >
-              <MaterialIcons
-                  name={showFullWeek ? 'view-day' : 'view-week'}
-                  size={24}
-                  color="#8B4513"
-              />
-              <Text style={styles.weekToggleText}>
-                  {showFullWeek ? 'Show Today' : 'Show Week'}
-              </Text>
-              </TouchableOpacity>
-          </LinearGradient>
+    for (let i = 0; i < (showFullWeek ? 7 : 1); i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      dates.push(date);
+    }
+    return dates;
+  }, [showFullWeek]);
+  
+  const getMenuItems = (date: Date) => {
+    const menuItems = menu.filter((menuItem) => {return menuItem.day.getFullYear === date.getFullYear && menuItem.day.getMonth === date.getMonth && menuItem.day.getDate === date.getDate})[0]?.menuItems || [];
+    return menuItems;
+  };
 
-          {/* Corkboard with texture */}
-          <View style={styles.corkboard}>
-              <View style={styles.corkTexture} />
-              <ScrollView 
-              contentContainerStyle={styles.cardGrid}
-              showsVerticalScrollIndicator={false}
-              >
-                {isAuthenticated ? (
-                  <>
-                    {getDates().map((date, index) => (
-                      <React.Fragment key={index}>
-                        <MealCard
-                        key={index}
-                        date={date}
-                        meals={getMealsForDate(date)}
-                        mealTypes={getMealsTypes()}
-                        onAddMeal={(mealType) => handleAddMeal(date, mealType)}
-                        index={index}
-                        isToday={date.toDateString() === new Date().toDateString()}
-                        showFullWeek={showFullWeek}
-                        />
-                      </React.Fragment>
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    <Text>In order to use an app, please log in</Text>
-                    <LoginButton loginMethod="google"/>
-                  </>
-                )}
-                
-              </ScrollView>
-          </View>
+  const getMealsTypes = Object.values(MealTypesEnum)
 
-          {/* Wooden Frame Bottom */}
-          <LinearGradient
-              colors={['#8B4513', '#A0522D', '#8B4513']}
-              style={styles.footer}
-          />
-      </>
-    );
+  const handleAddMeal = (menuItem: MenuItem, date: Date) => {
+    
+    console.log(`Adding meal for ${date.toDateString()}, ${menuItem}`);
+  };
+    
+  return (
+      <> 
+        {/* Wooden Frame Header */}
+        <LinearGradient
+            colors={['#8B4513', '#A0522D', '#8B4513']}
+            style={styles.header}
+        >
+            <Text style={styles.title}>My Meal Plan</Text>
+            <TouchableOpacity
+            style={styles.weekToggle}
+            onPress={() => setShowFullWeek(!showFullWeek)}
+            >
+            <MaterialIcons
+                name={showFullWeek ? 'view-day' : 'view-week'}
+                size={24}
+                color="#8B4513"
+            />
+            <Text style={styles.weekToggleText}>
+                {showFullWeek ? 'Show Today' : 'Show Week'}
+            </Text>
+            </TouchableOpacity>
+        </LinearGradient>
+
+        {/* Corkboard with texture */}
+        <View style={styles.corkboard}>
+            <View style={styles.corkTexture} />
+            <ScrollView 
+            contentContainerStyle={styles.cardGrid}
+            showsVerticalScrollIndicator={false}
+            >
+              {isAuthenticated ? (
+                <>
+                  {getDates().map((date, index) => (
+                    <React.Fragment key={index}>
+                      <MealCard
+                      key={index}
+                      date={date}
+                      menuItems={getMenuItems(date)}
+                      mealTypes={getMealsTypes}
+                      onAddMenuItem={() => refreshPage()}
+                      index={index}
+                      isToday={date.toDateString() === new Date().toDateString()}
+                      showFullWeek={showFullWeek}
+                      />
+                    </React.Fragment>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <Text>In order to use an app, please log in</Text>
+                  <LoginButton loginMethod="google"/>
+                </>
+              )}
+              
+            </ScrollView>
+        </View>
+
+        {/* Wooden Frame Bottom */}
+        <LinearGradient
+            colors={['#8B4513', '#A0522D', '#8B4513']}
+            style={styles.footer}
+        />
+    </>
+  );
 };
 
 const styles = StyleSheet.create({

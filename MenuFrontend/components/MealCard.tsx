@@ -4,28 +4,26 @@ import {
   View, 
   Text, 
   Animated,
-  Pressable
+  Pressable,
+  ImageBackground
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AddMealDialog from './AddMealDialog/AddMealDialog';
+import { MenuItem } from './Interfaces/ICommon';
+import MealTypesEnum from './Enums/MealTypesEnum';
 
 interface MealCardProps {
   date: Date;
-  meals: {
-    type: string;
-    name: string;
-  }[];
+  menuItems: MenuItem[];
   mealTypes: string[];
-  onAddMeal: (mealType: string) => void;
+  onAddMenuItem: () => void;
   index: number;
   isToday: boolean;
   showFullWeek: boolean;
 }
 
 const PAPER_PATTERNS = [
-  'repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%)',
-  'repeating-linear-gradient(90deg, #000 0, #000 1px, transparent 1px, transparent 50%)',
-  'repeating-linear-gradient(30deg, #000 0, #000 1px, transparent 1px, transparent 50%)',
+    '../assets/paper-pattern.png'
 ];
 
 const PIN_COLORS = [
@@ -43,9 +41,9 @@ const PAPER_COLORS = [
 
 const MealCard: React.FC<MealCardProps> = ({ 
   date, 
-  meals, 
+  menuItems, 
   mealTypes,
-  onAddMeal, 
+  onAddMenuItem: onAddMenuItem, 
   index,
   isToday,
   showFullWeek
@@ -158,10 +156,10 @@ const MealCard: React.FC<MealCardProps> = ({
         ]}
       >
         {/* Enhanced paper texture */}
-        <View style={[
-          styles.paperTexture,
-          { backgroundImage: PAPER_PATTERNS[patternIndex] }
-        ]} />
+        <ImageBackground
+          source={{ uri: PAPER_PATTERNS[patternIndex] }}
+          style={styles.paperTexture}
+        />
         
         {/* Coffee stain effect (random position) */}
         {index % 3 === 0 && (
@@ -185,81 +183,24 @@ const MealCard: React.FC<MealCardProps> = ({
         </View>
 
         <View style={styles.mealsList}>
-          {mealTypes.map((mealType, index) => {
-            const meal = meals.find(m => m.type === mealType);
+          {Object.values(MealTypesEnum).map((mealType, index) => { 
+            // console.log(mealType);
+            // console.log(menuItems);
+            const menuItem = menuItems.find(m => m.menuItemType === mealType);
             
             return (
               <View key={index} style={styles.mealItem}>
                 <Text style={styles.mealType}>{mealType}</Text>
-                {meal ? (
                   <View style={styles.mealNameContainer}>
-                    <Text style={styles.mealName}>{meal.name}</Text>
+                    <Text style={styles.mealName}>{menuItem ? (menuItem.product ? menuItem.product.name : menuItem.recipe?.name) : ''}</Text>
                     <View style={[
                       styles.underline,
                       { transform: [{ rotate: `${(index % 2) * 0.5}deg` }] }
                     ]} />
                   </View>
-                ) : (
-                  // <TouchableOpacity
-                  //   style={styles.addMealButton}
-                  //   onPress={() => onAddMeal(mealType)}
-                  // >
-                  //   <MaterialIcons name="add" size={16} color="#8B4513" />
-                  //   <Text style={styles.addMealText}>Add meal</Text>
-                  // </TouchableOpacity>
+                
                   <AddMealDialog 
-                  onAddMeal={(mealData) => {
-                    // Handle the meal addition here
-                    console.log('Meal added:', mealData);
-                    onAddMeal(mealData.type);
-                  }}
-                  recipes={[
-                    {
-                      id: '1',
-                      name: 'Pancakes',
-                      description: 'Fluffy homemade pancakes with maple syrup',
-                      imageUrl: '/path/to/pancakes.jpg',
-                      preparationTime: '20 min',
-                      difficulty: 'Easy'
-                    },
-                    {
-                      id: '2',
-                      name: 'Scrambled eggs',
-                      description: 'Fluffy homemade pancakes with maple syrup',
-                      imageUrl: '/path/to/pancakes.jpg',
-                      preparationTime: '20 min',
-                      difficulty: 'Easy'
-                    },
-                    {
-                      id: '3',
-                      name: 'Pancakes',
-                      description: 'Fluffy homemade pancakes with maple syrup',
-                      imageUrl: '/path/to/pancakes.jpg',
-                      preparationTime: '20 min',
-                      difficulty: 'Easy'
-                    },
-                    {
-                      id: '4',
-                      name: 'Pancakes',
-                      description: 'Fluffy homemade pancakes with maple syrup',
-                      imageUrl: '/path/to/pancakes.jpg',
-                      preparationTime: '20 min',
-                      difficulty: 'Easy'
-                    },
-                    // ... more recipes
-                  ]}
-                  products={[
-                    {
-                      id: '1',
-                      name: 'Greek Yogurt',
-                      description: 'Plain Greek yogurt, high in protein',
-                      imageUrl: '',
-                      weight: '200g',
-                      calories: 130
-                    },
-                    // ... more products
-                  ]}/>
-                )}
+                  onAddMenuItem={onAddMenuItem}/>
               </View>
             );
           })}
@@ -341,7 +282,6 @@ const styles = StyleSheet.create({
   paperTexture: {
     ...StyleSheet.absoluteFillObject,
     opacity: 0.05,
-    backgroundSize: '10px 10px',
   },
   coffeeStain: {
     position: 'absolute',

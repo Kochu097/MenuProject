@@ -37,7 +37,7 @@ public class FirebaseAuthMockConfig {
                     throw new FirebaseAuthException(ErrorCode.PERMISSION_DENIED, "Invalid token", null, null, null);
                 });
 
-        return mockFirebaseAuth;
+        return Mockito.mock(FirebaseAuth.class);
     }
 
     // Helper method to create a mock FirebaseToken

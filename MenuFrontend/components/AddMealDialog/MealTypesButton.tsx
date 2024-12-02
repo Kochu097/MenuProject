@@ -1,12 +1,13 @@
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import MealTypesEnum from "../Enums/MealTypesEnum";
 
 interface MealTypesButtonProp {
     selectedType: string;
-    setSelectedType: (type: string) => void;
+    setSelectedType: (type: MealTypesEnum) => void;
 }
 
 const MealTypesButton: React.FC<MealTypesButtonProp> = ({selectedType, setSelectedType}) => {
-    const MEAL_TYPES = ['Breakfast', 'Dinner', 'Supper', 'Snacks'];
+    const MEAL_TYPES = Object.values(MealTypesEnum);
 
     return (
         <View style={styles.section}>

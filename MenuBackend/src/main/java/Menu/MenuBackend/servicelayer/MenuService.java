@@ -1,7 +1,9 @@
 package Menu.MenuBackend.servicelayer;
 
 import Menu.MenuBackend.common.exception.MenuNotFoundException;
+import Menu.MenuBackend.datalayer.entity.MenuItem;
 import Menu.MenuBackend.servicelayer.dto.MenuDTO;
+import Menu.MenuBackend.servicelayer.dto.MenuItemDTO;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
 
 import java.time.LocalDate;
@@ -51,4 +53,6 @@ public interface MenuService {
     void deleteMenu(Integer id) throws MenuNotFoundException;
 
     List<MenuDTO> getMenuForPeriod(LocalDate startDate, LocalDate endDate, UserDTO user) throws MenuNotFoundException;
+
+    void addMenuItem(LocalDate date, MenuItemDTO item, UserDTO user) throws MenuNotFoundException;
 }

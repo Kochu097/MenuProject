@@ -7,6 +7,7 @@ import Menu.MenuBackend.datalayer.DAO.MenuDAO;
 import Menu.MenuBackend.datalayer.entity.Menu;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -49,5 +50,13 @@ public class MenuDAOImpl extends BasicDAO implements MenuDAO {
                 .setParameter("endDate", endDate)
                 .setParameter("user", user)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<Menu> getByDate(LocalDate date, User user) {
+        return entityManager.createNamedQuery(Menu.GET_BY_DATE, Menu.class)
+                .setParameter("date", date)
+                .setParameter("user", user)
+                .getResultList().stream().findFirst();
     }
 }

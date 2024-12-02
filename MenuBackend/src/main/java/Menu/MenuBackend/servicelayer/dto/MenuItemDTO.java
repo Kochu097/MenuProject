@@ -1,13 +1,13 @@
 package Menu.MenuBackend.servicelayer.dto;
 
-import Menu.MenuBackend.datalayer.enums.AmountUnit;
+import Menu.MenuBackend.datalayer.enums.MenuItemType;
 import lombok.Data;
 
 @Data
-public class IngredientDTO {
+public class MenuItemDTO {
     private Integer id;
+    private MenuItemType menuItemType;
     private RecipeDTO recipe;
     private ProductDTO product;
-    private Long amount;
-    private AmountUnit amountUnit;
+
 }

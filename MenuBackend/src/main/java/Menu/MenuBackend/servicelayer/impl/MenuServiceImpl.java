@@ -3,11 +3,11 @@ package Menu.MenuBackend.servicelayer.impl;
 import Menu.MenuBackend.common.exception.MenuNotFoundException;
 import Menu.MenuBackend.common.exception.UserNotFoundException;
 import Menu.MenuBackend.datalayer.DAO.UserDAO;
+import Menu.MenuBackend.datalayer.entity.*;
+import Menu.MenuBackend.servicelayer.dto.MenuItemDTO;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import org.springframework.transaction.annotation.Transactional;
 import Menu.MenuBackend.datalayer.DAO.MenuDAO;
-import Menu.MenuBackend.datalayer.entity.Menu;
-import Menu.MenuBackend.datalayer.entity.User;
 import Menu.MenuBackend.servicelayer.MenuService;
 import Menu.MenuBackend.servicelayer.dto.MenuDTO;
 import org.modelmapper.ModelMapper;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class MenuServiceImpl implements MenuService {
 
     private static final String MENU_NOT_FOUND_ERROR_MESSAGE = "Menu not found with id: ";
@@ -88,5 +89,33 @@ public class MenuServiceImpl implements MenuService {
 
         List<Menu> menu = menuDAO.getByPeriod(startDate, endDate, userEntity);
         return menu.stream().map( m -> modelMapper.map(m, MenuDTO.class)).toList();
+    }
+
+    @Override
+    public void addMenuItem(LocalDate date, MenuItemDTO item, UserDTO user) throws MenuNotFoundException {
+        User userEntity = userDAO.findById(user.getId())
+                .orElseThrow(() -> new UserNotFoundException("User Not found"));
+
+        Menu menu = menuDAO.getByDate(date, userEntity)
+                .orElseGet(() -> {
+                    Menu newMenu = new Menu();
+                    newMenu.setDay(date);
+                    newMenu.setUser(userEntity);
+                    return menuDAO.save(newMenu);
+                });
+
+        MenuItem menuItem = modelMapper.map(item, MenuItem.class);
+        menuItem.setMenu(menu);
+
+        if (item.getProduct() != null) {
+            menuItem.setProduct(modelMapper.map(item.getProduct(), Product.class));
+        }
+
+        if (item.getRecipe() != null) {
+            menuItem.setRecipe(modelMapper.map(item.getRecipe(), Recipe.class));
+        }
+
+        menu.getMenuItems().add(menuItem);
+        menuDAO.save(menu);
     }
 }

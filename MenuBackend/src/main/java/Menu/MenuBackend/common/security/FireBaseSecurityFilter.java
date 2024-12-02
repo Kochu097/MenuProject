@@ -1,4 +1,4 @@
-package Menu.MenuBackend.presentationlayer.security;
+package Menu.MenuBackend.common.security;
 
 import Menu.MenuBackend.common.exception.UserNotFoundException;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
@@ -52,11 +52,11 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } else {
                 setAuthErrorDetails(response);
-                filterChain.doFilter(request, response);
+                return;
             }
         } else {
             setAuthErrorDetails(response);
-            filterChain.doFilter(request, response);
+            return;
         }
     }
 

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Modal from 'react-native-modal';
-import Product from "../Interfaces/IProduct";
+import { Product } from "../Interfaces/ICommon";
 import { TouchableOpacity, Text, StyleSheet, View, Image, TextInput} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -60,7 +60,7 @@ const AddProductDialog: React.FC = () => {
 
     const [product, setProduct] = useState<Product| null>(null);
     const [isVisible, setIsVisible] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<string>('');
+    const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
     const [productName, setProductName] = useState<string>('');
     const [productDescription, setProductDescription] = useState<string>('');
     const [productWeight, setProductWeight] = useState<string>('');
@@ -70,7 +70,7 @@ const AddProductDialog: React.FC = () => {
 
 
     const clearForm = () => {
-        setSelectedImage('');
+        setSelectedImage(undefined);
         setProductName('');
         setProductDescription('');
         setProductWeight('');
@@ -102,13 +102,13 @@ const AddProductDialog: React.FC = () => {
       }
     };
 
-    const handleAddRecipe = () => {
+    const handleAddProduct = () => {
         const newProduct: Product = {
             name: productName,
             description: productDescription,
             imageUrl: selectedImage,
             weight: Number(productWeight),
-            weightUnit: weightUnitOption.value,
+            weightUnit: weightUnitOption.value as ProductWeightUnit,
             calories: productCalories == '' ? Number(productCalories) : 0,
         };
         console.log(newProduct);
@@ -156,7 +156,7 @@ const AddProductDialog: React.FC = () => {
                     {/* CONTENT */}
                     <View style={styles.content}>
                         <View style={styles.imageContainer}>
-                            {selectedImage != '' ? (
+                            {selectedImage ? (
                             <Image
                                 source={{ uri: selectedImage }}
                                 style={styles.selectedImage}
@@ -243,7 +243,7 @@ const AddProductDialog: React.FC = () => {
                     <View style={styles.footer}>
                     <TouchableOpacity
                     style={styles.addProductButton}
-                    onPress={handleAddRecipe}
+                    onPress={handleAddProduct}
                     >
                     <Text style={styles.addProductButtonText}>Add Recipe</Text>
                     </TouchableOpacity>

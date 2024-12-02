@@ -1,7 +1,7 @@
 package Menu.MenuBackend.servicelayer;
 
 import Menu.MenuBackend.BaseIntegrationTest;
-import Menu.MenuBackend.datalayer.DAO.*;
+import Menu.MenuBackend.datalayer.enums.Difficulty;
 import Menu.MenuBackend.datalayer.enums.WeightUnit;
 import Menu.MenuBackend.servicelayer.dto.*;
 import org.junit.jupiter.api.AfterEach;
@@ -48,7 +48,6 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
 
     protected IngredientDTO createTestIngredientDTO(MenuDTO menu, RecipeDTO recipe, ProductDTO product) {
         IngredientDTO ingredientDTO = new IngredientDTO();
-        ingredientDTO.setMenu(menu);
         ingredientDTO.setRecipe(recipe);
         ingredientDTO.setProduct(product);
         return ingredientDTO;
@@ -61,7 +60,9 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
         recipeDTO.setImageUrl("http://test.com/recipe-image.jpg");
         recipeDTO.setPreparationTime(LocalTime.of(0, 45)); // 45 minutes
         recipeDTO.setServings(BigDecimal.valueOf(4));
-        recipeDTO.setDifficulty("Medium");
+        recipeDTO.setDifficulty(Difficulty.Easy);
+        recipeDTO.setSource("test-source");
+        recipeDTO.setShared(false);
         return recipeDTO;
     }
 
@@ -73,6 +74,8 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
         productDTO.setWeight(100L);
         productDTO.setWeightUnit(WeightUnit.GRAM);
         productDTO.setCalories(250L);
+        productDTO.setSource("test-source");
+        productDTO.setShared(false);
         return productDTO;
     }
 

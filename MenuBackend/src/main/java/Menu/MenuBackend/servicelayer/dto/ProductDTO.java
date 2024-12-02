@@ -13,5 +13,7 @@ public class ProductDTO {
     private Long weight;
     private WeightUnit weightUnit;
     private Long calories;
+    private String source;
+    private Boolean shared;
 }
 

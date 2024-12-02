@@ -40,4 +40,6 @@ public interface MenuDAO {
     void delete(Menu menu);
 
     List<Menu> getByPeriod(LocalDate startDate, LocalDate endDate, User user);
+
+    Optional<Menu> getByDate(LocalDate date, User user);
 }

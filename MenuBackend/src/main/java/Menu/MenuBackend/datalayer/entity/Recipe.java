@@ -1,5 +1,6 @@
 package Menu.MenuBackend.datalayer.entity;
 
+import Menu.MenuBackend.datalayer.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,9 +34,16 @@ public class Recipe {
     private BigDecimal servings;
 
     @Column(name = "Difficulty")
-    private String difficulty;
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
 
     @OneToMany()
     @JoinColumn(name = "recipe", nullable = false)
     private List<Ingredient> ingredients = new ArrayList<>();
+
+    @Column(name = "Source", nullable = false)
+    private String source;
+
+    @Column(name = "Shared" , nullable = false)
+    private Boolean shared;
 }

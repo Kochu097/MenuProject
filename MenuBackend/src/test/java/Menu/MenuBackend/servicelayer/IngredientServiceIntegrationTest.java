@@ -1,14 +1,17 @@
 package Menu.MenuBackend.servicelayer;
 
 import Menu.MenuBackend.common.exception.IngredientNotFoundException;
+import Menu.MenuBackend.config.FirebaseAuthMockConfig;
 import Menu.MenuBackend.servicelayer.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Import(FirebaseAuthMockConfig.class)
 class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
 
     @Test
@@ -27,7 +30,6 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
         // Assert
         assertNotNull(createdIngredient);
         assertNotNull(createdIngredient.getId());
-        assertEquals(testMenu.getId(), createdIngredient.getMenu().getId());
         assertEquals(testRecipe.getId(), createdIngredient.getRecipe().getId());
         assertEquals(testProduct.getId(), createdIngredient.getProduct().getId());
     }
@@ -70,7 +72,6 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
         // Assert
         assertNotNull(retrievedIngredient);
         assertEquals(ingredientId, retrievedIngredient.getId());
-        assertEquals(testMenu.getId(), retrievedIngredient.getMenu().getId());
         assertEquals(testRecipe.getId(), retrievedIngredient.getRecipe().getId());
         assertEquals(testProduct.getId(), retrievedIngredient.getProduct().getId());
     }
@@ -110,7 +111,6 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
         // Assert
         assertNotNull(updatedIngredient);
         assertEquals(ingredientId, updatedIngredient.getId());
-        assertEquals(testMenu2.getId(), updatedIngredient.getMenu().getId());
         assertEquals(testRecipe2.getId(), updatedIngredient.getRecipe().getId());
         assertEquals(testProduct2.getId(), updatedIngredient.getProduct().getId());
     }
@@ -181,7 +181,5 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
         // Assert
         assertNotNull(menuIngredients);
         assertTrue(menuIngredients.size() >= 2);
-        assertTrue(menuIngredients.stream()
-                .allMatch(ingredient -> ingredient.getMenu().getId().equals(testMenu.getId())));
     }
 }

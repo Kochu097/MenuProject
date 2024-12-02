@@ -1,43 +1,39 @@
-import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useUser } from "@/context/UserContext";
+import { MenuItem } from '@/components/Interfaces/ICommon';
 
 function getAPIConfiguration(token: string) {
     return {
         headers: {
-            Authorization: 'Bearer '+ token,
+            Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json',
         },
         httpsAgent: false,
     }
 }
 
-function useAPI(url: string, params: Record<string, string> = {}) {
-    const [data, setData] = useState([]);
-    const { token } = useUser();
-
-    useEffect(() => {
-        if (token != null) {
-            const queryString = new URLSearchParams(params).toString();
-            const fullUrl = queryString ? `${url}?${queryString}` : url;
-            axios.get(fullUrl, getAPIConfiguration(token))
-                .then(response => {
-                    setData(response.data);
-                }).catch(error => {
-                    console.error('There was an error!', error);
-                });
-        }
-    }, [token, url, ...Object.values(params)]);
-
-    return data;
+export async function fetchRecipes(token: string) {
+    const response = await axios.get('http://localhost:8083/api/getRecipes', getAPIConfiguration(token));
+    return response.data;
 }
 
-export function useTestMenuConnection() {
-    return useAPI('http://localhost:8083/api/test');
+export async function fetchProducts(token: string) {
+    const response = await axios.get('http://localhost:8083/api/getProducts', getAPIConfiguration(token));
+    return response.data;
 }
 
-export function useFetchMenu(startDate: Date, endDate: Date) {
-    const formattedStartDate = startDate.toISOString().split('T')[0];
-    const formattedEndDate = endDate.toISOString().split('T')[0];
-    return useAPI('http://localhost:8083/api/getMenuForPeriod', { startDate: formattedStartDate, endDate: formattedEndDate });
+export async function fetchMenu(token: string, startDate: Date, endDate: Date) {
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const response = await axios.get(`http://localhost:8083/api/getMenuForPeriod?startDate=${formattedStartDate}&endDate=${formattedEndDate}`, getAPIConfiguration(token));
+    return response.data;
+}
+
+export async function addMenuItem(token: string, menuItem: MenuItem, date: Date) {
+    const formattedDate = formatDate(date);
+    await axios.post(`http://localhost:8083/api/addMenuItem?date=${formattedDate}`, menuItem, getAPIConfiguration(token));
+}
+
+function formatDate(date: Date) {
+    return date.toISOString().split('T')[0];
 }

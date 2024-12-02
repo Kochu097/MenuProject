@@ -1,8 +1,11 @@
 package Menu.MenuBackend;
 
 
+import Menu.MenuBackend.common.ApplicationConfig;
 import Menu.MenuBackend.config.FirebaseAuthMockConfig;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -17,6 +20,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@ComponentScan(
+        basePackages = "Menu.MenuBackend",
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ApplicationConfig.class)
+)
 public abstract class BaseIntegrationTest {
 
     @Container

@@ -1,6 +1,7 @@
 package Menu.MenuBackend.datalayer.DAO;
 
 import Menu.MenuBackend.datalayer.entity.Product;
+import Menu.MenuBackend.datalayer.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,8 @@ public interface ProductDAO {
      * @return a list of all Product entities
      */
     List<Product> findAll();
+
+    List<Product> findAllForUser(User user);
 
     /**
      * Retrieves a Product entity by its unique identifier (ID).

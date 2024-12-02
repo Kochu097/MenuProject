@@ -1,5 +1,6 @@
 package Menu.MenuBackend.datalayer.DAO.impl;
 
+import Menu.MenuBackend.datalayer.entity.User;
 import jakarta.persistence.TypedQuery;
 import Menu.MenuBackend.datalayer.DAO.BasicDAO;
 import Menu.MenuBackend.datalayer.DAO.ProductDAO;
@@ -14,6 +15,13 @@ public class ProductDAOImpl extends BasicDAO implements ProductDAO {
     @Override
     public List<Product> findAll() {
         TypedQuery<Product> query = entityManager.createQuery("SELECT p FROM Product p", Product.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Product> findAllForUser(User user) {
+        TypedQuery<Product> query = entityManager.createQuery("SELECT p FROM Product p WHERE p.source = :user OR p.shared", Product.class);
+        query.setParameter("user", user.getId());
         return query.getResultList();
     }
 

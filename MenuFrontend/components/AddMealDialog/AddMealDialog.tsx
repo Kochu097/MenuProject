@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,79 +10,67 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import DatePickerButton from './AddMealDialogCalendarComponent';
 import MealTypesButton from './MealTypesButton';
-import RecipeProductSearchable from './RecipeProductSearchable';
-
-interface Recipe {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string | null;
-  ingredients: { id: string; name: string; amount: string }[];
-  preparationTime: string;
-  servings: number;
-  difficulty: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string;
-  weight: string;
-  calories: number;
-}
+import RecipeProductSearchable from './MenuItemSearchable';
+import { Product, Recipe, MenuItem } from '../Interfaces/ICommon';
+import MealTypesEnum from '../Enums/MealTypesEnum';
+import { addMenuItem, fetchProducts, fetchRecipes } from '@/hooks/useMealAPI';
+import { useUser } from '@/context/UserContext';
+import Menu from 'react-select/dist/declarations/src/components/Menu';
 
 interface AddMealDialogProps {
-  recipes: Recipe[];
-  products: Product[];
   onClose?: () => void;
-  onAddMeal?: (mealData: {
-    type: string;
-    itemId: string;
-    itemType: 'recipe' | 'product';
-    date: Date;
-  }) => void;
+  onAddMenuItem: () => void;
 }
 
 const AddMealDialog: React.FC<AddMealDialogProps> = ({
-  recipes,
-  products,
   onClose,
-  onAddMeal,
+  onAddMenuItem,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedType, setSelectedType] = useState<string>('');
+
+  const [selectedType, setSelectedType] = useState<MealTypesEnum>(MealTypesEnum.BREAKFAST);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItemType, setSelectedItemType] = useState<'recipe' | 'product'>('recipe');
   const [selectedItem, setSelectedItem] = useState<Recipe | Product | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const [recipies, setRecipies] = useState<Recipe[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const { token, isAuthenticated } = useUser();
+
+
+  useEffect(() => {
+    if (isVisible && isAuthenticated && token) {
+      const fetchItems = async () => {
+        const fetchedRecipes = await fetchRecipes(token);
+        const fetchedProducts = await fetchProducts(token);
+        setRecipies(fetchedRecipes);
+        setProducts(fetchedProducts);
+      };
+      fetchItems();
+    }
+  }, [isVisible, isAuthenticated, token]);
+
   const filteredItems = React.useMemo(() => {
-    const items = selectedItemType === 'recipe' ? recipes : products;
+    const items = selectedItemType === 'recipe' ? recipies : products;
     return items.filter(item =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [selectedItemType, searchQuery, recipes, products]);
+  }, [selectedItemType, searchQuery, recipies, products]);
 
   const handleAddMeal = () => {
-    if (selectedType && selectedItem && selectedDate) {
-      // Placeholder API call
-      console.log('Adding meal:', {
-        type: selectedType,
-        itemId: selectedItem.id,
-        itemType: selectedItemType,
-        date: selectedDate,
-      });
-      
-      onAddMeal?.({
-        type: selectedType,
-        itemId: selectedItem.id,
-        itemType: selectedItemType,
-        date: selectedDate,
-      });
-      
+    if (selectedType && selectedItem && selectedDate && token && isAuthenticated) {
+
+      const menuItem: MenuItem = {
+        menuItemType: MealTypesEnum[selectedType as keyof typeof MealTypesEnum],
+        recipe: selectedItemType === 'recipe' ? (selectedItem as Recipe) : undefined,
+        product: selectedItemType === 'product' ? (selectedItem as Product) : undefined
+      };
+
+      addMenuItem(token, menuItem, selectedDate);
+      onAddMenuItem();
       // Reset and close
-      setSelectedType('');
+      setSelectedType(MealTypesEnum.BREAKFAST);
       setSearchQuery('');
       setSelectedItem(null);
       setIsVisible(false);
@@ -136,7 +124,7 @@ const AddMealDialog: React.FC<AddMealDialogProps> = ({
             <RecipeProductSearchable filteredItems={filteredItems} searchQuery={searchQuery}
             setSearchQuery={setSearchQuery} selectedItem={selectedItem} setSelectedItem={setSelectedItem}
             selectedItemType={selectedItemType} setSelectedItemType={setSelectedItemType}
-            setIsVisible={setIsVisible} recipes={recipes} products={products}/>
+            setIsVisible={setIsVisible} recipes={recipies} products={products}/>
 
             {/* Add Button */}
             <TouchableOpacity

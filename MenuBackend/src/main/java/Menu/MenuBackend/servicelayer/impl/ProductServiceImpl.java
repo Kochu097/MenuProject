@@ -6,6 +6,7 @@ import Menu.MenuBackend.datalayer.entity.Product;
 import Menu.MenuBackend.datalayer.entity.User;
 import Menu.MenuBackend.servicelayer.ProductService;
 import Menu.MenuBackend.servicelayer.dto.ProductDTO;
+import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,14 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
         return productDAO.findAll()
+                .stream()
+                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .toList();
+    }
+
+    @Override
+    public List<ProductDTO> getAllProductsForUser(UserDTO user) {
+        return productDAO.findAllForUser(modelMapper.map(user, User.class))
                 .stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
                 .toList();

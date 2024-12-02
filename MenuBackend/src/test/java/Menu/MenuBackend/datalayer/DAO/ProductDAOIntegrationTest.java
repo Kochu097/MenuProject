@@ -22,6 +22,8 @@ class ProductDAOIntegrationTest extends BaseDAOIntegrationTest {
         testProduct.setWeight(100L);
         testProduct.setWeightUnit(WeightUnit.GRAM);
         testProduct.setCalories(50L);
+        testProduct.setSource("test-source");
+        testProduct.setShared(false);
         testProduct = productDAO.save(testProduct);
     }
 
