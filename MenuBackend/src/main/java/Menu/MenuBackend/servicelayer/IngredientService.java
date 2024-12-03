@@ -47,12 +47,4 @@ public interface IngredientService {
      * @throws IngredientNotFoundException if the Ingredient entity is not found
      */
     void deleteIngredient(Integer id) throws IngredientNotFoundException;
-
-    /**
-     * Retrieves all ingredients for a specific menu.
-     *
-     * @param menuId the unique identifier (ID) of the Menu
-     * @return a list of IngredientDTO objects representing all ingredients in the specified menu
-     */
-    List<IngredientDTO> getIngredientsByMenuId(Integer menuId);
 }

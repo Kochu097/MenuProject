@@ -9,8 +9,8 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 
-import static Menu.MenuBackend.config.FirebaseAuthMockConfig.INVALID_TOKEN;
-import static Menu.MenuBackend.config.FirebaseAuthMockConfig.VALID_TOKEN;
+import static Menu.MenuBackend.config.TestApplicationConfig.INVALID_TOKEN;
+import static Menu.MenuBackend.config.TestApplicationConfig.VALID_TOKEN;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

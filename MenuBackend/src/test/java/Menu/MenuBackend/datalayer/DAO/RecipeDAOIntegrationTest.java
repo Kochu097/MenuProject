@@ -22,7 +22,7 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         testRecipe.setDescription("Test Recipe Description");
         testRecipe.setPreparationTime(LocalTime.of(0, 30));
         testRecipe.setServings(BigDecimal.valueOf(4));
-        testRecipe.setDifficulty(Difficulty.Medium);
+        testRecipe.setDifficulty(Difficulty.MEDIUM);
         testRecipe.setSource("test-source");
         testRecipe.setShared(false);
         testRecipe = recipeDAO.save(testRecipe);
@@ -36,7 +36,9 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         newRecipe.setDescription("New Recipe Description");
         newRecipe.setPreparationTime(LocalTime.of(1, 0));
         newRecipe.setServings(BigDecimal.valueOf(2));
-        newRecipe.setDifficulty(Difficulty.Hard);
+        newRecipe.setDifficulty(Difficulty.HARD);
+        newRecipe.setSource("test-source");
+        newRecipe.setShared(false);
 
         Recipe savedRecipe = recipeDAO.save(newRecipe);
 
@@ -48,7 +50,7 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
     @DisplayName("Should successfully update an existing recipe")
     void testUpdatingRecipe() {
         testRecipe.setName("Updated Recipe");
-        testRecipe.setDifficulty(Difficulty.Easy);
+        testRecipe.setDifficulty(Difficulty.EASY);
 
         Recipe updatedRecipe = recipeDAO.save(testRecipe);
 
@@ -62,6 +64,9 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         Recipe secondRecipe = new Recipe();
         secondRecipe.setName("Second Test Recipe");
         secondRecipe.setServings(BigDecimal.valueOf(3));
+        secondRecipe.setShared(false);
+        secondRecipe.setSource("test-source");
+
         recipeDAO.save(secondRecipe);
 
         List<Recipe> recipes = recipeDAO.findAll();
@@ -92,6 +97,8 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         Recipe recipeToDelete = new Recipe();
         recipeToDelete.setName("Recipe to Delete");
         recipeToDelete.setServings(BigDecimal.valueOf(1));
+        recipeToDelete.setShared(false);
+        recipeToDelete.setSource("test-source");
         recipeToDelete = recipeDAO.save(recipeToDelete);
 
         recipeDAO.delete(recipeToDelete);

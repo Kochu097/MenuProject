@@ -1,17 +1,14 @@
 package Menu.MenuBackend.servicelayer;
 
 import Menu.MenuBackend.common.exception.IngredientNotFoundException;
-import Menu.MenuBackend.config.FirebaseAuthMockConfig;
 import Menu.MenuBackend.servicelayer.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Import(FirebaseAuthMockConfig.class)
 class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
 
     @Test
@@ -160,26 +157,5 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
         assertThrows(IngredientNotFoundException.class, () -> {
             ingredientService.deleteIngredient(9999);
         });
-    }
-
-    @Test
-    @DisplayName("Get Ingredients By Menu ID - Successfully retrieves ingredients for a specific menu")
-    void testGetIngredientsByMenuId_Success() {
-        // Arrange
-        MenuDTO testMenu = menuService.createMenu(createTestMenuDTO(TODAY));
-        RecipeDTO testRecipe = recipeService.createRecipe(createTestRecipeDTO("Test Recipe"));
-        ProductDTO testProduct1 = productService.createProduct(createTestProductDTO("Test Product 1"));
-        ProductDTO testProduct2 = productService.createProduct(createTestProductDTO("Test Product 2"));
-
-        // Create ingredients for the same menu
-        ingredientService.createIngredient(createTestIngredientDTO(testMenu, testRecipe, testProduct1));
-        ingredientService.createIngredient(createTestIngredientDTO(testMenu, testRecipe, testProduct2));
-
-        // Act
-        List<IngredientDTO> menuIngredients = ingredientService.getIngredientsByMenuId(testMenu.getId());
-
-        // Assert
-        assertNotNull(menuIngredients);
-        assertTrue(menuIngredients.size() >= 2);
     }
 }

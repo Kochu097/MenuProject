@@ -19,7 +19,7 @@ public abstract class BaseDAOIntegrationTest extends BaseIntegrationTest {
     protected UserDAOImpl userDAO;
 
     @Autowired
-    protected IngredientDAOImpl menuItemDAO;
+    protected IngredientDAOImpl ingredientDAO;
 
     @Autowired
     protected RecipeDAOImpl recipeDAO;

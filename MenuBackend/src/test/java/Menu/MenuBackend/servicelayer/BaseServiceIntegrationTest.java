@@ -60,7 +60,7 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
         recipeDTO.setImageUrl("http://test.com/recipe-image.jpg");
         recipeDTO.setPreparationTime(LocalTime.of(0, 45)); // 45 minutes
         recipeDTO.setServings(BigDecimal.valueOf(4));
-        recipeDTO.setDifficulty(Difficulty.Easy);
+        recipeDTO.setDifficulty(Difficulty.EASY);
         recipeDTO.setSource("test-source");
         recipeDTO.setShared(false);
         return recipeDTO;

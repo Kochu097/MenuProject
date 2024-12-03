@@ -1,29 +1,27 @@
 package Menu.MenuBackend;
 
 
-import Menu.MenuBackend.common.ApplicationConfig;
-import Menu.MenuBackend.config.FirebaseAuthMockConfig;
+import Menu.MenuBackend.config.TestApplicationConfig;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+//@RunWith(SpringRunner.class)
 @SpringBootTest
-@Import(FirebaseAuthMockConfig.class)
 @Testcontainers
 @Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@ComponentScan(
-        basePackages = "Menu.MenuBackend",
-        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ApplicationConfig.class)
-)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@ActiveProfiles("test")
+@Import(TestApplicationConfig.class)
 public abstract class BaseIntegrationTest {
 
     @Container
@@ -31,7 +29,7 @@ public abstract class BaseIntegrationTest {
             .withDatabaseName("menu_database")
             .withUsername("root")
             .withPassword("zaq1@WSX")
-            .withReuse(true);
+            .withReuse(false);
 
     @DynamicPropertySource
     static void registerMySQLProperties(DynamicPropertyRegistry registry) {

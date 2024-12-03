@@ -83,7 +83,7 @@ class RecipeServiceIntegrationTest extends BaseServiceIntegrationTest {
         updateDTO.setDescription("Updated recipe description");
         updateDTO.setPreparationTime(LocalTime.of(1, 30)); // 1 hour 30 minutes
         updateDTO.setServings(BigDecimal.valueOf(6));
-        updateDTO.setDifficulty(Difficulty.Hard);
+        updateDTO.setDifficulty(Difficulty.HARD);
 
         // Act
         RecipeDTO updatedRecipe = recipeService.updateRecipe(recipeId, updateDTO);
@@ -94,7 +94,7 @@ class RecipeServiceIntegrationTest extends BaseServiceIntegrationTest {
         assertEquals("Updated recipe description", updatedRecipe.getDescription());
         assertEquals(LocalTime.of(1, 30), updatedRecipe.getPreparationTime());
         assertEquals(BigDecimal.valueOf(6), updatedRecipe.getServings());
-        assertEquals(Difficulty.Hard, updatedRecipe.getDifficulty());
+        assertEquals(Difficulty.HARD, updatedRecipe.getDifficulty());
     }
 
     @Test
