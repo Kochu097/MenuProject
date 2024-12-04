@@ -13,25 +13,34 @@ function getAPIConfiguration(token: string) {
 }
 
 export async function fetchRecipes(token: string) {
-    const response = await axios.get('http://localhost:8083/api/getRecipes', getAPIConfiguration(token));
-    return response.data;
+    const response = await axios.get('http://localhost:8083/api/getRecipes', getAPIConfiguration(token)).catch((error) => {
+        console.log('error fetching recipes', error);
+    });
+    return response?.data;
 }
 
 export async function fetchProducts(token: string) {
-    const response = await axios.get('http://localhost:8083/api/getProducts', getAPIConfiguration(token));
-    return response.data;
+    const response = await axios.get('http://localhost:8083/api/getProducts', getAPIConfiguration(token)).catch((error) => {
+        console.log('error fetching products', error);
+    });
+    return response?.data;
 }
 
 export async function fetchMenu(token: string, startDate: Date, endDate: Date) {
     const formattedStartDate = formatDate(startDate);
     const formattedEndDate = formatDate(endDate);
-    const response = await axios.get(`http://localhost:8083/api/getMenuForPeriod?startDate=${formattedStartDate}&endDate=${formattedEndDate}`, getAPIConfiguration(token));
-    return response.data;
+    const response = await axios.get(`http://localhost:8083/api/getMenuForPeriod?startDate=${formattedStartDate}&endDate=${formattedEndDate}`, getAPIConfiguration(token))
+    .catch((error) => {
+        console.log('error fetching menu', error);
+    });
+    return response?.data;
 }
 
 export async function addMenuItem(token: string, menuItem: MenuItem, date: Date) {
     const formattedDate = formatDate(date);
-    await axios.post(`http://localhost:8083/api/addMenuItem?date=${formattedDate}`, menuItem, getAPIConfiguration(token));
+    await axios.post(`http://localhost:8083/api/addMenuItem?date=${formattedDate}`, menuItem, getAPIConfiguration(token)).catch((error) => {
+        console.log('error adding menu item', error);
+    });
 }
 
 function formatDate(date: Date) {

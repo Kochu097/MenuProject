@@ -8,6 +8,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 // Create provider component
 export const UserProvider = ({ children }: { children: ReactNode }) => {
+
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -17,12 +18,29 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const provider = new GoogleAuthProvider();
   provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      setIsAuthenticated(true);
+      auth.currentUser?.getIdToken(false).then(function(tokenId) {
+        setToken(tokenId);
+      })
+      setUserInfo({
+        displayName: user.displayName != null ? user.displayName : '',
+        email: user.email != null ? user.email : '',
+        photoURL: user.photoURL != null ? user.photoURL : '',
+      })
+    } else {
+      setIsAuthenticated(false);
+      setToken(null);
+      setUserInfo(null);
+    }
+  });
+
   const login = (source: string) => {
     if(source == 'google') {
       signInWithPopup(auth, provider)
       .then((result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential?.accessToken;
           const user = result.user;
           auth.currentUser?.getIdToken(true).then(function(tokenId) {
             setToken(tokenId);

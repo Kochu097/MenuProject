@@ -15,8 +15,13 @@ const MealPlanFrame: React.FC = () => {
   const [showFullWeek, setShowFullWeek] = useState(false);
   const [menu, setMenu] = useState<Menu[]>([]);
 
+  // useEffect(() => {
+  //   refreshPage();
+  // }, [isAuthenticated, token, showFullWeek]);
   useEffect(() => {
-    refreshPage();
+    if (isAuthenticated) {
+      refreshPage();
+    }
   }, [isAuthenticated, token, showFullWeek]);
 
   const refreshPage = () => {
@@ -25,7 +30,10 @@ const MealPlanFrame: React.FC = () => {
       const endDate = new Date();
       endDate.setDate(startDate.getDate() + (showFullWeek ? 6 : 0));
       fetchMenu(token, startDate, endDate).then((fetchedMenu) => {
+        console.log('fetched menu', fetchedMenu);
         setMenu(fetchedMenu as Menu[]);
+      }).catch((error) => {
+        console.log('error fetching menu', error);
       });
     }
   }
@@ -43,7 +51,7 @@ const MealPlanFrame: React.FC = () => {
   }, [showFullWeek]);
   
   const getMenuItems = (date: Date) => {
-    const menuItems = menu.filter((menuItem) => {return menuItem.day.getFullYear === date.getFullYear && menuItem.day.getMonth === date.getMonth && menuItem.day.getDate === date.getDate})[0]?.menuItems || [];
+    const menuItems = menu.filter((singleMenu) => {return singleMenu.day.toString === date.toISOString().split("T")[0].toString })[0]?.menuItems || [];
     return menuItems;
   };
 
