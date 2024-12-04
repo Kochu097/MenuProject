@@ -184,8 +184,6 @@ const MealCard: React.FC<MealCardProps> = ({
 
         <View style={styles.mealsList}>
           {Object.values(MealTypesEnum).map((mealType, index) => { 
-            // console.log(mealType);
-            // console.log(menuItems);
             const menuItem = menuItems.find(m => m.menuItemType === mealType);
             
             return (
