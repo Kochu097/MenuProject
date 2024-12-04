@@ -1,6 +1,7 @@
 package Menu.MenuBackend.servicelayer;
 
 import Menu.MenuBackend.BaseIntegrationTest;
+import Menu.MenuBackend.datalayer.enums.AmountUnit;
 import Menu.MenuBackend.datalayer.enums.Difficulty;
 import Menu.MenuBackend.datalayer.enums.WeightUnit;
 import Menu.MenuBackend.servicelayer.dto.*;
@@ -46,10 +47,12 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
         }
     }
 
-    protected IngredientDTO createTestIngredientDTO(MenuDTO menu, RecipeDTO recipe, ProductDTO product) {
+    protected IngredientDTO createTestIngredientDTO(RecipeDTO recipe, ProductDTO product) {
         IngredientDTO ingredientDTO = new IngredientDTO();
         ingredientDTO.setRecipe(recipe);
         ingredientDTO.setProduct(product);
+        ingredientDTO.setAmount(100L);
+        ingredientDTO.setAmountUnit(AmountUnit.GRAMS);
         return ingredientDTO;
     }
 
@@ -87,10 +90,6 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
 
     protected MenuDTO createTestMenuDTO() {
         return createTestMenuDTO(TODAY, testUser);
-    }
-
-    protected MenuDTO createTestMenuDTO(LocalDate date) {
-        return createTestMenuDTO(date, testUser);
     }
 
     protected MenuDTO createTestMenuDTO(UserDTO user) {

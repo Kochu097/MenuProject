@@ -2,24 +2,21 @@ package Menu.MenuBackend;
 
 
 import Menu.MenuBackend.config.TestApplicationConfig;
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-//@RunWith(SpringRunner.class)
 @SpringBootTest
 @Testcontainers
 @Transactional
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @ActiveProfiles("test")
 @Import(TestApplicationConfig.class)
 public abstract class BaseIntegrationTest {
@@ -29,7 +26,7 @@ public abstract class BaseIntegrationTest {
             .withDatabaseName("menu_database")
             .withUsername("root")
             .withPassword("zaq1@WSX")
-            .withReuse(false);
+            .withReuse(true);
 
     @DynamicPropertySource
     static void registerMySQLProperties(DynamicPropertyRegistry registry) {

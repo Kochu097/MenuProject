@@ -30,7 +30,7 @@ class RecipeServiceIntegrationTest extends BaseServiceIntegrationTest {
         assertEquals("http://test.com/recipe-image.jpg", createdRecipe.getImageUrl());
         assertEquals(LocalTime.of(0, 45), createdRecipe.getPreparationTime());
         assertEquals(BigDecimal.valueOf(4), createdRecipe.getServings());
-        assertEquals("Medium", createdRecipe.getDifficulty());
+        assertEquals(Difficulty.EASY, createdRecipe.getDifficulty());
     }
 
     @Test

@@ -24,14 +24,6 @@ public abstract class BaseDAOIntegrationTest extends BaseIntegrationTest {
     @Autowired
     protected RecipeDAOImpl recipeDAO;
 
-    @BeforeAll
-    public static void beforeAll() {
-    }
-
-    @AfterAll
-    public static void afterAll() {
-    }
-
     @BeforeEach
     public void beforeEach() {
         beforeEachTest();
@@ -39,10 +31,10 @@ public abstract class BaseDAOIntegrationTest extends BaseIntegrationTest {
 
     @AfterEach
     public void afterEach() {
+        afterEachTest();
         if (TestTransaction.isActive()) {
             TestTransaction.flagForRollback();
         }
-        afterEachTest();
     }
 
     public void beforeEachTest() {

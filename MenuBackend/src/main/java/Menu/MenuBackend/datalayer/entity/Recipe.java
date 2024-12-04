@@ -37,8 +37,7 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @OneToMany()
-    @JoinColumn(name = "recipe", nullable = false)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @Column(name = "Source", nullable = false)

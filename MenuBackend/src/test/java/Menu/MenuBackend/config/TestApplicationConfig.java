@@ -35,9 +35,9 @@ public class TestApplicationConfig {
                 .setCredentials(mockGoogleCredentials)
                 .build();
 
-        if(FirebaseApp.getApps().isEmpty())
-        FirebaseApp.initializeApp(options);
-
+        if(FirebaseApp.getApps().isEmpty()) {
+            FirebaseApp.initializeApp(options);
+        }
         // Stub the verifyIdToken method
         Mockito.lenient().when(mockFirebaseAuth.verifyIdToken(Mockito.anyString()))
                 .thenAnswer(invocation -> {

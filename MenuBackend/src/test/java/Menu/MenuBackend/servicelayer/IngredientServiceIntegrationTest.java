@@ -15,11 +15,10 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
     @DisplayName("Create Ingredient - Successfully creates a new ingredient with all details")
     void testCreateIngredient_Success() {
         // Arrange
-        MenuDTO testMenu = menuService.createMenu(createTestMenuDTO(TODAY));
         RecipeDTO testRecipe = recipeService.createRecipe(createTestRecipeDTO("Test Recipe"));
         ProductDTO testProduct = productService.createProduct(createTestProductDTO("Test Product"));
 
-        IngredientDTO ingredientDTO = createTestIngredientDTO(testMenu, testRecipe, testProduct);
+        IngredientDTO ingredientDTO = createTestIngredientDTO(testRecipe, testProduct);
 
         // Act
         IngredientDTO createdIngredient = ingredientService.createIngredient(ingredientDTO);
@@ -35,13 +34,12 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
     @DisplayName("Get All Ingredients - Retrieves all created ingredients")
     void testGetAllIngredients() {
         // Arrange
-        MenuDTO testMenu = menuService.createMenu(createTestMenuDTO(TODAY));
         RecipeDTO testRecipe = recipeService.createRecipe(createTestRecipeDTO("Test Recipe"));
         ProductDTO testProduct1 = productService.createProduct(createTestProductDTO("Test Product 1"));
         ProductDTO testProduct2 = productService.createProduct(createTestProductDTO("Test Product 2"));
 
-        ingredientService.createIngredient(createTestIngredientDTO(testMenu, testRecipe, testProduct1));
-        ingredientService.createIngredient(createTestIngredientDTO(testMenu, testRecipe, testProduct2));
+        ingredientService.createIngredient(createTestIngredientDTO(testRecipe, testProduct1));
+        ingredientService.createIngredient(createTestIngredientDTO(testRecipe, testProduct2));
 
         // Act
         List<IngredientDTO> ingredients = ingredientService.getAllIngredients();
@@ -54,12 +52,11 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
     @DisplayName("Get Ingredient By ID - Successfully retrieves an ingredient by its ID")
     void testGetIngredientById_Success() {
         // Arrange
-        MenuDTO testMenu = menuService.createMenu(createTestMenuDTO(TODAY));
         RecipeDTO testRecipe = recipeService.createRecipe(createTestRecipeDTO("Test Recipe"));
         ProductDTO testProduct = productService.createProduct(createTestProductDTO("Test Product"));
 
         IngredientDTO createdIngredient = ingredientService.createIngredient(
-                createTestIngredientDTO(testMenu, testRecipe, testProduct)
+                createTestIngredientDTO(testRecipe, testProduct)
         );
         Integer ingredientId = createdIngredient.getId();
 
@@ -86,21 +83,19 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
     @DisplayName("Update Ingredient - Successfully updates ingredient details")
     void testUpdateIngredient_Success() {
         // Arrange
-        MenuDTO testMenu1 = menuService.createMenu(createTestMenuDTO(TODAY));
         RecipeDTO testRecipe1 = recipeService.createRecipe(createTestRecipeDTO("Original Recipe"));
         ProductDTO testProduct1 = productService.createProduct(createTestProductDTO("Original Product"));
 
         IngredientDTO createdIngredient = ingredientService.createIngredient(
-                createTestIngredientDTO(testMenu1, testRecipe1, testProduct1)
+                createTestIngredientDTO(testRecipe1, testProduct1)
         );
         Integer ingredientId = createdIngredient.getId();
 
         // Prepare update details
-        MenuDTO testMenu2 = menuService.createMenu(createTestMenuDTO(TODAY.plusDays(1)));
         RecipeDTO testRecipe2 = recipeService.createRecipe(createTestRecipeDTO("Updated Recipe"));
         ProductDTO testProduct2 = productService.createProduct(createTestProductDTO("Updated Product"));
 
-        IngredientDTO updateDTO = createTestIngredientDTO(testMenu2, testRecipe2, testProduct2);
+        IngredientDTO updateDTO = createTestIngredientDTO(testRecipe2, testProduct2);
 
         // Act
         IngredientDTO updatedIngredient = ingredientService.updateIngredient(ingredientId, updateDTO);
@@ -116,11 +111,10 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
     @DisplayName("Update Ingredient - Throws exception when ingredient ID does not exist")
     void testUpdateIngredient_NotFound_ThrowsException() {
         // Arrange
-        MenuDTO testMenu = menuService.createMenu(createTestMenuDTO(TODAY));
         RecipeDTO testRecipe = recipeService.createRecipe(createTestRecipeDTO("Test Recipe"));
         ProductDTO testProduct = productService.createProduct(createTestProductDTO("Test Product"));
 
-        IngredientDTO updateDTO = createTestIngredientDTO(testMenu, testRecipe, testProduct);
+        IngredientDTO updateDTO = createTestIngredientDTO(testRecipe, testProduct);
 
         // Act & Assert
         assertThrows(IngredientNotFoundException.class, () -> {
@@ -132,12 +126,11 @@ class IngredientServiceIntegrationTest extends BaseServiceIntegrationTest {
     @DisplayName("Delete Ingredient - Successfully deletes an existing ingredient")
     void testDeleteIngredient_Success() {
         // Arrange
-        MenuDTO testMenu = menuService.createMenu(createTestMenuDTO(TODAY));
         RecipeDTO testRecipe = recipeService.createRecipe(createTestRecipeDTO("Test Recipe"));
         ProductDTO testProduct = productService.createProduct(createTestProductDTO("Test Product"));
 
         IngredientDTO createdIngredient = ingredientService.createIngredient(
-                createTestIngredientDTO(testMenu, testRecipe, testProduct)
+                createTestIngredientDTO(testRecipe, testProduct)
         );
         Integer ingredientId = createdIngredient.getId();
 
