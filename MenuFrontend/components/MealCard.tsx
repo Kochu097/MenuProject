@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { 
   StyleSheet, 
   View, 
@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AddMealDialog from './AddMealDialog/AddMealDialog';
-import { MenuItem } from './Interfaces/ICommon';
+import { Menu, MenuItem } from './Interfaces/ICommon';
 import MealTypesEnum from './Enums/MealTypesEnum';
 
 interface MealCardProps {
   date: Date;
-  menuItems: MenuItem[];
+  menu: Menu;
   mealTypes: string[];
   onAddMenuItem: () => void;
   index: number;
@@ -22,9 +22,8 @@ interface MealCardProps {
   showFullWeek: boolean;
 }
 
-const PAPER_PATTERNS = [
-    '../assets/paper-pattern.png'
-];
+console.log('rendering MealCard');
+
 
 const PIN_COLORS = [
   ['#FF4B4B', '#CC3333'],
@@ -41,7 +40,7 @@ const PAPER_COLORS = [
 
 const MealCard: React.FC<MealCardProps> = ({ 
   date, 
-  menuItems, 
+  menu, 
   mealTypes,
   onAddMenuItem: onAddMenuItem, 
   index,
@@ -55,84 +54,19 @@ const MealCard: React.FC<MealCardProps> = ({
 
   // Get random variations based on index
   
-  const patternIndex = index % PAPER_PATTERNS.length;
   const paperColorIndex = index % PAPER_COLORS.length;
   const pinColorIndex = index % PIN_COLORS.length;
   const [pinMainColor, pinShadowColor] = PIN_COLORS[pinColorIndex];
 
   const baseRotation = ((index % 3) - 1) * 2;
 
-  // Floating animation
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(floatAnim, {
-          toValue: 1,
-          duration: 2000 + (index % 3) * 500,
-          useNativeDriver: false,
-        }),
-        Animated.timing(floatAnim, {
-          toValue: 0,
-          duration: 2000 + (index % 3) * 500,
-          useNativeDriver: false,
-        }),
-      ])
-    ).start();
-  }, []);
-
-  const handlePressIn = () => {
-    Animated.parallel([
-      Animated.spring(scaleAnim, {
-        toValue: 0.95,
-        useNativeDriver: false,
-      }),
-      Animated.spring(rotateAnim, {
-        toValue: 1,
-        useNativeDriver: false,
-      }),
-    ]).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.parallel([
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        useNativeDriver: false,
-      }),
-      Animated.spring(rotateAnim, {
-        toValue: 0,
-        useNativeDriver: false,
-      }),
-    ]).start();
-  };
-
-  const cardStyle = {
-    transform: [
-      { scale: scaleAnim },
-      {
-        rotate: rotateAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [`${baseRotation}deg`, `${baseRotation + 2}deg`],
-        }),
-      },
-      {
-        translateY: floatAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, -3],
-        }),
-      },
-    ],
-  };
-
   // Calculate dimensions based on whether it's today's card in single view
   const cardWidth = showFullWeek ? '45%' : '80%';
-  const cardScale = showFullWeek ? 1 : 1.2;
 
   return (
-    <Animated.View style={[
+    <View style={[
       styles.cardContainer,
       { width: cardWidth },
-      cardStyle,
     ]}
     key={index}>
       {/* Enhanced pin with 3D effect */}
@@ -147,8 +81,6 @@ const MealCard: React.FC<MealCardProps> = ({
       </View>
 
       <Pressable
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
         style={[
           styles.card,
           { backgroundColor: PAPER_COLORS[paperColorIndex] },
@@ -157,7 +89,6 @@ const MealCard: React.FC<MealCardProps> = ({
       >
         {/* Enhanced paper texture */}
         <ImageBackground
-          source={{ uri: PAPER_PATTERNS[patternIndex] }}
           style={styles.paperTexture}
         />
         
@@ -184,13 +115,15 @@ const MealCard: React.FC<MealCardProps> = ({
 
         <View style={styles.mealsList}>
           {Object.values(MealTypesEnum).map((mealType, index) => { 
-            const menuItem = menuItems.find(m => m.menuItemType === mealType);
+            const menuItems = menu.menuItems.filter(m => m.menuItemType === mealType);
             
             return (
               <View key={index} style={styles.mealItem}>
                 <Text style={styles.mealType}>{mealType}</Text>
                   <View style={styles.mealNameContainer}>
-                    <Text style={styles.mealName}>{menuItem ? (menuItem.product ? menuItem.product.name : menuItem.recipe?.name) : ''}</Text>
+                    {menuItems.map((menuItem, index) => (
+                    <Text key={index} style={styles.mealName}>{menuItem ? (menuItem.product ? menuItem.product.name : menuItem.recipe?.name) : ''}</Text>
+                    ))}
                     <View style={[
                       styles.underline,
                       { transform: [{ rotate: `${(index % 2) * 0.5}deg` }] }
@@ -198,7 +131,8 @@ const MealCard: React.FC<MealCardProps> = ({
                   </View>
                 
                   <AddMealDialog 
-                  onAddMenuItem={onAddMenuItem}/>
+                  onAddMenuItem={onAddMenuItem}
+                  date={date}/>
               </View>
             );
           })}
@@ -215,7 +149,7 @@ const MealCard: React.FC<MealCardProps> = ({
           { transform: [{ rotate: `${(index % 2) * 5}deg` }] }
         ]} />
       </Pressable>
-    </Animated.View>
+    </View>
   );
 };
 
@@ -233,10 +167,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)',
   },
   pinReflection: {
     position: 'absolute',
@@ -264,16 +195,12 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: -10,
     elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
     overflow: 'hidden',
   },
   todayCard: {
     elevation: 8,
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
+    boxShadow: '2px 2px 6px rgba(0, 0, 0, 0.4)',
     borderColor: '#8B4513',
     borderWidth: 1,
   },
@@ -311,9 +238,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#8B4513',
-    textShadowColor: 'rgba(0, 0, 0, 0.1)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
   },
   date: {
     fontSize: 14,

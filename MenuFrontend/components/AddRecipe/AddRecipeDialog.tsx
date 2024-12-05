@@ -14,8 +14,7 @@ import IngredientAmountDropdown from './IngredientAmountDropdown';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from "expo-linear-gradient";
 import Select from 'react-select';
-import Recipe from '../Interfaces/IRecipe';
-import Product from '../Interfaces/ICommon';
+import { Product, Recipe } from '../Interfaces/ICommon';
 import Difficulty from '../Enums/DifficultyEnum';
 
 interface Option {
@@ -49,7 +48,7 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
   const [selectedProducts, setSelectedProducts] = useState<{product: Product, amount: string, unit: string}[]>([]);
   const [preparationTime, setPreparationTime] = useState('');
   const [newRecipeServings, setNewRecipeServings] = useState('');
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showTimeSelect, setShowTimeSelect] = useState(false);
   const [selectedDifficultyOption, setSelectedDifficultyOption] = useState<Option>(difficultOptions[0]);
@@ -87,7 +86,7 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
     setSelectedProducts([]);
     setPreparationTime('');
     setNewRecipeServings('');
-    setSelectedImage(null);
+    setSelectedImage(undefined);
     setSelectedDifficultyOption(difficultOptions[0]);
   };
 
@@ -365,228 +364,222 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
 };
 
 const styles = StyleSheet.create({
-    addButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-      padding: 8,
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    padding: 8,
+  },
+  addButtonText: {
+    fontSize: 12,
+    color: '#8B4513',
+    fontStyle: 'italic',
+  },
+  modal: {
+    margin: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dialogContainer: {
+    width: '90%',
+    maxWidth: 800,
+    maxHeight:'100%',
+    backgroundColor: '#FFF9E5',
+    borderRadius: 12,
+    overflow: 'scroll',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+    paddingVertical: 24,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingHorizontal: 24,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#6B4423',
+  },
+  closeButton: {
+    padding: 4,
+  },
+  bookLayout: {
+    flexDirection: 'row',
+    height: '90%',
+    gap: 24,
+  },
+  leftPage: {
+    flex: 1,
+    backgroundColor: '#FFF9E5',
+    padding: 24,
+  },
+  rightPage: {
+    flex: 1,
+    backgroundColor: '#FFF9E5',
+    padding: 24,
+  },
+  selectedIngredientsContent: {
+    flex: 1,
+    gap: 16,
+  },
+  input: {
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    color: '#8B4513',
+    borderWidth: 1,
+    borderColor: '#D4B483',
+  },
+  recipeNameInput: {
+    marginBottom: 16,
+  },
+  descriptionInput: {
+    marginBottom: 16,
+    flex: 1,
+  },
+  detailsInput: {
+    marginBottom: 12,
+  },
+  imageInput: {
+    marginTop: 12,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#6B4423',
+    marginBottom: 8,
+  },
+  ingredientsContainer: {
+    gap: 16,
+  },
+  ingredientsList: {
+    flexDirection: 'row',
+    gap: 16,
+    paddingVertical: 8,
+  },
+  ingredientItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  ingredientImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+  },
+  ingredientName: {
+    fontSize: 14,
+    color: '#8B4513',
+    textAlign: 'center',
+  },
+  selectedIngredients: {
+    gap: 12,
+  },
+  ingredientRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  ingredientInfo: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  ingredientAmount: {
+    backgroundColor: '#F4F4F4',
+    borderRadius: 4,
+    padding: 8,
+    fontSize: 14,
+    color: '#8B4513',
+    width: 100,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  imagePickerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    padding: 12,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#D4B483',
+  },
+  imagePickerButtonText: {
+    fontSize: 14,
+    color: '#8B4513',
+  },
+  imagePlaceholder: {
+    width: '100%',
+    height: 200,
+    backgroundColor: '#F4F4F4',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+  },
+  imagePlaceholderText: {
+    fontSize: 16,
+    color: '#A67B5B',
+    textAlign: 'center',
+  },
+  selectedImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+  },
+  recipeDetails: {
+    gap: 12
+  },
+  addRecipeButton: {
+    backgroundColor: '#8B4513',
+    borderRadius: 8,
+    padding: 16,
+    alignItems: 'center',
+  },
+  addRecipeButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFF',
+  },
+  addIngredientButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     },
-    addButtonText: {
-      fontSize: 12,
-      color: '#8B4513',
-      fontStyle: 'italic',
-    },
-    modal: {
-      margin: 0,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    dialogContainer: {
-      width: '90%',
-      maxWidth: 800,
-      maxHeight:'100%',
-      backgroundColor: '#FFF9E5',
-      borderRadius: 12,
-      overflow: 'scroll',
-      elevation: 8,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      paddingVertical: 24,
-    },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 16,
-      paddingHorizontal: 24,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: '#6B4423',
-    },
-    closeButton: {
-      padding: 4,
-    },
-    bookLayout: {
-      flexDirection: 'row',
-      height: '90%',
-      gap: 24,
-    },
-    leftPage: {
-      flex: 1,
-      backgroundColor: '#FFF9E5',
-      padding: 24,
-    },
-    rightPage: {
-      flex: 1,
-      backgroundColor: '#FFF9E5',
-      padding: 24,
-    },
-    selectedIngredientsContent: {
-        flex: 1,
-        gap: 16,
-    },
-    input: {
-      backgroundColor: '#FFF',
-      borderRadius: 8,
-      padding: 12,
-      fontSize: 16,
-      color: '#8B4513',
-      borderWidth: 1,
-      borderColor: '#D4B483',
-    },
-    recipeNameInput: {
-      marginBottom: 16,
-    },
-    descriptionInput: {
-      marginBottom: 16,
-      flex: 1,
-    },
-    detailsInput: {
-      marginBottom: 12,
-    },
-    imageInput: {
-      marginTop: 12,
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: '#6B4423',
-      marginBottom: 8,
-    },
-    ingredientsContainer: {
-      gap: 16,
-    },
-    ingredientsList: {
-      flexDirection: 'row',
-      gap: 16,
-      paddingVertical: 8,
-    },
-    ingredientItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-    },
-    ingredientImage: {
-      width: 80,
-      height: 80,
-      borderRadius: 8,
-    },
-    ingredientName: {
-      fontSize: 14,
-      color: '#8B4513',
-      textAlign: 'center',
-    },
-    selectedIngredients: {
-      gap: 12,
-    },
-    ingredientRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 12,
-    },
-    ingredientInfo: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 12,
-    },
-    ingredientAmount: {
-      backgroundColor: '#F4F4F4',
-      borderRadius: 4,
-      padding: 8,
-      fontSize: 14,
-      color: '#8B4513',
-      width: 100,
-    },
-    imageContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 12,
-    },
-    imagePickerButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-      padding: 12,
-      backgroundColor: '#FFF',
-      borderRadius: 8,
-      borderWidth: 1,
-      borderColor: '#D4B483',
-    },
-    imagePickerButtonText: {
-      fontSize: 14,
-      color: '#8B4513',
-    },
-    imagePlaceholder: {
-      width: '100%',
-      height: 200,
-      backgroundColor: '#F4F4F4',
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 8,
-    },
-    imagePlaceholderText: {
-      fontSize: 16,
-      color: '#A67B5B',
-      textAlign: 'center',
-    },
-    selectedImage: {
-      width: '100%',
-      height: 200,
-      borderRadius: 8,
-    },
-    recipeDetails: {
-      gap: 12
-    },
-    addRecipeButton: {
-      backgroundColor: '#8B4513',
-      borderRadius: 8,
-      padding: 16,
-      alignItems: 'center',
-    },
-    addRecipeButtonText: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: '#FFF',
-    },
-    addIngredientButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-      },
-    addIngredientButtonText: {
-      fontSize: 14,
-      color: '#8B4513',
-    },
-    ingredientsModalContainer: {
-      backgroundColor: '#FFF9E5',
-      borderRadius: 12,
-      overflow: 'hidden',
-      elevation: 8,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      width: '90%',
-      maxWidth: 600,
-    },
-    ingredientsModalHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: '#8B4513',
-      padding: 16,
-    },
-    ingredientsModalTitle: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: '#FFF',
-    },
-    ingredientsModalContent: {
-      padding: 16,
-    },
+  addIngredientButtonText: {
+    fontSize: 14,
+    color: '#8B4513',
+  },
+  ingredientsModalContainer: {
+    backgroundColor: '#FFF9E5',
+    borderRadius: 12,
+    overflow: 'hidden',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+    width: '90%',
+    maxWidth: 600,
+  },
+  ingredientsModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#8B4513',
+    padding: 16,
+  },
+  ingredientsModalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFF',
+  },
+  ingredientsModalContent: {
+    padding: 16,
+  },
   });
 
 export default AddRecipeDialog;

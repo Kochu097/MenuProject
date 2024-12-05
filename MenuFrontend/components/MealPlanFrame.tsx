@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, ScrollView, TouchableOpacity, View, Text } from "react-native";
 import MealCard from "./MealCard";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useUser } from "@/context/UserContext";
 import React from "react";
@@ -15,25 +15,27 @@ const MealPlanFrame: React.FC = () => {
   const [showFullWeek, setShowFullWeek] = useState(false);
   const [menu, setMenu] = useState<Menu[]>([]);
 
-  // useEffect(() => {
-  //   refreshPage();
-  // }, [isAuthenticated, token, showFullWeek]);
   useEffect(() => {
     if (isAuthenticated) {
       refreshPage();
     }
   }, [isAuthenticated, token, showFullWeek]);
+  
 
   const refreshPage = () => {
     if(isAuthenticated && token) {
-      const startDate = new Date();
+      const today = new Date();
+      const startDate = showFullWeek ? new Date(today.setDate(today.getDate() - today.getDay()+1)) : today;
       const endDate = new Date();
       endDate.setDate(startDate.getDate() + (showFullWeek ? 6 : 0));
       fetchMenu(token, startDate, endDate).then((fetchedMenu) => {
-        console.log('fetched menu', fetchedMenu);
-        setMenu(fetchedMenu as Menu[]);
+        if(fetchedMenu){
+          setMenu(fetchedMenu as Menu[]);
+        }
+        
       }).catch((error) => {
         console.log('error fetching menu', error);
+        setMenu([]);
       });
     }
   }
@@ -41,26 +43,25 @@ const MealPlanFrame: React.FC = () => {
   const getDates = useCallback(() => {
     const dates = [];
     const today = new Date();
+    const currentDay = showFullWeek ? new Date(today.setDate(today.getDate() - today.getDay()+1)) : today;
     
     for (let i = 0; i < (showFullWeek ? 7 : 1); i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
+      const date = new Date(currentDay);
+      date.setDate(currentDay.getDate() + i);
       dates.push(date);
     }
     return dates;
   }, [showFullWeek]);
   
   const getMenuItems = (date: Date) => {
-    const menuItems = menu.filter((singleMenu) => {return singleMenu.day.toString === date.toISOString().split("T")[0].toString })[0]?.menuItems || [];
+    if(menu.length > 0) {
+    const menuItems = menu.filter((singleMenu) => {return singleMenu.day.toString() === date.toISOString().split("T")[0].toString() })[0]?.menuItems || [];
     return menuItems;
+    }
+    return [];
   };
 
   const getMealsTypes = Object.values(MealTypesEnum)
-
-  const handleAddMeal = (menuItem: MenuItem, date: Date) => {
-    
-    console.log(`Adding meal for ${date.toDateString()}, ${menuItem}`);
-  };
     
   return (
       <> 
@@ -99,7 +100,7 @@ const MealPlanFrame: React.FC = () => {
                       <MealCard
                       key={index}
                       date={date}
-                      menuItems={getMenuItems(date)}
+                      menu={menu.filter((singleMenu) => {return singleMenu.day.toString() === date.toISOString().split("T")[0].toString() })[0] || {day: date, menuItems: []}}
                       mealTypes={getMealsTypes}
                       onAddMenuItem={() => refreshPage()}
                       index={index}
@@ -129,67 +130,52 @@ const MealPlanFrame: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 20,
-      paddingTop: 40,
-      elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.3,
-      shadowRadius: 4,
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: '#FFF8F0',
-      textShadowColor: 'rgba(0, 0, 0, 0.3)',
-      textShadowOffset: { width: 1, height: 1 },
-      textShadowRadius: 2,
-    },
-    weekToggle: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-      padding: 8,
-      backgroundColor: '#FFF8F0',
-      borderRadius: 20,
-      elevation: 2,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-    },
-    weekToggleText: {
-      color: '#8B4513',
-      fontWeight: '500',
-    },
-    corkboard: {
-      flex: 1,
-      backgroundColor: '#D4B483',
-      position: 'relative',
-    },
-    corkTexture: {
-      ...StyleSheet.absoluteFillObject,
-      opacity: 0.1,
-      backgroundColor: '#000',
-    },
-    cardGrid: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      padding: 10,
-      paddingTop: 20,
-    },
-    footer: {
-      height: 20,
-      elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: -2 },
-      shadowOpacity: 0.3,
-      shadowRadius: 4,
-    },
-  });
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 40,
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.3)',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFF8F0',
+  },
+  weekToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    padding: 8,
+    backgroundColor: '#FFF8F0',
+    borderRadius: 20,
+    boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.2)',
+  },
+  weekToggleText: {
+    color: '#8B4513',
+    fontWeight: '500',
+  },
+  corkboard: {
+    flex: 1,
+    backgroundColor: '#D4B483',
+    position: 'relative',
+  },
+  corkTexture: {
+    ...StyleSheet.absoluteFillObject,
+    opacity: 0.1,
+    backgroundColor: '#000',
+  },
+  cardGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 10,
+    paddingTop: 20,
+  },
+  footer: {
+    height: 20,
+    boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.3)',
+  },
+});
 
 export default MealPlanFrame;

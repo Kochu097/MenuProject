@@ -13,42 +13,40 @@ interface Option {
   }
   
 const customStyles: StylesConfig<Option, false> = {
-control: (provided) => ({
-    ...provided,
-    backgroundColor: '#F4F4F4',
-    borderRadius: 4,
-    padding: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: '#D4B483',
-    width: 100,
-}),
-singleValue: (provided) => ({
-    ...provided,
-    fontSize: 14,
-    color: '#8B4513',
-}),
-menu: (provided) => ({
-    ...provided,
-    backgroundColor: '#FFF9E5',
-    borderRadius: 8,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    maxWidth: 300,
-    zIndex: 10,
-    padding: 8,
-}),
-option: (provided, { isSelected }) => ({
-    ...provided,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: isSelected ? '#D4B483' : '#FFF9E5',
-    color: isSelected ? '#FFF' : '#8B4513',
-}),
+    control: (provided) => ({
+        ...provided,
+        backgroundColor: '#F4F4F4',
+        borderRadius: 4,
+        padding: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderWidth: 1,
+        borderColor: '#D4B483',
+        width: 100,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
+    }),
+    singleValue: (provided) => ({
+        ...provided,
+        fontSize: 14,
+        color: '#8B4513',
+    }),
+    menu: (provided) => ({
+        ...provided,
+        backgroundColor: '#FFF9E5',
+        borderRadius: 8,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
+        maxWidth: 300,
+        zIndex: 10,
+        padding: 8,
+    }),
+    option: (provided, { isSelected }) => ({
+        ...provided,
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        backgroundColor: isSelected ? '#D4B483' : '#FFF9E5',
+        color: isSelected ? '#FFF' : '#8B4513',
+    }),
 };
 
 const AddProductDialog: React.FC = () => {
@@ -260,28 +258,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 4,
         padding: 8,
-      },
-      addButtonText: {
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
+    },
+    addButtonText: {
         fontSize: 12,
         color: '#8B4513',
         fontStyle: 'italic',
-      },
-      modal: {
+    },
+    modal: {
         margin: 0,
         justifyContent: 'center',
         alignItems: 'center',
-      },
-      dialogContainer: {
+    },
+    dialogContainer: {
         width: '90%',
         maxWidth: 500,
         backgroundColor: '#FFF9E5',
         borderRadius: 12,
         overflow: 'hidden',
-        elevation: 8,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-      },
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
+    },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -304,10 +300,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     addProductButton: {
-      backgroundColor: '#8B4513',
-      borderRadius: 8,
-      padding: 16,
-      alignItems: 'center',
+        backgroundColor: '#8B4513',
+        borderRadius: 8,
+        padding: 16,
+        alignItems: 'center',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
     },
     addProductButtonText: {
         fontSize: 16,
@@ -333,6 +330,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         borderColor: '#D4B483',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
     },
     imagePickerButtonText: {
         fontSize: 14,
@@ -345,6 +343,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 8,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
     },
     imagePlaceholderText: {
         fontSize: 16,
@@ -355,6 +354,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         borderRadius: 8,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
     },
     input: {
         width: '100%',
@@ -366,6 +366,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#D4B483',
         marginBottom: 16,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
     },
     descriptionInput: {
         flex: 1,
@@ -376,8 +377,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 12,
-        position: 'relative'
-    }
-})
+        position: 'relative',
+    },
+});
 
 export default AddProductDialog;

@@ -20,11 +20,13 @@ import Menu from 'react-select/dist/declarations/src/components/Menu';
 interface AddMealDialogProps {
   onClose?: () => void;
   onAddMenuItem: () => void;
+  date: Date;
 }
 
 const AddMealDialog: React.FC<AddMealDialogProps> = ({
   onClose,
   onAddMenuItem,
+  date
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -32,7 +34,7 @@ const AddMealDialog: React.FC<AddMealDialogProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItemType, setSelectedItemType] = useState<'recipe' | 'product'>('recipe');
   const [selectedItem, setSelectedItem] = useState<Recipe | Product | null>(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(date);
 
   const [recipies, setRecipies] = useState<Recipe[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -168,9 +170,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
   },
   header: {
     flexDirection: 'row',
