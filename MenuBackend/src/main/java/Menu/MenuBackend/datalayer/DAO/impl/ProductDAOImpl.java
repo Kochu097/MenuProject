@@ -20,8 +20,8 @@ public class ProductDAOImpl extends BasicDAO implements ProductDAO {
 
     @Override
     public List<Product> findAllForUser(User user) {
-        TypedQuery<Product> query = entityManager.createQuery("SELECT p FROM Product p WHERE p.source = :user OR p.shared", Product.class);
-        query.setParameter("user", user.getId());
+        TypedQuery<Product> query = entityManager.createQuery("SELECT p FROM Product p WHERE p.user = :user OR p.shared", Product.class);
+        query.setParameter("user", user);
         return query.getResultList();
     }
 
