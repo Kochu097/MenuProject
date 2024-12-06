@@ -20,19 +20,16 @@ class IngredientDAOIntegrationTest extends BaseDAOIntegrationTest {
         product1 = new Product();
         product1.setName("Product 1");
         product1.setShared(true);
-        product1.setSource("Source 1");
         productDAO.save(product1);
 
         Product product2 = new Product();
         product2.setName("Product 2");
         product2.setShared(true);
-        product2.setSource("Source 2");
         productDAO.save(product2);
 
         Product product3 = new Product();
         product3.setName("Product 3");
         product3.setShared(true);
-        product3.setSource("Source 3");
         productDAO.save(product3);
 
         Recipe recipe1 = new Recipe();
@@ -40,7 +37,6 @@ class IngredientDAOIntegrationTest extends BaseDAOIntegrationTest {
         recipe1.setDifficulty(Difficulty.EASY);
         recipe1.setPreparationTime(LocalTime.of(0, 30));
         recipe1.setShared(true);
-        recipe1.setSource("Source 1");
         recipeDAO.save(recipe1);
 
         Recipe recipe2 = new Recipe();
@@ -48,7 +44,6 @@ class IngredientDAOIntegrationTest extends BaseDAOIntegrationTest {
         recipe2.setDifficulty(Difficulty.MEDIUM);
         recipe2.setPreparationTime(LocalTime.of(1, 0));
         recipe2.setShared(true);
-        recipe2.setSource("Source 2");
         recipeDAO.save(recipe2);
 
         Recipe recipe3 = new Recipe();
@@ -56,7 +51,6 @@ class IngredientDAOIntegrationTest extends BaseDAOIntegrationTest {
         recipe3.setDifficulty(Difficulty.HARD);
         recipe3.setPreparationTime(LocalTime.of(2, 0));
         recipe3.setShared(true);
-        recipe3.setSource("Source 3");
         recipeDAO.save(recipe3);
 
         Ingredient ingredient1 = new Ingredient();

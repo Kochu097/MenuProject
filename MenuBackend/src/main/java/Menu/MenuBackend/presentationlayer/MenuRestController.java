@@ -63,4 +63,16 @@ public class MenuRestController {
         menuService.addMenuItem(date, item, user);
     }
 
+    @PostMapping("/addProduct")
+    public void addProduct(@RequestBody ProductDTO product) {
+        UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        productService.addProduct(product, user);
+    }
+
+    @PostMapping("/addRecipe")
+    public void addRecipe(@RequestBody RecipeDTO recipe) {
+        UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        recipeService.addRecipe(recipe, user);
+    }
+
 }

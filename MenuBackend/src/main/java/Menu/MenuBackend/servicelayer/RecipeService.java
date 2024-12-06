@@ -2,6 +2,7 @@ package Menu.MenuBackend.servicelayer;
 
 import Menu.MenuBackend.common.exception.RecipeNotFoundException;
 import Menu.MenuBackend.servicelayer.dto.RecipeDTO;
+import Menu.MenuBackend.servicelayer.dto.UserDTO;
 
 import java.util.List;
 
@@ -47,4 +48,6 @@ public interface RecipeService {
      * @throws RecipeNotFoundException if the Recipe entity is not found
      */
     void deleteRecipe(Integer id) throws RecipeNotFoundException;
+
+    void addRecipe(RecipeDTO recipeDTO, UserDTO user);
 }

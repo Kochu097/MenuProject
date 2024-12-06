@@ -16,6 +16,5 @@ public class RecipeDTO {
     private LocalTime preparationTime;
     private BigDecimal servings;
     private Difficulty difficulty;
-    private String source;
     private Boolean shared;
 }

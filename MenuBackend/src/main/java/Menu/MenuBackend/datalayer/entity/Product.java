@@ -32,8 +32,9 @@ public class Product {
     @Column(name = "Calories")
     private Long calories;
 
-    @Column(name = "Source", nullable = false)
-    private String source;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private User user;
 
     @Column(name = "Shared" , nullable = false)
     private Boolean shared;

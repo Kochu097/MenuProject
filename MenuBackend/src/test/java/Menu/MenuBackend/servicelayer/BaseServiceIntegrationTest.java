@@ -64,7 +64,6 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
         recipeDTO.setPreparationTime(LocalTime.of(0, 45)); // 45 minutes
         recipeDTO.setServings(BigDecimal.valueOf(4));
         recipeDTO.setDifficulty(Difficulty.EASY);
-        recipeDTO.setSource("test-source");
         recipeDTO.setShared(false);
         return recipeDTO;
     }
@@ -77,7 +76,6 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
         productDTO.setWeight(100L);
         productDTO.setWeightUnit(WeightUnit.GRAM);
         productDTO.setCalories(250L);
-        productDTO.setSource("test-source");
         productDTO.setShared(false);
         return productDTO;
     }

@@ -80,4 +80,11 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
         productDAO.delete(product);
     }
+
+    @Override
+    public void addProduct(ProductDTO productDTO, UserDTO user) {
+        Product product = modelMapper.map(productDTO, Product.class);
+        product.setUser(modelMapper.map(user, User.class));
+        productDAO.save(product);
+    }
 }

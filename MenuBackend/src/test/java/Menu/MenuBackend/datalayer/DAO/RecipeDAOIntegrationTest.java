@@ -23,7 +23,6 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         testRecipe.setPreparationTime(LocalTime.of(0, 30));
         testRecipe.setServings(BigDecimal.valueOf(4));
         testRecipe.setDifficulty(Difficulty.MEDIUM);
-        testRecipe.setSource("test-source");
         testRecipe.setShared(false);
         testRecipe = recipeDAO.save(testRecipe);
     }
@@ -37,7 +36,6 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         newRecipe.setPreparationTime(LocalTime.of(1, 0));
         newRecipe.setServings(BigDecimal.valueOf(2));
         newRecipe.setDifficulty(Difficulty.HARD);
-        newRecipe.setSource("test-source");
         newRecipe.setShared(false);
 
         Recipe savedRecipe = recipeDAO.save(newRecipe);
@@ -65,7 +63,6 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         secondRecipe.setName("Second Test Recipe");
         secondRecipe.setServings(BigDecimal.valueOf(3));
         secondRecipe.setShared(false);
-        secondRecipe.setSource("test-source");
 
         recipeDAO.save(secondRecipe);
 
@@ -98,7 +95,6 @@ class RecipeDAOIntegrationTest extends BaseDAOIntegrationTest {
         recipeToDelete.setName("Recipe to Delete");
         recipeToDelete.setServings(BigDecimal.valueOf(1));
         recipeToDelete.setShared(false);
-        recipeToDelete.setSource("test-source");
         recipeToDelete = recipeDAO.save(recipeToDelete);
 
         recipeDAO.delete(recipeToDelete);

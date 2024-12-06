@@ -50,4 +50,6 @@ public interface ProductService {
      * @throws ProductNotFoundException if the Product entity is not found
      */
     void deleteProduct(Integer id) throws ProductNotFoundException;
+
+    void addProduct(ProductDTO productDTO, UserDTO user);
 }

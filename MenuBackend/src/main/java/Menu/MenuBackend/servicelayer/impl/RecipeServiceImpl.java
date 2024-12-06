@@ -6,6 +6,7 @@ import Menu.MenuBackend.datalayer.entity.Recipe;
 import Menu.MenuBackend.datalayer.entity.User;
 import Menu.MenuBackend.servicelayer.RecipeService;
 import Menu.MenuBackend.servicelayer.dto.RecipeDTO;
+import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,12 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipe = recipeDAO.findById(id)
                 .orElseThrow(() -> new RecipeNotFoundException("Recipe not found with id: " + id));
         recipeDAO.delete(recipe);
+    }
+
+    @Override
+    public void addRecipe(RecipeDTO recipeDTO, UserDTO user) {
+        Recipe recipe = modelMapper.map(recipeDTO, Recipe.class);
+        recipe.setUser(modelMapper.map(user, User.class));
+        recipeDAO.save(recipe);
     }
 }

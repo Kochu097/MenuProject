@@ -40,8 +40,9 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    @Column(name = "Source", nullable = false)
-    private String source;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private User user;
 
     @Column(name = "Shared" , nullable = false)
     private Boolean shared;
