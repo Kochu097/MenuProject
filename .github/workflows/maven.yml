@@ -36,5 +36,5 @@ jobs:
       if: always()
       with:
         files: |
-          result.json
+          TestResults/result.json
 
