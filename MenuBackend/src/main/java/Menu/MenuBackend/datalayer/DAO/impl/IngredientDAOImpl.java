@@ -3,7 +3,6 @@ package Menu.MenuBackend.datalayer.DAO.impl;
 import Menu.MenuBackend.datalayer.DAO.IngredientDAO;
 import Menu.MenuBackend.datalayer.DAO.BasicDAO;
 import Menu.MenuBackend.datalayer.entity.Ingredient;
-import Menu.MenuBackend.datalayer.entity.MenuItem;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 

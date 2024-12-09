@@ -49,5 +49,6 @@ interface MenuItem {
   menuItemType: MealTypesEnum;
   recipe: Recipe| undefined;
   product: Product | undefined;
+  servings: number;
 }
   export type { MenuItem };

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AddMealDialog from './AddMealDialog/AddMealDialog';
-import { Menu, MenuItem } from './Interfaces/ICommon';
+import { Menu } from './Interfaces/ICommon';
 import MealTypesEnum from './Enums/MealTypesEnum';
 
 interface MealCardProps {
@@ -122,7 +122,13 @@ const MealCard: React.FC<MealCardProps> = ({
                 <Text style={styles.mealType}>{mealType}</Text>
                   <View style={styles.mealNameContainer}>
                     {menuItems.map((menuItem, index) => (
-                    <Text key={index} style={styles.mealName}>{menuItem ? (menuItem.product ? menuItem.product.name : menuItem.recipe?.name) : ''}</Text>
+                      <>
+                      <Text key={index} style={styles.mealName}>{menuItem ? (menuItem.product ? menuItem.product.name : menuItem.recipe?.name) : ''}</Text>
+                    <Text key={`serving-${index}`} style={styles.servingText}>
+                      {menuItem.servings ? `${menuItem.servings} serving(s)` : ''}
+                    </Text>
+                      </>
+                    
                     ))}
                     <View style={[
                       styles.underline,
@@ -132,7 +138,8 @@ const MealCard: React.FC<MealCardProps> = ({
                 
                   <AddMealDialog 
                   onAddMenuItem={onAddMenuItem}
-                  date={date}/>
+                  date={date}
+                  selectedMealType={mealType}/>
               </View>
             );
           })}
@@ -256,6 +263,8 @@ const styles = StyleSheet.create({
   },
   mealNameContainer: {
     position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   mealName: {
     fontSize: 14,
@@ -303,6 +312,12 @@ const styles = StyleSheet.create({
     marginLeft: -20,
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
     borderRadius: 2,
+  },
+  servingText: {
+    fontSize: 12,
+    color: '#6B4423',
+    fontStyle: 'italic',
+    textAlign: 'right',
   },
 });
 
