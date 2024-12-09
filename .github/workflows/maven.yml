@@ -31,10 +31,7 @@ jobs:
       run: mvn clean compile
     - name: Running tests
       run: mvn test
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action/linux@v2
+    - name: Publish Test Summary Results
       if: always()
-      with:
-        files: |
-          TestResults/result.json
+      run: npx github-actions-ctrf TestResults/result.json
 
