@@ -9,5 +9,6 @@ public class MenuItemDTO {
     private MenuItemType menuItemType;
     private RecipeDTO recipe;
     private ProductDTO product;
+    private Integer servings;
 
 }

@@ -21,20 +21,23 @@ interface AddMealDialogProps {
   onClose?: () => void;
   onAddMenuItem: () => void;
   date: Date;
+  selectedMealType: MealTypesEnum
 }
 
 const AddMealDialog: React.FC<AddMealDialogProps> = ({
   onClose,
   onAddMenuItem,
-  date
+  date,
+  selectedMealType
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const [selectedType, setSelectedType] = useState<MealTypesEnum>(MealTypesEnum.BREAKFAST);
+  const [selectedType, setSelectedType] = useState<MealTypesEnum>(selectedMealType);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItemType, setSelectedItemType] = useState<'recipe' | 'product'>('recipe');
   const [selectedItem, setSelectedItem] = useState<Recipe | Product | null>(null);
   const [selectedDate, setSelectedDate] = useState(date);
+  const [servings, setServings] = useState(1);
 
   const [recipies, setRecipies] = useState<Recipe[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -66,13 +69,14 @@ const AddMealDialog: React.FC<AddMealDialogProps> = ({
       const menuItem: MenuItem = {
         menuItemType: MealTypesEnum[selectedType as keyof typeof MealTypesEnum],
         recipe: selectedItemType === 'recipe' ? (selectedItem as Recipe) : undefined,
-        product: selectedItemType === 'product' ? (selectedItem as Product) : undefined
+        product: selectedItemType === 'product' ? (selectedItem as Product) : undefined,
+        servings: servings,
       };
 
       addMenuItem(token, menuItem, selectedDate);
       onAddMenuItem();
       // Reset and close
-      setSelectedType(MealTypesEnum.BREAKFAST);
+      setSelectedType(selectedMealType);
       setSearchQuery('');
       setSelectedItem(null);
       setIsVisible(false);
@@ -126,7 +130,7 @@ const AddMealDialog: React.FC<AddMealDialogProps> = ({
             <RecipeProductSearchable filteredItems={filteredItems} searchQuery={searchQuery}
             setSearchQuery={setSearchQuery} selectedItem={selectedItem} setSelectedItem={setSelectedItem}
             selectedItemType={selectedItemType} setSelectedItemType={setSelectedItemType}
-            setIsVisible={setIsVisible} recipes={recipies} products={products}/>
+            setIsVisible={setIsVisible} recipes={recipies} products={products} setServings={setServings}/>
 
             {/* Add Button */}
             <TouchableOpacity

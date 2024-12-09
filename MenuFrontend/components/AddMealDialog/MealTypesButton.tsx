@@ -2,7 +2,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import MealTypesEnum from "../Enums/MealTypesEnum";
 
 interface MealTypesButtonProp {
-    selectedType: string;
+    selectedType: MealTypesEnum;
     setSelectedType: (type: MealTypesEnum) => void;
 }
 

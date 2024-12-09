@@ -70,7 +70,7 @@ class MenuRestControllerIntegrationTest extends BasicIntegrationTest {
     @DisplayName("Should add menu item")
     void testAddingMenuItem() throws Exception {
         MenuItemDTO menuItemDTO = new MenuItemDTO();
-        // Set properties of menuItemDTO as needed
+        menuItemDTO.setServings(3);
 
         mockMvc.perform(post("/api/addMenuItem")
                         .header("Authorization", BEARER_PREFIX + VALID_TOKEN)

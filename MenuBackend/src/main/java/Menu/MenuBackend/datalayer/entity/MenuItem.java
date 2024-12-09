@@ -21,6 +21,9 @@ public class MenuItem {
     @Enumerated(EnumType.STRING)
     private MenuItemType menuItemType;
 
+    @Column(name = "SERVINGS", nullable = false)
+    private Integer servings;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Recipe_ID")
     private Recipe recipe;

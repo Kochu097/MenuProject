@@ -1,7 +1,6 @@
 package Menu.MenuBackend.datalayer.DAO;
 
 import Menu.MenuBackend.datalayer.entity.Ingredient;
-import Menu.MenuBackend.datalayer.entity.MenuItem;
 
 import java.util.List;
 import java.util.Optional;
