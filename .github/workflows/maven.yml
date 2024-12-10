@@ -31,7 +31,10 @@ jobs:
       run: mvn clean compile
     - name: Running tests
       run: mvn test
-    - name: Publish Test Summary Results
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/linux@v2
       if: always()
-      run: npx github-actions-ctrf MenuBackend/target/surefire-reports/TEST-*.xml
+      with:
+        files: |
+          MenuBackend/target/surefire-reports/TEST-*.xml
 
