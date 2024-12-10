@@ -33,5 +33,5 @@ jobs:
       run: mvn test
     - name: Publish Test Summary Results
       if: always()
-      run: npx github-actions-ctrf TestResults/result.json
+      run: npx github-actions-ctrf MenuBackend/target/surefire-reports/TEST-*.xml
 
