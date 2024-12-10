@@ -36,5 +36,5 @@ jobs:
       if: always()
       with:
         files: |
-          ./TestResults/result.json
+          MenuBackend/target/surefire-reports/TEST-*.xml
 
