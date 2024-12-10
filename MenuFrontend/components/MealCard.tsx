@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { 
   StyleSheet, 
   View, 
@@ -15,7 +15,6 @@ import MealTypesEnum from './Enums/MealTypesEnum';
 interface MealCardProps {
   date: Date;
   menu: Menu;
-  mealTypes: string[];
   onAddMenuItem: () => void;
   index: number;
   isToday: boolean;
@@ -38,10 +37,9 @@ const PAPER_COLORS = [
   '#FFEDD6',
 ];
 
-const MealCard: React.FC<MealCardProps> = ({ 
+const MealCard: React.FC<MealCardProps> = memo(({ 
   date, 
   menu, 
-  mealTypes,
   onAddMenuItem: onAddMenuItem, 
   index,
   isToday,
@@ -58,10 +56,15 @@ const MealCard: React.FC<MealCardProps> = ({
   const pinColorIndex = index % PIN_COLORS.length;
   const [pinMainColor, pinShadowColor] = PIN_COLORS[pinColorIndex];
 
-  const baseRotation = ((index % 3) - 1) * 2;
-
   // Calculate dimensions based on whether it's today's card in single view
   const cardWidth = showFullWeek ? '45%' : '80%';
+
+  const memoizedMenuItems = useMemo(() => {
+    return Object.values(MealTypesEnum).map((mealType) => ({
+      menuItems: menu.menuItems.filter(m => m.menuItemType === mealType),
+      mealType
+    }));
+  }, [menu.menuItems]);
 
   return (
     <View style={[
@@ -114,9 +117,8 @@ const MealCard: React.FC<MealCardProps> = ({
         </View>
 
         <View style={styles.mealsList}>
-          {Object.values(MealTypesEnum).map((mealType, index) => { 
-            const menuItems = menu.menuItems.filter(m => m.menuItemType === mealType);
-            
+          {memoizedMenuItems.map(({mealType, menuItems}, index) => { 
+            console.log('menuItems', menuItems);
             return (
               <View key={index} style={styles.mealItem}>
                 <Text style={styles.mealType}>{mealType}</Text>
@@ -158,7 +160,7 @@ const MealCard: React.FC<MealCardProps> = ({
       </Pressable>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   cardContainer: {

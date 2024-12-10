@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
   },
   dialogContainer: {
     width: '90%',
