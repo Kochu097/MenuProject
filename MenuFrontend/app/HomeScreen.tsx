@@ -1,5 +1,4 @@
 import { View } from 'react-native';
-import Sidebar from '@/components/HomeScreenSidebar';
 import MealPlanFrame from '@/components/MealPlanFrame';
 
 const HomeScreen: React.FC = () => {
@@ -9,7 +8,6 @@ const HomeScreen: React.FC = () => {
       flex: 1,
       backgroundColor: '#8B4513'
       }}>
-      <Sidebar />
       <MealPlanFrame />
     </View>
   );
