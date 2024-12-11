@@ -118,18 +118,17 @@ const MealCard: React.FC<MealCardProps> = memo(({
 
         <View style={styles.mealsList}>
           {memoizedMenuItems.map(({mealType, menuItems}, index) => { 
-            console.log('menuItems', menuItems);
             return (
               <View key={index} style={styles.mealItem}>
                 <Text style={styles.mealType}>{mealType}</Text>
                   <View style={styles.mealNameContainer}>
                     {menuItems.map((menuItem, index) => (
-                      <>
-                      <Text key={index} style={styles.mealName}>{menuItem ? (menuItem.product ? menuItem.product.name : menuItem.recipe?.name) : ''}</Text>
-                    <Text key={`serving-${index}`} style={styles.servingText}>
-                      {menuItem.servings ? `${menuItem.servings} serving(s)` : ''}
-                    </Text>
-                      </>
+                      <View key={index} style={styles.menuItemContainer}>
+                        <Text key={index} style={styles.mealName}>{menuItem ? (menuItem.product ? menuItem.product.name : menuItem.recipe?.name) : ''}</Text>
+                        <Text key={`serving-${index}`} style={styles.servingText}>
+                          {menuItem.servings ? `${menuItem.servings} serving(s)` : ''}
+                        </Text>
+                      </View>
                     
                     ))}
                     <View style={[
@@ -268,7 +267,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  menuItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   mealName: {
+    flex: 1,
     fontSize: 14,
     color: '#2C1810',
     paddingBottom: 2,

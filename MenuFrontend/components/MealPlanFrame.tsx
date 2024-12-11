@@ -8,6 +8,7 @@ import React from "react";
 import LoginButton from "./Buttons/LoginButton";
 import { Menu } from "./Interfaces/ICommon";
 import { fetchMenu } from "@/hooks/useMealAPI";
+import UserComponent from "./UserComponent";
 
 interface SelectedDateRange {
   startDate: Date;
@@ -16,7 +17,7 @@ interface SelectedDateRange {
 }
 
 const MealPlanFrame: React.FC = () => {
-  const { isAuthenticated, token } = useUser();
+  const { isAuthenticated, token, logout, userInfo } = useUser();
   const [showFullWeek, setShowFullWeek] = useState(false);
   const [menu, setMenu] = useState<Menu[]>([]);
   const [selectedDate, setSelectedDate] = useState<SelectedDateRange>({
@@ -114,6 +115,7 @@ const MealPlanFrame: React.FC = () => {
           <MaterialIcons name={showFullWeek ? "view-day" : "view-week"} size={24} color="#8B4513" />
           <Text style={styles.weekToggleText}>{showFullWeek ? "Show Today" : "Show Week"}</Text>
         </TouchableOpacity>
+        <UserComponent isAuthenticated={isAuthenticated} logout={logout} profilePicture={userInfo?.photoURL} userName={userInfo?.displayName}/>
       </LinearGradient>
 
       {/* Date Selector */}
@@ -174,6 +176,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 40,
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
+    zIndex: 1000,
   },
   title: {
     fontSize: 24,
@@ -220,6 +223,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#FFF8F0",
     boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.2)",
+    zIndex: 500,
   },
   dateText: {
     fontSize: 16,
