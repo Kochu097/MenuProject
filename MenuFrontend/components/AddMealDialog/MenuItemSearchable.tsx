@@ -75,7 +75,7 @@ const MenuItemSearchable: React.FC<MenuItemSearchableProp> = ({
         </View>
 
         {/* Search Input */}
-        <View style={styles.searchContainer}>
+        <View style={styles.searchContainer} testID="menu-item-searchable">
             <MaterialIcons name="search" size={20} color="#8B4513" />
             <TextInput
             style={styles.searchInput}

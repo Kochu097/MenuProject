@@ -85,6 +85,7 @@ const AddMealDialog: React.FC<AddMealDialogProps> = ({
 
   return (
     <>
+      <View testID="add-meal-dialog"></View>
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => setIsVisible(true)}
