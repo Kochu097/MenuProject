@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  backendTest:
     defaults:
       run:
         working-directory: ./MenuBackend
@@ -38,3 +38,33 @@ jobs:
         files: |
           MenuBackend/target/surefire-reports/TEST-*.xml
 
+  frontendTest:
+    defaults:
+      run:
+        working-directory: ./MenuFrontend
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+      
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Run tests
+        run: npm test
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/linux@v2
+        if: always()
+        with:
+          files: |
+            MenuFrontend/test-results/junit.xml
