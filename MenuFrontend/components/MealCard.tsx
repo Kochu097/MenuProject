@@ -71,7 +71,8 @@ const MealCard: React.FC<MealCardProps> = memo(({
       styles.cardContainer,
       { width: cardWidth },
     ]}
-    key={index}>
+    key={index}
+    testID='meal-card'>
       {/* Enhanced pin with 3D effect */}
       <View style={styles.pinContainer}>
         <LinearGradient
@@ -106,7 +107,7 @@ const MealCard: React.FC<MealCardProps> = memo(({
           ]} />
         )}
 
-        <View style={styles.dateHeader}>
+        <View style={styles.dateHeader} testID='date-text'>
           <Text style={styles.dayName}>
             {date.toLocaleDateString('en-US', { weekday: 'short' })}
           </Text>

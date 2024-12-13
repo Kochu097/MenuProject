@@ -7,7 +7,8 @@ const HomeScreen: React.FC = () => {
     <View style={{
       flex: 1,
       backgroundColor: '#8B4513'
-      }}>
+      }}
+      testID='home-screen'>
       <MealPlanFrame />
     </View>
   );
