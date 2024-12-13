@@ -17,9 +17,6 @@ jobs:
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.1.0
-        with:
-          node-version-file: package.json
-          architecture: x64
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
