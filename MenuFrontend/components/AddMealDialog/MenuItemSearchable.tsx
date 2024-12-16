@@ -1,47 +1,68 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, TouchableOpacity, TextInput, ScrollView, Text, StyleSheet} from "react-native";
 import AddRecipeDialog from "../AddRecipe/AddRecipeDialog";
 import AddProductDialog from "../AddProduct/AddProductDialog";
 import { Product, Recipe } from "../Interfaces/ICommon";
+import React from "react";
+import { addProduct, fetchProducts, fetchRecipes } from "@/hooks/useMealAPI";
+import { useUser } from "@/context/UserContext";
 
 interface MenuItemSearchableProp {
-    selectedItemType: 'recipe' | 'product',
-    setSelectedItemType: (type: 'recipe' | 'product') => void,
-    searchQuery: string,
-    setSearchQuery: (query: string) => void,
-    selectedItem: Recipe | Product | null,
-    setSelectedItem: (item: Recipe | Product | null) => void,
-    filteredItems: (Recipe | Product)[],
-    recipes: Recipe[],
-    products: Product[],
-    setIsVisible: (visible: boolean) => void,
-    setServings: (servings: number) => void,
+  onSelectedItem: (item: Recipe | Product, servings: number, selectedItemType: 'recipe' | 'product') => void,
+  isVisible: boolean,
     
 }
 
 const MenuItemSearchable: React.FC<MenuItemSearchableProp> = ({
-    selectedItemType,
-    setSelectedItemType,
-    searchQuery,
-    setSearchQuery,
-    selectedItem,
-    setSelectedItem,
-    filteredItems,
-    recipes,
-    products,
-    setIsVisible,
-    setServings,
+    onSelectedItem,
+    isVisible,
 }) => {
+    const [selectedItemType, setSelectedItemType] = useState<'recipe' | 'product'>('recipe');
+    const [servings, setServings] = useState<number>(1);
+    const [selectedItem, setSelectedItem] = useState<Recipe | Product | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const [recipies, setRecipies] = useState<Recipe[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
 
-    const [items, setItems] = useState<(Recipe | Product)[]>(filteredItems);
+    const {isAuthenticated, token} = useUser();
 
     const handleAddRecipe = (newRecipe: Recipe | Product) => {
-        setItems([...items, newRecipe]);
       };
 
+    const handleAddProduct = async (newProduct: Product, file: File | undefined) => {
+      if(isAuthenticated && token){
+        await addProduct(token, newProduct, file);
+      }
+    }
+
+    const filteredItems = React.useMemo(() => {
+      const items = selectedItemType === 'recipe' ? recipies : products;
+      return items.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }, [selectedItemType, searchQuery, recipies, products]);
+
+    useEffect(() => {
+      if (isVisible && isAuthenticated && token) {
+        const fetchItems = async () => {
+          const fetchedRecipes = await fetchRecipes(token);
+          const fetchedProducts = await fetchProducts(token);
+          setRecipies(fetchedRecipes);
+          setProducts(fetchedProducts);
+        };
+        fetchItems();
+      }
+    }, [isVisible, isAuthenticated, token]);
+
+    useEffect(() => {
+      if (selectedItem) {
+        onSelectedItem(selectedItem, servings, selectedItemType);
+      }
+    }, [selectedItem]);
+
     return (
-        <>
+      <>
         {/* Recipe/Product Toggle */}
         <View style={styles.toggleContainer}>
             <TouchableOpacity
@@ -86,13 +107,13 @@ const MenuItemSearchable: React.FC<MenuItemSearchableProp> = ({
             />
             {selectedItemType == 'recipe' ? (
                 <AddRecipeDialog
-                recipes={recipes}
+                recipes={recipies}
                 products={products}
                 onAddRecipe={handleAddRecipe}
-                onClose={() => setIsVisible(true)}
+                onClose={() => console.log('close recipe dialog')}
                 />
             ) : (
-              <AddProductDialog />
+              <AddProductDialog onAddProduct={handleAddProduct} />
             )}
         </View>
 
@@ -139,7 +160,7 @@ const MenuItemSearchable: React.FC<MenuItemSearchableProp> = ({
             </TouchableOpacity>
             ))}
         </ScrollView>
-        </>
+      </>
     );
 
 }

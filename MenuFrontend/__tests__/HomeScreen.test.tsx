@@ -121,9 +121,9 @@ describe('MenuItemSearchable', () => {
       description: 'A classic Italian pasta dish with rich meat sauce', 
       imageUrl: 'http://example.com/spaghetti.jpg', 
       ingredients: [
-        { product: { name: 'Spaghetti', description: 'Italian pasta', imageUrl: undefined, weight: 500, weightUnit: ProductWeightUnit.Gram, calories: 200 }, amount: '500', unit: 'GRAM' },
-        { product: { name: 'Ground Beef', description: 'Lean ground beef', imageUrl: undefined, weight: 500, weightUnit: ProductWeightUnit.Gram, calories: 250 }, amount: '500', unit: 'GRAM' },
-        { product: { name: 'Tomato Sauce', description: 'Rich tomato sauce', imageUrl: undefined, weight: 300, weightUnit: ProductWeightUnit.Gram, calories: 100 }, amount: '300', unit: 'MILLILITER' }
+        { product: { name: 'Spaghetti', description: 'Italian pasta', imageUrl: undefined, weight: 500, weightUnit: ProductWeightUnit.GRAM, calories: 200, shared: false }, amount: '500', unit: 'GRAM' },
+        { product: { name: 'Ground Beef', description: 'Lean ground beef', imageUrl: undefined, weight: 500, weightUnit: ProductWeightUnit.GRAM, calories: 250, shared: false }, amount: '500', unit: 'GRAM' },
+        { product: { name: 'Tomato Sauce', description: 'Rich tomato sauce', imageUrl: undefined, weight: 300, weightUnit: ProductWeightUnit.GRAM, calories: 100, shared: false }, amount: '300', unit: 'MILLILITER' }
       ], 
       preparationTime: '45', 
       servings: 4, 
@@ -134,9 +134,9 @@ describe('MenuItemSearchable', () => {
       description: 'A fresh salad with grilled chicken, romaine lettuce, and Caesar dressing', 
       imageUrl: 'http://example.com/caesar_salad.jpg', 
       ingredients: [
-        { product: { name: 'Chicken Breast', description: 'Grilled chicken breast', imageUrl: undefined, weight: 200, weightUnit: ProductWeightUnit.Gram, calories: 165 }, amount: '200', unit: 'GRAM' },
-        { product: { name: 'Romaine Lettuce', description: 'Fresh romaine lettuce', imageUrl: undefined, weight: 150, weightUnit: ProductWeightUnit.Gram, calories: 15 }, amount: '150', unit: 'GRAM' },
-        { product: { name: 'Caesar Dressing', description: 'Creamy Caesar dressing', imageUrl: undefined, weight: 50, weightUnit: ProductWeightUnit.Gram, calories: 80 }, amount: '50', unit: 'GRAM' }
+        { product: { name: 'Chicken Breast', description: 'Grilled chicken breast', imageUrl: undefined, weight: 200, weightUnit: ProductWeightUnit.GRAM, calories: 165, shared: false }, amount: '200', unit: 'GRAM' },
+        { product: { name: 'Romaine Lettuce', description: 'Fresh romaine lettuce', imageUrl: undefined, weight: 150, weightUnit: ProductWeightUnit.GRAM, calories: 15, shared: false }, amount: '150', unit: 'GRAM' },
+        { product: { name: 'Caesar Dressing', description: 'Creamy Caesar dressing', imageUrl: undefined, weight: 50, weightUnit: ProductWeightUnit.GRAM, calories: 80, shared: false }, amount: '50', unit: 'GRAM' }
       ], 
       preparationTime: '20', 
       servings: 2, 

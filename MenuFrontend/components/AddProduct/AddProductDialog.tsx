@@ -6,6 +6,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Select, { StylesConfig } from 'react-select';
 import ProductWeightUnit from "../Enums/ProductWeghtUnit";
+import React from "react";
 
 interface Option {
     label: string;
@@ -49,7 +50,11 @@ const customStyles: StylesConfig<Option, false> = {
     }),
 };
 
-const AddProductDialog: React.FC = () => {
+interface AddProductDialogProps {
+    onAddProduct: (product: Product, file: File | undefined) => void;
+}
+
+const AddProductDialog: React.FC<AddProductDialogProps> = ({onAddProduct}) => {
 
     const weightOptions = Object.values(ProductWeightUnit).map(unit => ({
         value: unit, 
@@ -58,7 +63,8 @@ const AddProductDialog: React.FC = () => {
 
     const [product, setProduct] = useState<Product| null>(null);
     const [isVisible, setIsVisible] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
+    const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string | undefined>(undefined);
     const [productName, setProductName] = useState<string>('');
     const [productDescription, setProductDescription] = useState<string>('');
     const [productWeight, setProductWeight] = useState<string>('');
@@ -90,7 +96,8 @@ const AddProductDialog: React.FC = () => {
       if (event.target.files && event.target.files.length > 0) {
         const file = event.target.files[0];
         const imageUrl = URL.createObjectURL(file);
-        setSelectedImage(imageUrl);
+        setSelectedImageUrl(imageUrl);
+        setSelectedImage(file);
       }
     };
 
@@ -104,12 +111,13 @@ const AddProductDialog: React.FC = () => {
         const newProduct: Product = {
             name: productName,
             description: productDescription,
-            imageUrl: selectedImage,
+            imageUrl: selectedImage ? URL.createObjectURL(selectedImage) : undefined,  
             weight: Number(productWeight),
-            weightUnit: weightUnitOption.value as ProductWeightUnit,
-            calories: productCalories == '' ? Number(productCalories) : 0,
+            weightUnit: Object.keys(ProductWeightUnit).find(key => ProductWeightUnit[key as keyof typeof ProductWeightUnit] === weightUnitOption.value) as ProductWeightUnit,
+            calories: productCalories === '' ? 0 : Number(productCalories),
+            shared: false,
         };
-        console.log(newProduct);
+        onAddProduct(newProduct, selectedImage);
         setIsVisible(false);
         clearForm();
 
@@ -156,7 +164,7 @@ const AddProductDialog: React.FC = () => {
                         <View style={styles.imageContainer}>
                             {selectedImage ? (
                             <Image
-                                source={{ uri: selectedImage }}
+                                source={{ uri: selectedImageUrl }}
                                 style={styles.selectedImage}
                                 resizeMode="center"
                             />

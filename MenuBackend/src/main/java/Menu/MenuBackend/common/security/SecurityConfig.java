@@ -22,12 +22,17 @@ public class SecurityConfig {
     @Autowired
     private final FireBaseSecurityFilter fireBaseSecurityFilter;
 
-    private static final String[] WHITELISTED_API_ENDPOINTS = {
+    private static final String[] WHITELISTED_GET_API_ENDPOINTS = {
             "/api/test",
             "/api/getMenuForPeriod",
             "/api/getRecipes",
-            "/api/getProducts",
-            "/api/addMenuItem"
+            "/api/getProducts"
+    };
+
+    private static final String[] WHITELISTED_POST_API_ENDPOINTS = {
+            "/api/addMenuItem",
+            "/api/addRecipe",
+            "/api/addProduct"
     };
 
     public SecurityConfig(FireBaseSecurityFilter fireBaseSecurityFilter) {
@@ -42,8 +47,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authManager ->
                         authManager.requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .requestMatchers(HttpMethod.GET, WHITELISTED_API_ENDPOINTS).permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/addMenuItem").permitAll()
+                                .requestMatchers(HttpMethod.GET, WHITELISTED_GET_API_ENDPOINTS).permitAll()
+                                .requestMatchers(HttpMethod.POST, WHITELISTED_POST_API_ENDPOINTS).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(fireBaseSecurityFilter, UsernamePasswordAuthenticationFilter.class);

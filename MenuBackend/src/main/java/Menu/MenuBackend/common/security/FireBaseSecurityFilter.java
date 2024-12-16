@@ -52,11 +52,9 @@ public class FireBaseSecurityFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } else {
                 setAuthErrorDetails(response);
-                return;
             }
         } else {
             setAuthErrorDetails(response);
-            return;
         }
     }
 

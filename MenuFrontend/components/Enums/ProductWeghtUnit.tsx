@@ -1,8 +1,8 @@
 enum ProductWeightUnit {
-    Gram = 'g',
-    Kilogram = 'kg',
-    Ounce = 'oz',
-    Pound = 'lb',
+    GRAM = 'g',
+    KILOGRAM = 'kg',
+    OUNCE = 'oz',
+    POUND = 'lb',
 }
 
 export default ProductWeightUnit;

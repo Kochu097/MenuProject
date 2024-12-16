@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -74,7 +75,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public void addRecipe(RecipeDTO recipeDTO, UserDTO user) {
+    @Transactional
+    public void addRecipe(RecipeDTO recipeDTO, MultipartFile image, UserDTO user) {
         Recipe recipe = modelMapper.map(recipeDTO, Recipe.class);
         recipe.setUser(modelMapper.map(user, User.class));
         recipeDAO.save(recipe);

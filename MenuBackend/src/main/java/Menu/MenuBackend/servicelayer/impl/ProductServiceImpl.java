@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -82,7 +83,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addProduct(ProductDTO productDTO, UserDTO user) {
+    public void addProduct(ProductDTO productDTO, MultipartFile image, UserDTO user) {
+
         Product product = modelMapper.map(productDTO, Product.class);
         product.setUser(modelMapper.map(user, User.class));
         productDAO.save(product);
