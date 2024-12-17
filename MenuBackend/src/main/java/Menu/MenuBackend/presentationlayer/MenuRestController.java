@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -64,15 +65,17 @@ public class MenuRestController {
     }
 
     @PostMapping("/addProduct")
-    public void addProduct(@RequestBody ProductDTO product) {
+    public void addProduct(@RequestPart("product") ProductDTO product,
+                            @RequestPart(value = "image", required = false) MultipartFile image) {
         UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        productService.addProduct(product, user);
+        productService.addProduct(product, image, user);
     }
 
     @PostMapping("/addRecipe")
-    public void addRecipe(@RequestBody RecipeDTO recipe) {
+    public void addRecipe(@RequestBody RecipeDTO recipe,
+                          @RequestPart(required = false) MultipartFile image) {
         UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        recipeService.addRecipe(recipe, user);
+        recipeService.addRecipe(recipe, image, user);
     }
 
 }

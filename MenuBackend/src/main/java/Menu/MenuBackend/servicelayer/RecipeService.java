@@ -3,6 +3,7 @@ package Menu.MenuBackend.servicelayer;
 import Menu.MenuBackend.common.exception.RecipeNotFoundException;
 import Menu.MenuBackend.servicelayer.dto.RecipeDTO;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -49,5 +50,5 @@ public interface RecipeService {
      */
     void deleteRecipe(Integer id) throws RecipeNotFoundException;
 
-    void addRecipe(RecipeDTO recipeDTO, UserDTO user);
+    void addRecipe(RecipeDTO recipeDTO, MultipartFile image, UserDTO user);
 }

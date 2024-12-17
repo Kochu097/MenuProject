@@ -10,6 +10,7 @@ interface Product {
     weight: number;
     weightUnit: ProductWeightUnit;
     calories: number;
+    shared: boolean;
 }
 
   export type { Product };

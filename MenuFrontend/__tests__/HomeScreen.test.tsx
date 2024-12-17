@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, cleanup, act, waitFor } from '@testing-library/react-native';
 import HomeScreen from '@/app/HomeScreen';
 import { UserProvider } from '@/context/UserContext';
 import MealPlanFrame from '@/components/MealPlanFrame';
@@ -10,6 +10,7 @@ import Difficulty from '@/components/Enums/DifficultyEnum';
 import MenuItemSearchable from '@/components/AddMealDialog/MenuItemSearchable';
 import { Recipe } from '@/components/Interfaces/ICommon';
 import ProductWeightUnit from '@/components/Enums/ProductWeghtUnit';
+import React from 'react';
 
 jest.mock('@/hooks/useMealAPI');
 
@@ -39,159 +40,171 @@ describe('AddMealDialog', () => {
 });
 
 describe('MenuItemSearchable', () => {
-  
+  const mockOnSelectedItem = jest.fn();
+  let userContextSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    // Mock UserContext values
+    userContextSpy = jest.spyOn(require('@/context/UserContext'), 'useUser')
+    .mockImplementation(() => ({
+      isAuthenticated: true,
+      token: 'fake-token'
+    }));
+
+    (fetchRecipes as jest.Mock).mockResolvedValue([{
+      name: 'Pasta',
+      description: 'Delicious pasta',
+      imageUrl: 'http://example.com/pasta.jpg',
+      ingredients: [],
+      preparationTime: '30 mins',
+      servings: 2,
+      difficulty: Difficulty.Easy
+    }]);
+    (fetchProducts as jest.Mock).mockResolvedValue([{
+      name: 'Tomato',
+      description: 'Fresh tomato',
+      imageUrl: 'http://example.com/tomato.jpg',
+      weight: 200,
+      weightUnit: ProductWeightUnit.GRAM,
+      calories: 18,
+      shared: true
+    }]);
+  });
+
   beforeAll(() => {
     jest.useFakeTimers();
   });
-  
+
   afterAll(() => {
     jest.useRealTimers();
   });
-  
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
 
-  test('renders correctly', () => {
-    const { getByTestId } = render(
-      <MenuItemSearchable
-        selectedItemType="recipe"
-        setSelectedItemType={jest.fn}
-        searchQuery=""
-        setSearchQuery={jest.fn}
-        selectedItem={null}
-        setSelectedItem={jest.fn}
-        filteredItems={[]}
-        recipes={[]}
-        products={[]}
-        setIsVisible={jest.fn}
-        setServings={jest.fn}
-      />
-    );
-    expect(getByTestId('menu-item-searchable')).toBeTruthy();
-  });
-
-  test('handles search input correctly', () => {
-    const setSearchQuery = jest.fn();
-    const { getByPlaceholderText } = render(
-      <MenuItemSearchable
-        selectedItemType="recipe"
-        setSelectedItemType={jest.fn()}
-        searchQuery=""
-        setSearchQuery={setSearchQuery}
-        selectedItem={null}
-        setSelectedItem={jest.fn()}
-        filteredItems={[]}
-        recipes={[]}
-        products={[]}
-        setIsVisible={jest.fn()}
-        setServings={jest.fn()}
-      />
-    );
-    const searchInput = getByPlaceholderText('Search recipes...');
-    fireEvent.changeText(searchInput, 'Chicken');
-    expect(setSearchQuery).toHaveBeenCalledWith('Chicken');
-  });
-
-  test('toggles between recipe and product', () => {
-    const setSelectedItemType = jest.fn();
-    const { getByText } = render(
-      <MenuItemSearchable
-        selectedItemType="recipe"
-        setSelectedItemType={setSelectedItemType}
-        searchQuery=""
-        setSearchQuery={jest.fn()}
-        selectedItem={null}
-        setSelectedItem={jest.fn()}
-        filteredItems={[]}
-        recipes={[]}
-        products={[]}
-        setIsVisible={jest.fn()}
-        setServings={jest.fn()}
-      />
-    );
-    fireEvent.press(getByText('Product'));
-    expect(setSelectedItemType).toHaveBeenCalledWith('product');
-  });
-
-  test('displays filtered items correctly', () => {
-    const mockItems = [
-    { 
-      name: 'Spaghetti Bolognese', 
-      description: 'A classic Italian pasta dish with rich meat sauce', 
-      imageUrl: 'http://example.com/spaghetti.jpg', 
-      ingredients: [
-        { product: { name: 'Spaghetti', description: 'Italian pasta', imageUrl: undefined, weight: 500, weightUnit: ProductWeightUnit.Gram, calories: 200 }, amount: '500', unit: 'GRAM' },
-        { product: { name: 'Ground Beef', description: 'Lean ground beef', imageUrl: undefined, weight: 500, weightUnit: ProductWeightUnit.Gram, calories: 250 }, amount: '500', unit: 'GRAM' },
-        { product: { name: 'Tomato Sauce', description: 'Rich tomato sauce', imageUrl: undefined, weight: 300, weightUnit: ProductWeightUnit.Gram, calories: 100 }, amount: '300', unit: 'MILLILITER' }
-      ], 
-      preparationTime: '45', 
-      servings: 4, 
-      difficulty: Difficulty.Medium 
-    },
-    { 
-      name: 'Chicken Caesar Salad', 
-      description: 'A fresh salad with grilled chicken, romaine lettuce, and Caesar dressing', 
-      imageUrl: 'http://example.com/caesar_salad.jpg', 
-      ingredients: [
-        { product: { name: 'Chicken Breast', description: 'Grilled chicken breast', imageUrl: undefined, weight: 200, weightUnit: ProductWeightUnit.Gram, calories: 165 }, amount: '200', unit: 'GRAM' },
-        { product: { name: 'Romaine Lettuce', description: 'Fresh romaine lettuce', imageUrl: undefined, weight: 150, weightUnit: ProductWeightUnit.Gram, calories: 15 }, amount: '150', unit: 'GRAM' },
-        { product: { name: 'Caesar Dressing', description: 'Creamy Caesar dressing', imageUrl: undefined, weight: 50, weightUnit: ProductWeightUnit.Gram, calories: 80 }, amount: '50', unit: 'GRAM' }
-      ], 
-      preparationTime: '20', 
-      servings: 2, 
-      difficulty: Difficulty.Easy 
+  afterEach(async () => {
+    try {
+      await act(async () => {
+        await Promise.resolve();
+        cleanup();
+        userContextSpy.mockRestore();
+        jest.clearAllMocks();
+        jest.clearAllTimers();
+      });
+    } catch (error) {
+      console.error('Cleanup error:', error);
     }
-    ];
-    const { getByText } = render(
-      <MenuItemSearchable
-        selectedItemType="recipe"
-        setSelectedItemType={jest.fn()}
-        searchQuery=""
-        setSearchQuery={jest.fn()}
-        selectedItem={null}
-        setSelectedItem={jest.fn()}
-        filteredItems={mockItems}
-        recipes={[]}
-        products={[]}
-        setIsVisible={jest.fn()}
-        setServings={jest.fn()}
-      />
-    );
-    expect(getByText('Spaghetti Bolognese')).toBeTruthy();
-    expect(getByText('Chicken Caesar Salad')).toBeTruthy();
   });
 
-  test('handles item selection', () => {
-    const setSelectedItem = jest.fn();
-    
-    const mockItem = {
-      name: 'Test Recipe',
-      description: 'Test description',
-      imageUrl: 'http://example.com/image.jpg',
-      ingredients: [],
-      preparationTime: '30',
-      servings: 4,
-      difficulty: Difficulty.Easy
-    } as Recipe;
-    const { getByText } = render(
-      <MenuItemSearchable
-        selectedItemType="recipe"
-        setSelectedItemType={jest.fn()}
-        searchQuery=""
-        setSearchQuery={jest.fn()}
-        selectedItem={null}
-        setSelectedItem={setSelectedItem}
-        filteredItems={[mockItem]}
-        recipes={[]}
-        products={[]}
-        setIsVisible={jest.fn()}
-        setServings={jest.fn()}
-      />
+  test('renders correctly', async () => {
+    const { getByTestId } = render(
+      <UserProvider>
+        <MenuItemSearchable onSelectedItem={mockOnSelectedItem} isVisible={true} />
+      </UserProvider>
     );
-    fireEvent.press(getByText('Test Recipe'));
-    expect(setSelectedItem).toHaveBeenCalledWith(mockItem);
+    
+    await act(async () => {
+      expect(getByTestId('menu-item-searchable')).toBeTruthy();
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
   });
+
+  test('toggles between recipe and product', async () => {
+    const { getByText, getByTestId } = render(
+      <UserProvider>
+        <MenuItemSearchable onSelectedItem={mockOnSelectedItem} isVisible={true} />
+      </UserProvider>
+    );
+    await act(async () => {
+      const recipeButton = getByTestId('recipe-button');
+      const productButton = getByTestId('product-button');
+
+      fireEvent.press(productButton);
+      await waitFor(() => {
+        expect(productButton.props.style.backgroundColor).toBe('#FFF');
+      });
+
+      fireEvent.press(recipeButton);
+      await waitFor(() => {
+        expect(recipeButton.props.style.backgroundColor).toBe('#FFF');
+      });
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+  });
+
+  test('handles search input correctly', async() => {
+    const { getByPlaceholderText } = render(
+      <UserProvider>
+        <MenuItemSearchable onSelectedItem={mockOnSelectedItem} isVisible={true} />
+      </UserProvider>
+    );
+
+    await act(async () => {
+      const searchInput = getByPlaceholderText('Search recipes...');
+      fireEvent.changeText(searchInput, 'Pasta');
+      await waitFor(() => {
+        expect(searchInput.props.value).toBe('Pasta');
+      });
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+  });
+
+  test('displays filtered items correctly', async () => {
+
+    const { getByText, getByPlaceholderText, findByText, getByTestId, toJSON } = render(
+      <UserProvider>
+        <MenuItemSearchable onSelectedItem={mockOnSelectedItem} isVisible={true} />
+      </UserProvider>
+    );
+
+    await act(async () => {
+    const recipeButton = getByTestId('recipe-button');
+    fireEvent.press(recipeButton);
+
+    const pastaItem = await findByText('Pasta');
+    expect(pastaItem).toBeTruthy();
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+  });
+
+  test('handles item selection', async () => {
+
+    const { getByPlaceholderText, findByText } = render(
+      <UserProvider>
+        <MenuItemSearchable onSelectedItem={mockOnSelectedItem} isVisible={true} />
+      </UserProvider>
+    );
+
+    await act(async () => {
+      const searchInput = getByPlaceholderText('Search recipes...');
+      fireEvent.changeText(searchInput, 'Pasta');
+
+      const pastaItem = await findByText('Pasta');
+      fireEvent.press(pastaItem);
+
+      expect(mockOnSelectedItem).toHaveBeenCalledWith(
+        expect.objectContaining({ name: 'Pasta' }),
+        1,
+        'recipe'
+      );
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+  });
+
+    
 });
 
 describe('MealCard', () => {
