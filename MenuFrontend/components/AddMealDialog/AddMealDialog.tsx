@@ -39,8 +39,6 @@ const AddMealDialog: React.FC<AddMealDialogProps> = ({
     servings: number
   }| null>(null);
   const [selectedDate, setSelectedDate] = useState(date);
-  const [servings, setServings] = useState(1);
-  const [selectedMenuItem, setSelectedMenuItem] = useState<Recipe | Product | undefined>(undefined);
 
   const { token, isAuthenticated } = useUser();
 

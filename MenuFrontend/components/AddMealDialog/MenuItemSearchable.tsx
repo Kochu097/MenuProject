@@ -71,6 +71,7 @@ const MenuItemSearchable: React.FC<MenuItemSearchableProp> = ({
                 selectedItemType === 'recipe' && styles.toggleButtonActive,
             ]}
             onPress={() => setSelectedItemType('recipe')}
+            testID="recipe-button"
             >
             <Text style={[
                 styles.toggleButtonText,
@@ -85,6 +86,7 @@ const MenuItemSearchable: React.FC<MenuItemSearchableProp> = ({
                 selectedItemType === 'product' && styles.toggleButtonActive,
             ]}
             onPress={() => setSelectedItemType('product')}
+            testID="product-button"
             >
             <Text style={[
                 styles.toggleButtonText,
