@@ -64,6 +64,17 @@ export async function addProduct(token: string, product: Product, image: File | 
     });
 }
 
+export async function addRecipe(token: string, recipe: any, image: File | undefined) {
+    const formData = new FormData();
+    formData.append('recipe', new Blob([JSON.stringify(recipe)], { type: 'application/json' }));
+    if (image) {
+        formData.append('image', image);
+    }
+    await axios.post('http://localhost:8083/api/addRecipe', formData, getMultipartAPIConfiguration(token)).catch((error) => {
+        console.log('error adding recipe', error);
+    });
+}
+
 function formatDate(date: Date) {
     return date.toISOString().split('T')[0];
 }

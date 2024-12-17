@@ -50,9 +50,12 @@
       "@babel/preset-typescript"
     ],
     "plugins": [
-      ["@babel/plugin-transform-runtime", {
-        "regenerator": true
-      }]
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "regenerator": true
+        }
+      ]
     ]
   },
   "dependencies": {
@@ -81,7 +84,8 @@
     "react-native-screens": "~4.1.0",
     "react-native-timer-picker": "^1.10.3",
     "react-native-web": "~0.19.13",
-    "react-select": "^5.8.3"
+    "react-select": "^5.8.3",
+    "react-time-picker": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

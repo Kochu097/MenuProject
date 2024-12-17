@@ -72,8 +72,8 @@ public class MenuRestController {
     }
 
     @PostMapping("/addRecipe")
-    public void addRecipe(@RequestBody RecipeDTO recipe,
-                          @RequestPart(required = false) MultipartFile image) {
+    public void addRecipe(@RequestPart("recipe") RecipeDTO recipe,
+                          @RequestPart(value = "image", required = false) MultipartFile image) {
         UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         recipeService.addRecipe(recipe, image, user);
     }

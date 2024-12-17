@@ -21,8 +21,6 @@ interface MealCardProps {
   showFullWeek: boolean;
 }
 
-console.log('rendering MealCard');
-
 
 const PIN_COLORS = [
   ['#FF4B4B', '#CC3333'],

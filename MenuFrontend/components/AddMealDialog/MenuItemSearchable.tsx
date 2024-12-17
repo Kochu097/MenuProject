@@ -5,7 +5,7 @@ import AddRecipeDialog from "../AddRecipe/AddRecipeDialog";
 import AddProductDialog from "../AddProduct/AddProductDialog";
 import { Product, Recipe } from "../Interfaces/ICommon";
 import React from "react";
-import { addProduct, fetchProducts, fetchRecipes } from "@/hooks/useMealAPI";
+import { addProduct, addRecipe, fetchProducts, fetchRecipes } from "@/hooks/useMealAPI";
 import { useUser } from "@/context/UserContext";
 
 interface MenuItemSearchableProp {
@@ -27,14 +27,17 @@ const MenuItemSearchable: React.FC<MenuItemSearchableProp> = ({
 
     const {isAuthenticated, token} = useUser();
 
-    const handleAddRecipe = (newRecipe: Recipe | Product) => {
-      };
+    const handleAddRecipe = async (newRecipe: Recipe, file: File | undefined) => {
+      if(isAuthenticated && token){
+        await addRecipe(token, newRecipe, file);
+      }
+    };
 
     const handleAddProduct = async (newProduct: Product, file: File | undefined) => {
       if(isAuthenticated && token){
         await addProduct(token, newProduct, file);
       }
-    }
+    };
 
     const filteredItems = React.useMemo(() => {
       const items = selectedItemType === 'recipe' ? recipies : products;
@@ -112,7 +115,6 @@ const MenuItemSearchable: React.FC<MenuItemSearchableProp> = ({
                 recipes={recipies}
                 products={products}
                 onAddRecipe={handleAddRecipe}
-                onClose={() => console.log('close recipe dialog')}
                 />
             ) : (
               <AddProductDialog onAddProduct={handleAddProduct} />
