@@ -37,6 +37,7 @@ jobs:
       with:
         files: |
           MenuBackend/target/surefire-reports/TEST-*.xml
+        check_name: MenuBackend Integration Tests
 
   frontendTest:
     defaults:
@@ -68,3 +69,4 @@ jobs:
         with:
           files: |
             MenuFrontend/test-results/junit.xml
+          check_name: MenuFrontend Integration Tests
