@@ -11,11 +11,11 @@ import {
 import Modal from 'react-native-modal';
 import { MaterialIcons } from '@expo/vector-icons';
 import IngredientAmountDropdown from './IngredientAmountDropdown';
-import { TimerPickerModal } from 'react-native-timer-picker';
-import { LinearGradient } from "expo-linear-gradient";
+
 import Select from 'react-select';
 import { Product, Recipe } from '../Interfaces/ICommon';
 import Difficulty from '../Enums/DifficultyEnum';
+import TimePicker from './TimePicker';
 
 interface Option {
   label: string;
@@ -25,15 +25,13 @@ interface Option {
 interface AddRecipeDialogProps {
   recipes: Recipe[];
   products: Product[];
-  onAddRecipe: (newRecipe: Recipe) => void;
-  onClose?: () => void;
+  onAddRecipe: (newRecipe: Recipe, file: File | undefined) => void;
 }
 
 const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
   recipes,
   products,
   onAddRecipe,
-  onClose,
 }) => {
   
   const difficultOptions = Object.values(Difficulty).map(difficulty => ({
@@ -46,9 +44,10 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
   const [newRecipeName, setNewRecipeName] = useState('');
   const [newRecipeDescription, setNewRecipeDescription] = useState('');
   const [selectedProducts, setSelectedProducts] = useState<{product: Product, amount: string, unit: string}[]>([]);
-  const [preparationTime, setPreparationTime] = useState('');
+  const [preparationTime, setPreparationTime] = useState('00:00');
   const [newRecipeServings, setNewRecipeServings] = useState('');
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | undefined>(undefined);
+  const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showTimeSelect, setShowTimeSelect] = useState(false);
   const [selectedDifficultyOption, setSelectedDifficultyOption] = useState<Option>(difficultOptions[0]);
@@ -67,15 +66,16 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
     const newRecipe: Recipe = {
       name: newRecipeName,
       description: newRecipeDescription,
-      imageUrl: selectedImage,
+      imageUrl: selectedImageUrl,
       ingredients: selectedProducts,
       preparationTime: preparationTime,
       servings: parseInt(newRecipeServings),
-      difficulty: selectedDifficultyOption.value,
+      difficulty: Object.keys(Difficulty).find(key => Difficulty[key as keyof typeof Difficulty] === selectedDifficultyOption.value) as Difficulty,
+      shared: false,
     };
 
     console.log(newRecipe);
-    onAddRecipe(newRecipe);
+    onAddRecipe(newRecipe, selectedImage);
     setIsVisible(false);
     clearForm();
   };
@@ -84,8 +84,9 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
     setNewRecipeName('');
     setNewRecipeDescription('');
     setSelectedProducts([]);
-    setPreparationTime('');
+    setPreparationTime('00:00');
     setNewRecipeServings('');
+    setSelectedImageUrl(undefined);
     setSelectedImage(undefined);
     setSelectedDifficultyOption(difficultOptions[0]);
   };
@@ -93,7 +94,6 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
   const handleOnClose = () => {
     setIsVisible(false);
     clearForm();
-    if(onClose != undefined) onClose();
   }
 
   const handleRemoveIngredient = (index: number) => {
@@ -117,8 +117,9 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
+      setSelectedImage(file);
       const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
+      setSelectedImageUrl(imageUrl);
     }
   };
 
@@ -178,9 +179,9 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
             {/* Left Page */}
             <View style={styles.leftPage}>
               <View style={styles.imageContainer}>
-                {selectedImage ? (
+                {selectedImageUrl ? (
                   <Image
-                    source={{ uri: selectedImage }}
+                    source={{ uri: selectedImageUrl }}
                     style={styles.selectedImage}
                     resizeMode='contain'
                   />
@@ -266,24 +267,16 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
                 key="Description"
               />
               <View style={styles.recipeDetails}>
-                <TouchableOpacity
-                onPress={() => setShowTimeSelect(true)}
-                >
-                  <TextInput
-                    style={[styles.input, styles.detailsInput]}
-                    placeholder="Preparation Time"
-                    value={preparationTime}
-                    placeholderTextColor="#A67B5B"
-                    key="preperationTime"
-                    editable={false}
-                  />
-                </TouchableOpacity>
+                <Text style={styles.label}>Preparation Time</Text>
+                <View style={styles.timePickerContainer}>
+                  <TimePicker preparationTime={preparationTime} setPreparationTime={setPreparationTime}/>
+                </View>
                 <TextInput
                   style={[styles.input, styles.detailsInput]}
                   placeholder="Servings ex.2"
                   value={newRecipeServings.toString()}
                   onChangeText={(value) =>
-                    setNewRecipeServings(value.replace(/[^0-9]/g, ''))
+                  setNewRecipeServings(value.replace(/[^0-9]/g, ''))
                   }
                   placeholderTextColor="#A67B5B"
                   keyboardType="numeric"
@@ -294,6 +287,18 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
                 value={selectedDifficultyOption}
                 onChange={handleSetSelectedDifficultyOption}
                 placeholder='Difficulty'
+                styles={{
+                  control: (base) => ({
+                  ...base,
+                  borderColor: '#D4B483',
+                  '&:hover': { borderColor: '#D4B483' },
+                  boxShadow: 'none',
+                  }),
+                  placeholder: (base) => ({
+                  ...base,
+                  color: '#A67B5B',
+                  }),
+                }}
                 />
                 <TouchableOpacity
                   style={styles.addRecipeButton}
@@ -306,19 +311,6 @@ const AddRecipeDialog: React.FC<AddRecipeDialogProps> = ({
           </View>
         </View>
       </Modal>
-      <TimerPickerModal 
-      visible={showTimeSelect}
-      setIsVisible={setShowTimeSelect}
-      onConfirm={(time) => {
-        setShowTimeSelect(false);
-        setPreparationTime(formatTime(time))
-      }}
-      modalTitle='Set duration'
-      onCancel={() => setShowTimeSelect(false)}
-      closeOnOverlayPress
-      hideSeconds
-      LinearGradient={LinearGradient}
-      />
       <Modal
         isVisible={isIngredientsModalVisible}
         onBackdropPress={handleCloseIngredientsModal}
@@ -379,6 +371,13 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  timePickerContainer: {
+    width: '100%',
+    padding: 12,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    marginBottom: 12,
   },
   dialogContainer: {
     width: '90%',

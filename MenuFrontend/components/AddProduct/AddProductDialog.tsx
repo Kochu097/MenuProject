@@ -61,7 +61,6 @@ const AddProductDialog: React.FC<AddProductDialogProps> = ({onAddProduct}) => {
         label: unit,
       }));
 
-    const [product, setProduct] = useState<Product| null>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
     const [selectedImageUrl, setSelectedImageUrl] = useState<string | undefined>(undefined);

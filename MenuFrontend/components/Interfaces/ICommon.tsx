@@ -24,6 +24,7 @@ interface Recipe {
   preparationTime: string;
   servings: number;
   difficulty: difficulty;
+  shared: boolean;
 }
 
   export type { Recipe };
