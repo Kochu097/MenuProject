@@ -1,7 +1,7 @@
 # MenuProject
 project to manage weekly menu for household purposes
 
-#Stack
+## Stack
 1. Java 21
 2. Spring boot
 3. Hibernate
@@ -17,7 +17,7 @@ project to manage weekly menu for household purposes
 13. Firebase
 14. MySQL
 
-#Concept
+## Concept
 I created an API in **Java Spring-Boot**, that connects **MySQL** database and Frontend written in **React**. 
 The purpose of the app is to help common household in meal planning for multiple people, and creating a simple shoping list, that you can print or take with you to the store.
 For the future I want to apply also connection to the 3rd party api to gather data about available products and recipies. That also includes caching the results from that API to limit the amount of calls, for budgeting purposes.
