@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import app from '@/components/FirebaseInit';
 import { UserContextType, UserInfo } from './UserContextType';
 
@@ -15,8 +15,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [loginSource, setLoginSource] = useState<string | null>(null);
 
   const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+  const googleProvider = new GoogleAuthProvider();
+  googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+
 
   auth.onAuthStateChanged((user) => {
     if (user) {
@@ -36,9 +37,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   });
 
-  const login = (source: string) => {
+  const login = (source: string, email?: string, password?: string) => {
     if(source == 'google') {
-      signInWithPopup(auth, provider)
+      signInWithPopup(auth, googleProvider)
       .then((result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const user = result.user;
@@ -59,6 +60,45 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
           const credential = GoogleAuthProvider.credentialFromError(error);
           setIsAuthenticated(false);
+      });
+    } else if (source == 'register' && email && password) {
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        auth.currentUser?.getIdToken(true).then(function(tokenId) {
+          setToken(tokenId);
+        })
+        setLoginSource(source);
+        setIsAuthenticated(true);
+        setUserInfo({
+          displayName: user.displayName != null ? user.displayName : '',
+          email: user.email != null ? user.email : '',
+          photoURL: user.photoURL != null ? user.photoURL : '',
+        })
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+    } else if (source == 'login' && email && password) {
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        auth.currentUser?.getIdToken(true).then(function(tokenId) {
+          setToken(tokenId);
+        })
+        setLoginSource(source);
+        setIsAuthenticated(true);
+        setUserInfo({
+          displayName: user.displayName != null ? user.displayName : '',
+          email: user.email != null ? user.email : '',
+          photoURL: user.photoURL != null ? user.photoURL : '',
+        })
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Error Message: "+errorMessage);
       });
     }
 };

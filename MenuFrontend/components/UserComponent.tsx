@@ -1,10 +1,11 @@
 import React, { memo, useMemo, useState } from 'react';
 import LoginButton from './Buttons/LoginButton';
 import { useUser } from '@/context/UserContext';
-import { StyleSheet, Image, TouchableOpacity, View} from "react-native";
+import { StyleSheet, Image, TouchableOpacity, View, Text} from "react-native";
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { MaterialIcons } from '@expo/vector-icons';
+import LoginDialog from './LoginDialog/LoginDialog';
 
 interface UserComponentProps {
   isAuthenticated: boolean, 
@@ -16,7 +17,7 @@ interface UserComponentProps {
 const UserComponent: React.FC<UserComponentProps> = ({isAuthenticated, profilePicture, userName, logout}) => {
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  
+  const [LoginDialogVisible, setLoginDialogVisible] = useState(false);
 
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible);
@@ -29,7 +30,7 @@ const UserComponent: React.FC<UserComponentProps> = ({isAuthenticated, profilePi
 
     const memoizedComponent = useMemo(() => {
       if (!isAuthenticated) {
-          return <LoginButton loginMethod='google' />;
+          return <LoginDialog />
       }
       return (
           <View style={styles.container}>
