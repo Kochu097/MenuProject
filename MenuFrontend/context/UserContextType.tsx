@@ -9,6 +9,6 @@ export interface UserContextType {
     loginSource: string | null;
     token: string | null;
     isAuthenticated: boolean;
-    login: (source: string) => void;
+    login: (source: string, email?: string, password?: string) => void;
     logout: () => void;
   }
