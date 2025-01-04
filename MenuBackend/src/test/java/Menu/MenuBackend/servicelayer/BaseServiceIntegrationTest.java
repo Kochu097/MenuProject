@@ -73,7 +73,7 @@ public class BaseServiceIntegrationTest extends BaseIntegrationTest {
         productDTO.setName(name);
         productDTO.setDescription("Test description for " + name);
         productDTO.setImageUrl("http://test.com/image.jpg");
-        productDTO.setWeight(100L);
+        productDTO.setWeight(100D);
         productDTO.setWeightUnit(WeightUnit.GRAM);
         productDTO.setCalories(250L);
         productDTO.setShared(false);

@@ -79,7 +79,7 @@ class ProductServiceIntegrationTest extends BaseServiceIntegrationTest{
         // Prepare update details
         ProductDTO updateDTO = createTestProductDTO("Updated Product");
         updateDTO.setDescription("Updated description");
-        updateDTO.setWeight(200L);
+        updateDTO.setWeight(200D);
         updateDTO.setWeightUnit(WeightUnit.KILOGRAM);
         updateDTO.setCalories(500L);
 
