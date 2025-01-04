@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 public class RecipeDTO {
@@ -16,5 +17,6 @@ public class RecipeDTO {
     private LocalTime preparationTime;
     private BigDecimal servings;
     private Difficulty difficulty;
+    private List<IngredientDTO> ingredients;
     private Boolean shared;
 }

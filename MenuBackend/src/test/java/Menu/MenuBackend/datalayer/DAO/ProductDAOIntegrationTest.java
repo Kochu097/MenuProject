@@ -19,7 +19,7 @@ class ProductDAOIntegrationTest extends BaseDAOIntegrationTest {
         testProduct = new Product();
         testProduct.setName("Test Product");
         testProduct.setDescription("Test Product Description");
-        testProduct.setWeight(100L);
+        testProduct.setWeight(100D);
         testProduct.setWeightUnit(WeightUnit.GRAM);
         testProduct.setCalories(50L);
         testProduct.setShared(false);
@@ -32,7 +32,7 @@ class ProductDAOIntegrationTest extends BaseDAOIntegrationTest {
         Product newProduct = new Product();
         newProduct.setName("New Product");
         newProduct.setDescription("New Product Description");
-        newProduct.setWeight(200L);
+        newProduct.setWeight(200D);
         newProduct.setWeightUnit(WeightUnit.KILOGRAM);
         newProduct.setCalories(100L);
         newProduct.setShared(false);
@@ -63,7 +63,7 @@ class ProductDAOIntegrationTest extends BaseDAOIntegrationTest {
         // Create another product to ensure we have multiple records
         Product secondProduct = new Product();
         secondProduct.setName("Second Test Product");
-        secondProduct.setWeight(50L);
+        secondProduct.setWeight(50D);
         secondProduct.setWeightUnit(WeightUnit.GRAM);
         secondProduct.setCalories(25L);
         secondProduct.setShared(false);
@@ -97,7 +97,7 @@ class ProductDAOIntegrationTest extends BaseDAOIntegrationTest {
         // Create a product to delete
         Product productToDelete = new Product();
         productToDelete.setName("Product to Delete");
-        productToDelete.setWeight(75L);
+        productToDelete.setWeight(75D);
         productToDelete.setWeightUnit(WeightUnit.GRAM);
         productToDelete.setShared(false);
         productToDelete = productDAO.save(productToDelete);

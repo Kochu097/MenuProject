@@ -4,6 +4,7 @@ import Menu.MenuBackend.datalayer.entity.MenuItem;
 import Menu.MenuBackend.servicelayer.MenuService;
 import Menu.MenuBackend.servicelayer.ProductService;
 import Menu.MenuBackend.servicelayer.RecipeService;
+import Menu.MenuBackend.servicelayer.ShoppingListService;
 import Menu.MenuBackend.servicelayer.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,6 +27,9 @@ public class MenuRestController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    ShoppingListService shoppingListService;
 
     @GetMapping("/test")
     public String test() {
@@ -52,6 +56,17 @@ public class MenuRestController {
     public List<ProductDTO> getProducts() {
         UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return productService.getAllProductsForUser(user);
+    }
+
+    @GetMapping("/generateShoppingList")
+    public ShoppingListDTO generateShoppingList(@RequestParam
+                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                    LocalDate startDate,
+                                                @RequestParam
+                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                    LocalDate endDate) {
+        UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return shoppingListService.generateShoppingList(startDate, endDate, user);
     }
 
     @PostMapping("/addMenuItem")

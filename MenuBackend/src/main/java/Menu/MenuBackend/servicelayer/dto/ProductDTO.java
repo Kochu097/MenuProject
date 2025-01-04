@@ -10,7 +10,7 @@ public class ProductDTO {
     private UserDTO user;
     private String description;
     private String imageUrl;
-    private Long weight;
+    private Double weight;
     private WeightUnit weightUnit;
     private Long calories;
     private Boolean shared;

@@ -23,7 +23,7 @@ public class Product {
     private String imageUrl;
 
     @Column(name = "Weight")
-    private Long weight;
+    private Double weight;
 
     @Column(name = "WeightUnit")
     @Enumerated(EnumType.STRING)
