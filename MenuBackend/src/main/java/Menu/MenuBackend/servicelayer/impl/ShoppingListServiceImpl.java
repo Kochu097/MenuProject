@@ -7,12 +7,14 @@ import Menu.MenuBackend.servicelayer.dto.MenuItemDTO;
 import Menu.MenuBackend.servicelayer.dto.ShoppingListDTO;
 import Menu.MenuBackend.servicelayer.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Service
 public class ShoppingListServiceImpl implements ShoppingListService {
 
     @Autowired
